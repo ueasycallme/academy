@@ -69,7 +69,11 @@ sources_checked: 2026-09-30                       # 来源核查日期
 
 ## 3. 写作规范
 
-- 简体中文。术语首次出现附英文原词，如"关节体（Articulation）"，之后可只用中文或英文，但全页统一。术语定义以 `0.8 术语表` 为准。
+- 简体中文。术语定义以 `0.8 术语表` 为准，中英使用规则（D-018）：
+  - **保留英文不翻译**：USD 基本对象（Stage、Prim、Layer、Schema）；代码中的类名、配置项与参数（Articulation、configclass、Manager、Term、decimation、num_envs、dt、render_interval）；产品与项目名；业界通用且翻译后难检索的词（rollout、headless、sim2real、PPO）。大小写按术语表，如 Prim、Term 首字母大写。
+  - **用中文，首次出现附英文**：一般概念，全页第一次写成"中文（English）"，之后只用中文，如"刚体（rigid body）"、"执行器（actuator）"、"域随机化（domain randomization）"。
+  - **两种写法都允许**：适配层（wrapper）首次写对照形式，之后同页二选一保持一致。"扩展"可以单独使用，不强制附 extension。
+  - 术语表未收录的词按上述规则判断；新增术语先补术语表再使用。
 - 先讲"是什么、为什么这样设计"，再讲"怎么用"。每一节开头一句话说明本节回答什么问题。
 - 段落短。一个概念一张图优先于一大段文字。
 - 图用 Mermaid（流程、时序、依赖）或 SVG（架构图，放 `docs/assets/img/`）。图必须有一行文字说明。
