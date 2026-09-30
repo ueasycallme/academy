@@ -1,6 +1,6 @@
 # T-ENV-01 披露 Isaac Sim 5.1.0 的 Unsupported 状态
 
-状态: 通过
+状态: 已合并
 优先级: P1（T-1.4 交校验后立即做）
 类型: 微任务（跨页，D-019）
 产出: 修改 `docs/0-map/0.1-overview.md`、`docs/1-env/1.1-compat-matrix.md`、`docs/1-env/1.2-version-decision.md`、Sphinx 公告条文案（site-sphinx 同步）

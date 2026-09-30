@@ -31,6 +31,25 @@ tools/check_head_build.sh --worktree   # 检查当前工作区
 | `tools/legacy/` | 已退役的迁移工具（`md2myst.py`、`gen_site.py`），仅作记录，不再使用 |
 | `tasks/`、`reviews/` | 任务卡与校验报告 |
 
+## 部署
+
+推送到 GitHub 后，`.github/workflows/pages.yml` 自动构建并发布到 <https://academy.kiloong.com>：
+
+1. 触发：推送到 `main` 或 `master` 分支（本地当前分支名为 `master`，两者都已列入），或在 Actions 页面手动运行（workflow_dispatch）。
+2. 构建：Python 3.10，安装 `requirements-docs.txt`（锁定版本，pip 缓存），执行 `sphinx-build -E -a -W --keep-going -b html docs docs/_build/html`，任何警告都会让构建失败。
+3. 发布：上传 `docs/_build/html` 为 Pages artifact，再由 `actions/deploy-pages` 部署。
+4. `docs/_extra/CNAME`（内容为 `academy.kiloong.com`）与 `docs/_extra/.nojekyll` 通过 `html_extra_path` 原样复制到产物根目录；`conf.py` 设置了 `html_baseurl`，页面带有指向自定义域名的 canonical 链接。
+
+**需要仓库所有者在 GitHub 与 DNS 上完成的事**（工作流本身不能代劳）：
+
+- [ ] 把本仓库推送到 <https://github.com/ueasycallme/academy>。
+- [ ] 仓库 Settings → Pages → Build and deployment → Source 选 **GitHub Actions**。
+- [ ] 在域名 `kiloong.com` 的 DNS 中添加 CNAME 记录：主机 `academy` → `ueasycallme.github.io`。
+- [ ] 仓库 Settings → Pages → Custom domain 填 `academy.kiloong.com`，DNS 检查通过后勾选 **Enforce HTTPS**。
+- [ ] 第一次推送后，在 Actions 页面确认 "Deploy site to GitHub Pages" 运行成功。
+
+注意：站点按"部署在域名根目录"配置（公告条里的链接使用 `/1-env/...` 这样的根相对路径）。如果改为部署在 `ueasycallme.github.io/academy/` 这类子路径下，需要同步修改这些链接与 `html_baseurl`。
+
 ## 协作
 
 三个 Claude Code session 分工协作，协议见 [WORKFLOW.md](WORKFLOW.md)，写作与代码规范见 [CONVENTIONS.md](CONVENTIONS.md)，裁断记录见 [DECISIONS.md](DECISIONS.md)。
