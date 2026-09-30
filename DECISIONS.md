@@ -67,3 +67,7 @@ reach → lift 用 RL；pick-and-place 走遥操作 + Mimic 模仿学习。
 ### D-018 术语中英使用规则（2026-09-30，源自 T-0.8）
 采纳 0.8 术语表"中英使用规则"一节，已并入 CONVENTIONS 第 3 节。回查结论：CONVENTIONS 原示例"关节体（Articulation）"与规则冲突，改为"刚体（rigid body）"，Articulation 全站保留英文；"扩展"允许单独使用（放宽规则 3）；0.6 的 term → Term、0.3/0.5/0.6 首次出现的 wrapper 补"适配层（wrapper）"由微任务 T-0.8b 处理。
 
+### D-019 Isaac Sim 5.1.0 被官方标记为 Unsupported（2026-09-30，源自 reviews/T-1.3.md）
+事实（设计 session 已复核）：docs.isaacsim.omniverse.nvidia.com/5.1.0 每页顶部显示 "Unsupported release: Isaac Sim 5.1.0 is no longer supported. Bug fixes and new features are delivered only in newer releases."；6.0.0 页无此提示。
+裁断：**主线暂不变**（5.1.0 + 2.3.2），理由：Isaac Lab 2.3.x 最高支持 5.1，3.0 仍为 EA（GA 目标 2026-10 底）；对读者而言 5.1.0 仍是唯一"稳定 Isaac Lab + 对应 Isaac Sim"的组合。但**必须如实披露**：0.1、1.1、1.2 写明 5.1.0 已不再获官方支持、本站仍以其为主线的理由、以及主线将在 3.0 GA 后切换；站点公告条同步此信息（微任务 T-ENV-01）。D-001 的"3.0 GA 后再评估"升级为"3.0 GA 后立即启动主线切换评估"，8.6 版本追踪页负责跟踪。
+
