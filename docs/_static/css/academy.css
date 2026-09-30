@@ -136,6 +136,17 @@ nav.bd-links p.caption {             /* 章节分组名；实测官方站为 600
    keep-all 让首列只在空格与标点处换行，首列宽度随其中最长的"词"而定。 */
 .bd-article table tr > :first-child { word-break: keep-all; }
 
+/* ---- 表格内行内代码与右栏目录可断行（T-SITE-09） ----
+   长路径、长类名、报错原文等不含空格的代码串会撑大表格列宽，或在右栏"本页目录"里被裁切。
+   overflow-wrap: anywhere 会参与最小内容宽度计算，允许在任意位置断行；只作用于表格内的代码与右栏目录。 */
+/* Sphinx 把行内代码的内容包在 span.pre 里，且设了 white-space: nowrap，所以要一并覆盖。
+   断行点由 js/table-code-wbr.js 在 "." "/" "_" 之后插入；break-word 只在单段仍放不下时才在段内断开。 */
+.bd-article table code,
+.bd-article table code .pre { overflow-wrap: break-word; white-space: normal; }
+.bd-sidebar-secondary .toc-entry a,
+.bd-sidebar-secondary .toc-entry code,
+.bd-sidebar-secondary .toc-entry code .pre { overflow-wrap: anywhere; white-space: normal; }
+
 /* ---- 2. 顶栏身份 ---- */
 .navbar-brand img.logo__image { height: 28px; width: auto; }   /* 参考站 logo 图 48px 含留白，可见图形约 22px；自制方形标识取 28px */
 .navbar-brand .logo__title { font-size: 20px; font-weight: 700; } /* 实测参考站标题 20px / 700 */

@@ -1,6 +1,6 @@
 # T-SITE-09 宽表格横向滚动与右栏长标题
 
-状态: 待实现
+状态: 已合并
 优先级: P2（不阻塞内容任务；在 T-3.x 之间找空档做）
 类型: 基础设施
 来源: T-2.1b 附记与 reviews/T-2.1b.md（1440 宽下 4 张表出现表内横向滚动：0.6 表 1、0.5 表 2、1.4 表 2、1.9 表 1，多因单元格内有不可断开的长代码或路径）
@@ -25,3 +25,42 @@
 ## 附记
 
 （实现/校验 session 写）
+
+### 实现附记（isaac-academy-accomplish，2026-09-30）
+
+**1. 盘点**：构建产物中含表格的页面共 21 个，在 1440 / 1920 / 2560 三档用 CDP 逐表检查滚动容器是否 `scrollWidth > clientWidth`。修改前出现横向滚动的有：
+
+| 页面 | 表 | 列数 | 1440 超出 | 1920 / 2560 超出 | 撑宽的内容 |
+|---|---|---|---|---|---|
+| 0.5 | 表 2（四个核心类） | 4 | 164px | 36 / 36px | 行内代码中的长类名，如 `SimulationManager.get_physics_sim_view()`、`isaacsim.core.api.SimulationContext` |
+| 1.4 | 表 2（环境变量与路径） | 3 | 9px | 无 | 行内代码中的长路径 |
+| 1.9 | 表 1（日志位置） | 3 | 86px | 无 | 行内代码中的长路径 `<环境>/lib/python3.11/site-packages/isaacsim/kit/logs/…` |
+
+**2. 处理**：只用了原则 ①（CSS 与前端），没有改任何页面内容。
+
+- 根因：Sphinx 把行内代码的内容包在 `span.pre` 中，并设了 `white-space: nowrap`，所以长代码串无法换行，撑大了列宽。
+- `academy.css`：`.bd-article table code` 与其中的 `.pre` 设为 `white-space: normal; overflow-wrap: break-word`，只作用于表格内的行内代码，没有改字号。T-2.1b 的首列 `keep-all` 规则保留。
+- 新增 `js/table-code-wbr.js`（已在 conf.py 的 `html_js_files` 中注册）：给表格内行内代码在 `.` `/` `_` 之后插入 `<wbr>`，让换行落在有意义的位置。
+  - 先试过只用 `overflow-wrap: anywhere`：溢出消失了，但标识符会在任意位置断开，如 `isaaclab.sim.Sim` / `ulationContext`，读起来很别扭，所以改为 `<wbr>` 加 `break-word`。
+  - `<wbr>` 不会进入复制出的文本。
+- **结果**：21 个页面在三档宽度下全部没有横向滚动，所以没有需要保留滚动的表。
+
+**3–4.** 表格字号未改；页面内容没有改动，因此没有需要逐处复核的内容调整。
+
+**5. 右栏目录**：`.bd-sidebar-secondary .toc-entry` 中的链接、`code` 与 `.pre` 设为 `white-space: normal; overflow-wrap: anywhere`。
+
+- 1.9 页 27 个目录项在 1440 与 2560 下都没有被裁切，长报错串会在栏内换行。
+- 抽查 3.11、2.4、0.2 的右栏，目录项都没有溢出，外观不变。
+
+**截图**（scratch/shots）：
+
+- 表格：`t09-0.5-table-{1440,1920,2560}.png`、`t09-1.9-table-{1440,1920,2560}.png`
+- 右栏：`t09-toc19-{1440,2560}.png`
+
+**其他**：
+
+- 按 T-SITE-10 的裁断，README 补了一句"首页也会加载 MathJax 的原因"。
+- `tools/check_head_build.sh --worktree` 通过（-W）。
+
+### 校验附记（isaac-academy-examine，2026-09-30）
+结论：通过。iframe 探针在 21 页 × 3 档宽度下无表格溢出（同一探针在 HEAD 上检出 4 张溢出表，其中 0.6 表 1 为盘点遗漏，也已一并解决）；断行落在 `.` `_` 后，复制文本不变；1.9 右栏目录修改前被裁切、修改后可换行。见 `reviews/T-SITE-09.md`。

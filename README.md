@@ -52,6 +52,8 @@ tools/check_head_build.sh --worktree   # 检查当前工作区
 
 站内搜索完全在浏览器端完成，不依赖外部服务：构建时 Sphinx 用 jieba 给中文分词建索引；查询时 `_static/js/cjk-search.js` 把连写的中文短语按索引词表切成词（如"导入路径"→"导入""路径"），再交给 Sphinx 自带的搜索。已知限制：切分后的多个词按"同时包含"匹配，不要求相邻，含完整短语的页面不会优先排序（设计 session 裁断暂不改 Sphinx 的打分逻辑，页面增多后再评估）。
 
+数学公式用 MyST 的 dollarmath / amsmath，由 MathJax 渲染（Sphinx 默认从 jsDelivr 加载，D-022）。只有含公式的页面加载 MathJax；首页也会加载，因为 Sphinx 判断根文档是否有公式时会把 toctree 包含的页面一并计入，这是默认行为，没有另做定制。
+
 ## 协作
 
 三个 Claude Code session 分工协作，协议见 [WORKFLOW.md](WORKFLOW.md)，写作与代码规范见 [CONVENTIONS.md](CONVENTIONS.md)，裁断记录见 [DECISIONS.md](DECISIONS.md)。
