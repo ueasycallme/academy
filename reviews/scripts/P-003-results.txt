@@ -1,0 +1,27 @@
+④ d=0 z=0 ground #1: 最大偏离 nan rad 数值有限 False 
+④ d=0 z=0 ground #2: 最大偏离 nan rad 数值有限 False 
+④ d=0 z=0 ground #3: 最大偏离 nan rad 数值有限 False 
+④ d=0 z=0.05 ground #1: 最大偏离 0.0355 rad 数值有限 True 
+④ d=0 z=0.05 ground #2: 最大偏离 0.0355 rad 数值有限 True 
+④ d=0 z=0.05 ground #3: 最大偏离 0.0355 rad 数值有限 True 
+④ d=0 no ground #1: 最大偏离 0.0355 rad 数值有限 True 
+④ d=0 no ground #2: 最大偏离 0.0355 rad 数值有限 True 
+④ d=0 no ground #3: 最大偏离 0.0355 rad 数值有限 True 
+① d=0.0087266/deg z=0 ground #1: 最大偏离 0.0355 rad 数值有限 True 
+① d=0.0087266/deg z=0 ground #2: 最大偏离 0.0355 rad 数值有限 True 
+① d=0.0087266/deg z=0 ground #3: 最大偏离 0.0355 rad 数值有限 True 
+① d=0.0174533/deg z=0 ground #1: 最大偏离 nan rad 数值有限 False 
+① d=0.0174533/deg z=0 ground #2: 最大偏离 nan rad 数值有限 False 
+① d=0.0174533/deg z=0 ground #3: 最大偏离 nan rad 数值有限 False 
+① d=0.10000736/deg z=0 ground #1: 最大偏离 nan rad 数值有限 False 
+① d=0.10000736/deg z=0 ground #2: 最大偏离 nan rad 数值有限 False 
+① d=0.10000736/deg z=0 ground #3: 最大偏离 nan rad 数值有限 False 
+① d=0.1/deg z=0 ground #1: 最大偏离 0.0355 rad 数值有限 True 
+① d=0.1/deg z=0 ground #2: 最大偏离 0.0355 rad 数值有限 True 
+① d=0.1/deg z=0 ground #3: 最大偏离 0.0355 rad 数值有限 True 
+extra d=0.10000736 z=0.05 #1: 最大偏离 0.0355 rad 数值有限 True 
+extra d=0.10000736 z=0.05 #2: 最大偏离 0.0355 rad 数值有限 True 
+extra d=0.10000736 z=0.05 #3: 最大偏离 0.0355 rad 数值有限 True 
+extra d=0.2 z=0.05 #1: 最大偏离 0.0355 rad 数值有限 True 
+extra d=0.2 z=0.05 #2: 最大偏离 0.0355 rad 数值有限 True 
+extra d=0.2 z=0.05 #3: 最大偏离 0.0355 rad 数值有限 True 
