@@ -130,6 +130,12 @@ nav.bd-links p.caption {             /* 章节分组名；实测官方站为 600
 .bd-main .bd-content .bd-article-container { max-width: none; } /* 参考站无上限 */
 .bd-sidebar-secondary { flex: 0 0 15rem; width: 15rem; min-width: 15rem; } /* 参考站 240px（覆盖前面 min-width: var(--pst-sidebar-secondary)） */
 
+/* ---- 正文表格首列不在汉字之间断行（T-2.1b） ----
+   首列通常是维度名或短标签；列多的表在 1440 宽下会被挤成每行一个字。
+   不用固定最小宽度：像 0.6 调用链表那样首列只是序号的表会被撑宽、出现横向滚动。
+   keep-all 让首列只在空格与标点处换行，首列宽度随其中最长的"词"而定。 */
+.bd-article table tr > :first-child { word-break: keep-all; }
+
 /* ---- 2. 顶栏身份 ---- */
 .navbar-brand img.logo__image { height: 28px; width: auto; }   /* 参考站 logo 图 48px 含留白，可见图形约 22px；自制方形标识取 28px */
 .navbar-brand .logo__title { font-size: 20px; font-weight: 700; } /* 实测参考站标题 20px / 700 */
