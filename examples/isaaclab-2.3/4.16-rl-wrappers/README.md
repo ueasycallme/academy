@@ -32,4 +32,9 @@ python examples/isaaclab-2.3/4.16-rl-wrappers/count_rl_support.py --headless
 - 日志目录 `logs/rsl_rl/cartpole/<时间戳>/` 下有 `events.out.tfevents.*`、`model_0.pt`、`model_50.pt`、`model_99.pt`、`params/env.yaml`、`params/agent.yaml`、`git/IsaacLab.diff`。
 - 回放：加载 `model_99.pt`，在同一目录下生成 `exported/policy.pt`（16 KB）与 `exported/policy.onnx`（6 KB），之后持续运行，本站在 60 秒时手动结束。
 
-训练使用官方默认的 4096 个环境（与 1.4 的验证命令一致）。显存：训练期间整卡占用峰值 3436 MiB，启动前为 491 MiB，训练进程约占 2.9 GB（nvidia-smi 每 0.5 秒采样一次）。
+训练使用官方默认的 4096 个环境（与 1.4 的验证命令一致），headless。
+
+显存（**按进程**测量）：训练进程峰值 2905 MiB，连续 3 次相同。
+
+- 测量方法：训练期间每 0.5 秒执行一次 `nvidia-smi --query-compute-apps=pid,used_memory --format=csv`，只累加训练命令（`isaaclab.sh` 及其子进程）的 `used_memory`，取最大值。
+- 整卡读数（`--query-gpu=memory.used`）还包含桌面及其他进程的占用，数值更大且随机器状态变化。本站同一次训练的整卡峰值为 3436 MiB（空闲时 491 MiB），校验方测得 5956 MiB，不宜作为示例的显存需求。
