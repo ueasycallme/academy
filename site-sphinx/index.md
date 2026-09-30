@@ -36,7 +36,7 @@ Isaac Academy 是 Isaac Sim / Isaac Lab 的中文学习网站，定位是官方�
 0-map/0.4-isaac-names
 0-map/0.5-sim-lab-boundary
 0-map/0.6-one-step
-0-map/0.7-roadmap
+0-map/0.7-learning-paths
 0-map/0.8-glossary
 ```
 

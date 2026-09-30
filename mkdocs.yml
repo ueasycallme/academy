@@ -75,6 +75,25 @@ markdown_extensions:
       alternate_style: true
 
 not_in_nav: |
+  /5-rl/5.1-mdp.md
+  /1-env/1.4-install-51-232.md
+  /2-usd-kit/2.2-usd-concepts.md
+  /2-usd-kit/2.1-why-usd.md
+  /2-usd-kit/2.4-physics-schema.md
+  /2-usd-kit/2.6-what-is-kit.md
+  /3-isaacsim/3.5-urdf-mjcf-import.md
+  /3-isaacsim/3.6-sensors.md
+  /3-isaacsim/3.2-simulation-app.md
+  /3-isaacsim/3.8-rendering.md
+  /6-galbot/6-eval/6.6.1-play-replay.md
+  /6-galbot/1-asset/6.1.6-articulation-cfg.md
+  /6-galbot/1-asset/6.1.5-joint-drive-tuning.md
+  /6-galbot/1-asset/6.1.3-vendor-vs-imported-usd.md
+  /6-galbot/1-asset/6.1.4-collision-mass-inertia.md
+  /6-galbot/1-asset/6.1.2-import-urdf.md
+  /6-galbot/4-task/6.4.1-reach.md
+  /6-galbot/5-train/6.5.1-train-reach-rsl-rl.md
+  /6-galbot/7-deploy/6.7.2-ros2-closed-loop.md
   /0-map/_template-check.md
   /1-env/1.1-compat-matrix.md
   /8-frontier/8.1-what-changed.md
@@ -95,13 +114,17 @@ not_in_nav: |
   /6-galbot/4-task/6.4.7-mimic.md
   /8-frontier/8.3-newton.md
   /2-usd-kit/2.8-nucleus.md
+  /0-map/0.8-glossary.md
+  /6-galbot/1-asset/6.1.1-galbot-repo.md
 
 nav:
   - 首页: index.md
   - 全景地图:
       - 0-map/index.md
+      - 0.1 Isaac 体系一页看懂: 0-map/0.1-overview.md
       - 0.2 分层依赖图: 0-map/0.2-layers.md
       - 0.3 产品谱系与改名史: 0-map/0.3-lineage.md
       - 0.4 名字带 Isaac 但不是一回事: 0-map/0.4-isaac-names.md
       - 0.5 Isaac Sim 与 Isaac Lab 的边界: 0-map/0.5-sim-lab-boundary.md
       - 0.6 一个 RL step 里发生了什么: 0-map/0.6-one-step.md
+      - 0.7 学习路线图: 0-map/0.7-learning-paths.md
