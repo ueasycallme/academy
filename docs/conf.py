@@ -20,7 +20,7 @@ source_suffix = {".md": "markdown"}
 exclude_patterns = ["_build", "MIGRATION-NOTES.md"]
 
 # -- MyST ---------------------------------------------------------------------
-myst_enable_extensions = ["colon_fence", "attrs_inline", "attrs_block", "deflist"]
+myst_enable_extensions = ["colon_fence", "attrs_inline", "attrs_block", "deflist", "dollarmath", "amsmath"]  # dollarmath、amsmath：D-022
 myst_heading_anchors = 3  # 让 [..](page.md#标题) 形式的链接可以解析
 myst_footnote_transition = False
 

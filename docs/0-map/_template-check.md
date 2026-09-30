@@ -89,6 +89,24 @@ echo "hello"
 
 ::::
 
+## 公式
+
+行内公式：关节驱动力矩 $\tau = K_p (q^* - q) + K_d (\dot q^* - \dot q)$，字面美元符号写成 \$5 或 `$5`。
+
+独立公式：
+
+$$
+\tau = K_p \,(q^* - q) + K_d \,(\dot q^* - \dot q)
+$$
+
+其中 $K_p$ 为刚度（N·m/rad），$K_d$ 为阻尼（N·m·s/rad），$q^*$、$\dot q^*$ 为目标位置与目标速度，$q$、$\dot q$ 为当前值。
+
+长公式（检查窄屏下是否撑破正文）：
+
+$$
+J(\theta) = \mathbb{E}_{\tau \sim \pi_\theta}\left[\sum_{t=0}^{T} \gamma^t\, r(s_t, a_t)\right] + \lambda_1 \lVert \theta \rVert_2^2 + \lambda_2 \sum_{i=1}^{N} \max\left(0,\; \lvert q_i \rvert - q_i^{\max}\right)^2 + \lambda_3 \sum_{t=0}^{T-1} \lVert a_{t+1} - a_t \rVert^2
+$$
+
 ## 脚注
 
 这是一句带来源的断言[^1]。
