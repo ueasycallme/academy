@@ -50,6 +50,8 @@ tools/check_head_build.sh --worktree   # 检查当前工作区
 
 站点在域名根目录（academy.kiloong.com）与子路径（`ueasycallme.github.io/academy/`）下都能正常浏览：页面内链接与静态资源都是 Sphinx 生成的相对路径；公告条是原样输出的 HTML，它的站内链接由 `_static/js/announcement-close.js` 按页面的 `data-content_root` 改写为相对路径（无 JS 时回退为自定义域名下的绝对地址）。`html_baseurl` 固定为自定义域名，用于 canonical 链接。
 
+站内搜索完全在浏览器端完成，不依赖外部服务：构建时 Sphinx 用 jieba 给中文分词建索引；查询时 `_static/js/cjk-search.js` 把连写的中文短语按索引词表切成词（如"导入路径"→"导入""路径"），再交给 Sphinx 自带的搜索。已知限制：切分后的多个词按"同时包含"匹配，不要求相邻，含完整短语的页面不会优先排序（设计 session 裁断暂不改 Sphinx 的打分逻辑，页面增多后再评估）。
+
 ## 协作
 
 三个 Claude Code session 分工协作，协议见 [WORKFLOW.md](WORKFLOW.md)，写作与代码规范见 [CONVENTIONS.md](CONVENTIONS.md)，裁断记录见 [DECISIONS.md](DECISIONS.md)。
