@@ -18,6 +18,7 @@ https://github.com/GalaxyGeneralRobotics/galbot_one_golf_description （Apache-2
 from __future__ import annotations
 
 import argparse
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -109,5 +110,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+    # Kit 退出时不会刷新 Python 的 stdout 缓冲；不先刷新，输出重定向到文件或管道时会丢失（CONVENTIONS 第 5 节）
+    sys.stdout.flush()
     if simulation_app is not None:
         simulation_app.close()

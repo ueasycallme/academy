@@ -35,3 +35,5 @@ PhysicsScene：无（场景由使用方创建，Isaac Lab 默认建在 /physicsS
 ## 验证记录
 
 2026-09-30：usd-core 26.8 与 Isaac Sim 5.1.0 pip 环境均运行通过，返回码 0，两者输出一致（Isaac Sim 环境仅多出 Kit 的日志行）。
+
+2026-09-30（T-2.4b）：退出前加 `sys.stdout.flush()` 后，在 Isaac Sim 环境中以终端（`script` 模拟 tty）、管道（`| cat`）、重定向到文件三种方式运行，脚本自身的输出一致、完整。修改前，管道下几乎全部丢失。

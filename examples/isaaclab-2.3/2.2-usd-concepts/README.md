@@ -48,3 +48,5 @@ metersPerUnit : 0.01
 ## 验证记录
 
 2026-09-30：usd-core 26.8（Python 3.11，约 0.1 秒）与 Isaac Sim 5.1.0 pip 环境（内置 USD 0.24.5，约 10 秒）均运行通过，返回码 0，Prim 树与属性值一致。区别：usd-core 不认识 PhysX / Isaac 的扩展 Schema，关节的 applied schemas 只列出 `PhysicsDriveAPI:angular`。
+
+2026-09-30（T-2.4b）：退出前加 `sys.stdout.flush()` 后，在 Isaac Sim 环境中以终端（`script` 模拟 tty）、管道（`| cat`）、重定向到文件三种方式运行，脚本自身的输出一致、完整。修改前，管道下几乎全部丢失。
