@@ -71,3 +71,7 @@ reach → lift 用 RL；pick-and-place 走遥操作 + Mimic 模仿学习。
 事实（设计 session 已复核）：docs.isaacsim.omniverse.nvidia.com/5.1.0 每页顶部显示 "Unsupported release: Isaac Sim 5.1.0 is no longer supported. Bug fixes and new features are delivered only in newer releases."；6.0.0 页无此提示。
 裁断：**主线暂不变**（5.1.0 + 2.3.2），理由：Isaac Lab 2.3.x 最高支持 5.1，3.0 仍为 EA（GA 目标 2026-10 底）；对读者而言 5.1.0 仍是唯一"稳定 Isaac Lab + 对应 Isaac Sim"的组合。但**必须如实披露**：0.1、1.1、1.2 写明 5.1.0 已不再获官方支持、本站仍以其为主线的理由、以及主线将在 3.0 GA 后切换；站点公告条同步此信息（微任务 T-ENV-01）。D-001 的"3.0 GA 后再评估"升级为"3.0 GA 后立即启动主线切换评估"，8.6 版本追踪页负责跟踪。
 
+### D-020 站点技术栈正式切换到 Sphinx（2026-09-30，用户决定）
+用户确认：① 正式切换到 Sphinx + MyST + pydata-sphinx-theme，MkDocs 版退役；② D-019 主线暂不变的裁断确认；③ GitHub 仓库 https://github.com/ueasycallme/academy ，托管 GitHub Pages，域名 academy.kiloong.com；④ 顶部公告条保留，但要有关闭按钮（关闭状态记 localStorage）；⑤ 站点标识保持品牌绿方块。
+执行：T-SITE-06（切换与迁移）、T-SITE-07（GitHub Pages 部署）、T-SITE-08（中文短语搜索）。切换合并后，所有页面直接用 MyST 语法写，CONVENTIONS 页面模板随 T-SITE-06 更新。
+
