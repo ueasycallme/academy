@@ -34,3 +34,14 @@ python measure_vram.py --task Isaac-Reach-Franka-v0 --num_envs 256
 ## 本站实测环境
 
 RTX 5070 12 GB，驱动 580.178.04，Ubuntu 22.04（内核 6.8），Isaac Sim 5.1.0（pip，Python 3.11），Isaac Lab 2.3.2。本站的校验环境中，Isaac Lab 的 editable 安装路径失效，需临时设置 `PYTHONPATH` 指向各 `source/` 包，详见 `reviews/ENV.md`；这是本机环境问题，不是脚本要求。
+
+## 补测：按进程口径的显存（2026-09-30，T-1.3b）
+
+`measure_vram.py` 记录的是整卡读数（`memory.used`），包含桌面与其他进程的占用。按 CONVENTIONS 第 5 节，另用"按进程"口径补测了同样的配置：运行期间每 0.5 秒执行一次 `nvidia-smi --query-compute-apps=pid,used_memory --format=csv`，只累加本脚本进程树的用量，取峰值。
+
+| 模式 | num_envs | 显存峰值（按进程） |
+|---|---|---|
+| headless | 256 / 1024 / 4096 | 2381 / 2517 / 3177 MiB（各 2 次，读数相同） |
+| GUI | 256 / 1024 / 4096 | 5076 / 5150 / 5976 MiB（各 1 次） |
+
+同一次运行的整卡峰值比按进程多约 530–560 MiB，大致就是启动前桌面等占用的量。
