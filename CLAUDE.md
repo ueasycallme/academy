@@ -5,7 +5,7 @@ Isaac Sim / Isaac Lab 中文学习网站的内容仓库。定位是官方文档�
 - 主线版本：**Isaac Sim 5.1.0 + Isaac Lab 2.3.2**。3.0 前沿专栏基于 Isaac Sim 6.1 + Isaac Lab 3.0.0-EA。
 - 主线机器人：Galbot One Golf（https://github.com/GalaxyGeneralRobotics/galbot_one_golf_description）。
 - 读者：会 Python，未接触 Isaac / USD，无 RL 基础。
-- 站点：MkDocs Material，部署到 Cloudflare Pages。中文翻译站 isaac.kiloong.com 是官方文档的中文版，可作延伸阅读链接。
+- 站点：Sphinx + MyST + pydata-sphinx-theme（`docs/` 为源，页面用 MyST 写，模板见 CONVENTIONS 第 2 节），GitHub Pages 托管，仓库 https://github.com/ueasycallme/academy ，域名 academy.kiloong.com。中文翻译站 isaac.kiloong.com 是官方文档的中文版，可作延伸阅读链接。
 
 ## 三个 session 协作
 

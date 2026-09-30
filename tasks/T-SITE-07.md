@@ -16,7 +16,8 @@
 3. `docs/_static/.nojekyll` 同样进入产物根目录。
 4. `conf.py`：`html_baseurl = "https://academy.kiloong.com/"`；`sitemap` 可选。
 5. README 增加"部署"一节：工作流说明；**需要用户在 GitHub 上做的事**列成清单：仓库 Settings → Pages → Source 选 GitHub Actions；DNS 加 CNAME 记录 `academy` → `ueasycallme.github.io`；Pages 里填自定义域名并勾选 Enforce HTTPS。
-6. 本地用 `act` 或至少 `python -c` 验证 workflow YAML 合法；实际推送由用户或设计 session 执行。
+6. **子路径与根路径**：公告条与自定义模板里以 `/` 开头的链接在 `ueasycallme.github.io/academy/` 子路径下会失效（reviews/T-SITE-06.md）。要么全部改为相对路径 / `pathto()`，要么确认只通过自定义域名根路径访问并在 README 写明；两者都验证一次。
+7. 本地用 `act` 或至少 `python -c` 验证 workflow YAML 合法；实际推送由用户或设计 session 执行。
 
 ## 附记
 

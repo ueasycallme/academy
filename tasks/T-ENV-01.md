@@ -1,6 +1,6 @@
 # T-ENV-01 披露 Isaac Sim 5.1.0 的 Unsupported 状态
 
-状态: 校验中
+状态: 通过
 优先级: P1（T-1.4 交校验后立即做）
 类型: 微任务（跨页，D-019）
 产出: 修改 `docs/0-map/0.1-overview.md`、`docs/1-env/1.1-compat-matrix.md`、`docs/1-env/1.2-version-decision.md`、Sphinx 公告条文案（site-sphinx 同步）
@@ -11,6 +11,8 @@
 2. 1.1 表中 Isaac Sim 5.1 行加"官方支持状态：已停止支持（2026-09 核对）"列或备注；6.0/6.1 行写"支持中"。
 3. 站点公告条改为："主线：Isaac Sim 5.1.0（官方已停止支持）+ Isaac Lab 2.3.2；3.0 前沿专栏基于 EA。为何仍选 5.1.0 → 链接 1.2"。
 4. 8.6 版本追踪占位页顶部加一行"待写：跟踪 3.0 GA 与主线切换"。
+
+5. 首页"从哪里开始"指向改为 0.1（入口页），不是 0.2（reviews/T-SITE-06.md 一般意见）。
 
 ## 验收标准
 
@@ -41,3 +43,6 @@
 **验证**：`tools/check_head_build.sh --worktree` 构建通过；headless Chrome 在三页上确认 warning 标题存在，公告条 HTML 含链接与关闭按钮，1.1 各表列数正确。
 
 **备注**：1.4 页开头在 T-1.4 中已有一个同主题的 warning，措辞略有不同（当时按 D-019 写，比本卡早）。1.4 仍在校验中，是否也统一成本卡的措辞，请设计 session 决定，改动很小。
+
+### 校验附记（isaac-academy-examine，2026-09-30）
+结论：通过。三页 warning 逐字一致，来源成立（5.1.0 横幅、README 版本表、3.0 EA release notes 均已核对）；1.1 支持状态列与公告条、8.6 占位页均按任务卡完成；构建通过。2 条建议（"支持中"应标为推断；1.4 页的同类 warning 措辞可统一）。

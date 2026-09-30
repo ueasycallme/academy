@@ -43,7 +43,7 @@
 | `CLAUDE.md`、`WORKFLOW.md`、`CONVENTIONS.md`、`OUTLINE.md`、`DECISIONS.md`（裁断区） | 设计 |
 | `tasks/*.md` 正文 | 设计 |
 | `tasks/*.md` 的"状态"行与"附记"区 | 实现、校验 |
-| `docs/**`、`examples/**`、`mkdocs.yml`、站点构建配置 | 实现 |
+| `docs/**`（Sphinx 源，含 `conf.py`、`_static`、`_templates`）、`examples/**`、`tools/serve.sh`、`.github/workflows/**` | 实现 |
 | `reviews/**` | 校验 |
 | `DECISIONS.md`（待裁断区，追加条目） | 实现、校验 |
 
