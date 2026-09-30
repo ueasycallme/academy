@@ -19,3 +19,12 @@
 
 ## `_reset_idx(env_ids)`（L349 起）
 `curriculum_manager.compute` → `scene.reset` → `event_manager.apply(mode="reset")` → 依次调用各 manager 的 `.reset()` 并把返回的 info 写进 `extras["log"]`（顺序：observation、action、reward、curriculum、command、event、termination、recorder）→ `episode_length_buf[ids] = 0`
+
+## T-SITE-03 预备（2026-09-30）
+- PyPI：`nvidia-sphinx-theme` 0.0.9.post1，license 字段为 "NVIDIA LICENSE AGREEMENT"，分类为 `Other/Proprietary License`，与卡片所述一致；`pydata-sphinx-theme` 0.22.0 为 BSD（OSI）。
+- 校验要点：
+  - 确认构建产物中没有 `nvidia_sphinx_theme` / NVIDIA logo / NVIDIA 字体（grep `nvidia`、`NVIDIA-Sans`、`.woff` 来源）。
+  - 屏蔽外网截图用 `--host-resolver-rules="MAP * ~NOTFOUND, EXCLUDE 127.0.0.1"`，另加 `--log-net-log`。
+  - 中文搜索：检查 `searchindex.js` 是否按 jieba 分词，并在浏览器里实际搜一个中文词。
+  - Mermaid：深浅色各截图一张，**目视确认方向与可读性**。
+  - MIGRATION-NOTES：拿 0.2 页原文逐个语法元素对照转换，看有没有遗漏（admonition 各类型、可折叠 `???`、tabs、脚注、attr_list、Mermaid fence、frontmatter、站内相对链接 `.md`）。
