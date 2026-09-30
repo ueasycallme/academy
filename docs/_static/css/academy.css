@@ -246,11 +246,13 @@ nav.bd-links p.caption {             /* 章节分组名；实测官方站为 600
 .bd-content pre.mermaid svg .edgeLabel,
 .bd-content pre.mermaid svg .edgeLabel rect,
 .bd-content pre.mermaid svg .labelBkg { background-color: var(--pst-color-background) !important; fill: var(--pst-color-background) !important; }
-.bd-content pre.mermaid svg .flowchart-link,
+/* 边：默认深灰细线；图里用 linkStyle 显式指定了 stroke 的边（Mermaid 写成内联 style）不覆盖，
+   其箭头用 Mermaid 按颜色生成的 marker（id 含 "__<颜色>"），同样不覆盖（T-0.7c） */
+.bd-content pre.mermaid svg .flowchart-link:not([style*="stroke:"]),
 .bd-content pre.mermaid svg .messageLine0,
 .bd-content pre.mermaid svg .messageLine1,
 .bd-content pre.mermaid svg .actor-line { stroke: var(--pst-color-text-muted) !important; stroke-width: 1px !important; }
-.bd-content pre.mermaid svg marker path,
+.bd-content pre.mermaid svg marker:not([id*="__"]) path,
 .bd-content pre.mermaid svg .arrowheadPath,
 .bd-content pre.mermaid svg #arrowhead path { fill: var(--pst-color-text-muted) !important; stroke: var(--pst-color-text-muted) !important; }
 .bd-content pre.mermaid svg .loopLine { stroke: var(--nv-color-green) !important; }
