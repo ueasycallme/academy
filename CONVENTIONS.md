@@ -3,14 +3,17 @@
 ## 1. 目录与文件命名
 
 ```
-docs/
-  index.md                      首页
+docs/                            Sphinx 源（conf.py、_static、_templates 在此）
+  index.md                      首页（含各部分 toctree）
   0-map/0.2-layers.md           <部分编号>-<部分slug>/<页面编号>-<页面slug>.md
   1-env/1.1-compat-matrix.md
   6-galbot/1-asset/6.1.2-import-urdf.md
-  assets/img/<页面编号>-<名字>.svg   图片
+  _static/img/<页面编号>-<名字>.svg   图片
+  _build/                       构建产物，已 gitignore
 examples/
   isaaclab-2.3/<页面编号>-<slug>/   每个示例一个目录，含 README.md 说明运行方式
+tools/serve.sh                   本地预览（全量构建 + http.server，默认 8767）
+tools/check_head_build.sh        设计 session 提交后运行
 ```
 
 页面编号与 `OUTLINE.md` 一致。slug 用英文小写、连字符。各部分目录名固定如下：
@@ -31,11 +34,11 @@ examples/
 
 已定的占位页路径：`0-map/0.3-lineage.md`、`0-map/0.4-isaac-names.md`、`1-env/1.1-compat-matrix.md`、`8-frontier/8.1-what-changed.md`。页面 slug 由任务卡指定；未指定时实现方自拟并在附记中列出。
 
-## 2. 页面模板
+## 2. 页面模板（MyST，D-020 后唯一写法）
 
-每页按以下顺序，标题层级固定：
+每页按以下顺序，标题层级固定。站点上"学习目标 / 前置知识"渲染为页首引导块（左侧细绿线、灰色小标题），不是彩色提示框。
 
-```markdown
+`````markdown
 ---
 title: <页面标题>
 verified: "Isaac Sim 5.1.0 / Isaac Lab 2.3.2"   # 无代码的概念页写 "n/a"
@@ -45,27 +48,70 @@ sources_checked: 2026-09-30                       # 来源核查日期
 
 # <页面标题>
 
-!!! abstract "学习目标"
-    - …（2–4 条，动词开头；不要写"读完本页你能："这类引导句）
+:::{admonition} 学习目标
+:class: lead-goals
 
-!!! info "前置知识"
-    - [x.y 页面标题](../路径.md)
+- …（2–4 条，动词开头；不写"读完本页你能："这类引导句）
+:::
 
-<正文，二级标题分节>
+:::{admonition} 前置知识
+:class: lead-prereq
 
-（站点上"学习目标 / 前置知识"渲染为页首引导块：左侧细绿线、灰色小标题、前置知识压成一行，不是彩色提示框；源文件写法不变，见 T-SITE-05 附记第 3 点。）
+- [x.y 页面标题](../路径.md)
+:::
 
-## 常见坑
-（可为空，但标题保留；概念页可改为"## 常见误解"，见 D-012）
+## <第一节标题>
+
+这一节回答：<本节回答的问题>？
+
+<正文。断言句末加脚注[^key]。站内链接写相对路径 [0.2 分层依赖图](../0-map/0.2-layers.md)，锚点链接写 [文字](page.md#标题)。>
+
+```{mermaid}
+flowchart TB
+    A["…"] --> B["…"]
+```
+
+*图 1：<一行说明，写明箭头语义（D-010 / D-017）>*
+
+::::{tab-set}
+:::{tab-item} conda
+```bash
+…
+```
+:::
+:::{tab-item} venv
+```bash
+…
+```
+:::
+::::
+
+## 常见误解            （概念页；实操页写"## 常见坑"；可为空但标题保留）
+
+:::{admonition} 误解一：…
+:class: warning
+
+…
+:::
 
 ## 延伸阅读
+
 - 官方文档：…
 - 源码：…
-- 中文翻译：isaac.kiloong.com 对应页
+- 中文翻译（中文翻译站，译自最新版 Isaac Sim 文档，与主线 5.1.0 可能有差异）：…
 
 ## 版本说明
+
 （本页内容在其他版本上的差异；3.0 相关差异必须在此提及并链接第 8 部分对应页）
-```
+
+[^key]: 页面名：URL（要点）
+`````
+
+MyST 要点：
+- 提示框统一 `:::{admonition} 标题` + `:class: note|tip|warning|danger`，冒号围栏；内部要嵌套代码块或 tab-set 时，外层冒号多一个。
+- 术语表锚点：块级目标写 `(term-xxx)=` 单独一行放在块前；行内写 `[**术语**]{#term-xxx}`。
+- 占位页：frontmatter 加 `orphan: true` 且不进 toctree；进入 toctree 的页面不要写 `orphan`。
+- 脚注、GFM 表格原生支持；`## 标题` 自动生成锚点（`myst_heading_anchors = 3`）。
 
 ## 3. 写作规范
 
@@ -83,7 +129,7 @@ sources_checked: 2026-09-30                       # 来源核查日期
 - **图的尺寸**：单张图高度控制在一屏以内（约 ≤ 700px）。节点只写层名和 2–4 字角色，细节放正文或表格。架构图箭头语义统一为"构建在……之上 / 运行在……之中"，图说明写明（D-010）。方向约定（D-017）：分层/依赖图竖排、底层在下；流程/流水线/时间线左→右；时序图上→下。
 - 不复制官方文档原文超过一句话。需要引用时改为链接。
 - 不写"显然""众所周知"。不写营销语气。
-- 提示框统一使用 MkDocs Material admonition：`note`、`tip`、`warning`、`danger`，"常见坑"里的每条用 `warning`。
+- 提示框统一使用 MyST admonition（见第 2 节），"常见坑 / 常见误解"里的每条用 `warning`。
 
 ## 4. 来源优先级
 
@@ -110,10 +156,10 @@ sources_checked: 2026-09-30                       # 来源核查日期
 - [ ] 页面结构与模板一致，frontmatter 完整
 - [ ] 任务卡"必须覆盖"各点均已覆盖
 - [ ] 每条架构/版本/API 断言有来源
-- [ ] 图有说明文字，Mermaid 能在 `mkdocs serve` 中渲染，**且已截图目检**（方向、层次、深浅色），截图路径写入附记
+- [ ] 图有说明文字，Mermaid 能在本地预览中渲染，**且已截图目检**（方向、层次、深浅色），截图路径写入附记
 - [ ] 示例代码已运行（或明确标注未验证）
 - [ ] 术语与术语表一致
-- [ ] 内部链接可达（`mkdocs build --strict` 通过）
+- [ ] 内部链接可达（`sphinx-build -W` 通过（`tools/serve.sh` 会构建））
 
 ## 7. 校验清单（`reviews/T-<编号>.md` 模板）
 

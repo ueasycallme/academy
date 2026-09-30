@@ -34,3 +34,15 @@
 - 方向按 D-017：分层/依赖图竖排、底层在下；流程与时间线从左到右；时序图从上到下。校验时先判断图属于哪一类，再看方向是否用对。
 - `flowchart BT` 配合"依赖方 --> 被依赖方"的边写法，会把被依赖方画在上方；底层在下的正确写法是 `TB`。
 - 子图若作为边的端点，其 `direction` 会被 Mermaid 忽略。
+
+## T-ENV-01 预备（D-019）
+- 原文（Isaac Sim 5.1.0 文档每页顶部横幅，2026-09-30）："Unsupported release: Isaac Sim 5.1.0 is no longer supported. Bug fixes and new features are delivered only in newer releases."
+- 核对范围：0.1、1.1、1.2 与 Sphinx 公告条；措辞四处要一致；来源用 5.1.0 文档页（任一页均有横幅）；理由写明"2.3.x 最高支持 5.1（README 版本表）；3.0 仍为 EA（v3.0.0-EA release）"。
+- Sphinx 站与 MkDocs 站都要检查；Sphinx 公告条位于 `conf.py` 的 `announcement`。
+
+## T-SITE-06 基线（D-020，切换前快照）
+- 快照提交：见 `reviews/baseline-pre-site06/HEAD.txt`（4211840）。
+- `baseline-pre-site06/site-sphinx-md.sha256`：切换前 `site-sphinx/` 下全部 .md 的 sha256（路径相对 site-sphinx/），切换后与新 `docs/` 逐个比对，应全部一致（除非任务卡要求改动）。
+- `formal-pages.txt`：20 个非占位页；切换前 11 个正式页的 docs/ 与 site-sphinx/ 版本已确认一致（md2myst diff = 0），因此以 site-sphinx 为准不会丢内容。
+- `pre-0.2-2560.png`：切换前 0.2 页在 2560×1440 下的截图（全新 profile）。
+- 还要检查：`tools/check_head_build.sh`、WORKFLOW / CONVENTIONS / README 中 mkdocs 的相关说明已更新；`examples/*/README.md` 中引用的 `docs/…` 路径仍然有效；旧 docs/ 的 `assets/js/mermaid.min.js` 等自托管资源在新站中有对应文件。

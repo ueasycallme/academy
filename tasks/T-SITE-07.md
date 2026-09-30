@@ -1,6 +1,6 @@
 # T-SITE-07 GitHub Pages 部署（academy.kiloong.com）
 
-状态: 待实现
+状态: 实现中
 优先级: P1
 类型: 基础设施
 依赖: T-SITE-06

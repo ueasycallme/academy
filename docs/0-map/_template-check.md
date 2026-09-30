@@ -1,6 +1,7 @@
 ---
 title: 渲染检查页
 verified: "n/a"
+orphan: true
 updated: 2026-09-30
 sources_checked: 2026-09-30
 ---
@@ -9,19 +10,25 @@ sources_checked: 2026-09-30
 
 本页不进导航，用于确认站点的 Markdown 扩展渲染正常，也可作为写作模板参考。
 
-!!! abstract "学习目标"
-    读完本页你能：
+:::{admonition} 学习目标
+:class: lead-goals
 
-    - 确认 admonition、Mermaid、代码 tabs、脚注均可渲染
+读完本页你能：
 
-!!! info "前置知识"
-    - 无
+- 确认 admonition、Mermaid、代码 tabs、脚注均可渲染
+:::
+
+:::{admonition} 前置知识
+:class: lead-prereq
+
+- 无
+:::
 
 ## Mermaid
 
 下图是一个自底向上的依赖示意，用于检查 Mermaid 在浅色/深色模式下的可读性。
 
-```mermaid
+```{mermaid}
 flowchart BT
     A[GPU 驱动 / CUDA] --> B[Omniverse Kit]
     B --> C[Isaac Sim]
@@ -31,36 +38,56 @@ flowchart BT
 
 ## Admonition
 
-!!! note "note"
-    说明性补充。
+:::{admonition} note
+:class: note
 
-!!! tip "tip"
-    实用技巧。
+说明性补充。
+:::
 
-!!! warning "warning"
-    常见坑，"常见坑"一节的每一条都用这种框。
+:::{admonition} tip
+:class: tip
 
-!!! danger "danger"
-    可能造成数据丢失或硬件损坏的操作。
+实用技巧。
+:::
 
-??? note "可折叠（pymdownx.details）"
-    折叠内容。
+:::{admonition} warning
+:class: warning
+
+常见坑，"常见坑"一节的每一条都用这种框。
+:::
+
+:::{admonition} danger
+:class: danger
+
+可能造成数据丢失或硬件损坏的操作。
+:::
+
+:::{dropdown} 可折叠（pymdownx.details）
+
+折叠内容。
+:::
 
 ## 代码 tabs
 
-=== "Python"
+::::{tab-set}
 
-    ```python
-    import torch
+:::{tab-item} Python
 
-    x = torch.zeros(4, device="cuda")
-    ```
+```python
+import torch
 
-=== "Shell"
+x = torch.zeros(4, device="cuda")
+```
+:::
 
-    ```bash
-    echo "hello"
-    ```
+:::{tab-item} Shell
+
+```bash
+echo "hello"
+```
+:::
+
+::::
 
 ## 脚注
 

@@ -2,32 +2,34 @@
 
 Isaac Sim / Isaac Lab 中文学习网站（Isaac Academy）的内容仓库。站点定位、版本策略与硬规则见 [CLAUDE.md](CLAUDE.md)。
 
-## 本地预览
+站点使用 **Sphinx + MyST-Parser + pydata-sphinx-theme**（D-020），源文件全部在 `docs/`，页面用 MyST Markdown 写，页面模板见 [CONVENTIONS.md](CONVENTIONS.md) 第 2 节。
+
+## 本地构建与预览
 
 ```bash
 python3 -m venv .venv
 env -u PYTHONPATH .venv/bin/pip install -r requirements-docs.txt
-env -u PYTHONPATH .venv/bin/mkdocs serve        # http://127.0.0.1:8000
-env -u PYTHONPATH .venv/bin/mkdocs build --strict
+
+tools/serve.sh            # 全量构建 docs/ 并在 http://127.0.0.1:8767/ 预览
+tools/check_head_build.sh # 导出 HEAD 做 sphinx-build -W（警告即失败），提交后运行
+tools/check_head_build.sh --worktree   # 检查当前工作区
 ```
 
-`env -u PYTHONPATH` 用来去掉 shell 里的 `PYTHONPATH`（例如 ROS 2 Humble 的 `/opt/ros/humble/...`），否则 ROS 的 Python 包会混进 venv，`pip freeze` 的结果也会不干净。
-
-不要把 mkdocs 升级到 2.x：Material 9.7 与 MkDocs 2.0 不兼容，`requirements-docs.txt` 已锁定版本。
-
-站点不依赖境外 CDN：Mermaid 自托管在 `docs/assets/js/`，字体用系统字体栈（`theme.font: false`），图标是 Material 内联 SVG。
+- `env -u PYTHONPATH`：去掉 shell 里的 `PYTHONPATH`（例如 ROS 2 Humble 的 `/opt/ros/humble/...`），避免别的 Python 包混进构建环境。
+- 改了 `docs/_static/` 下的 CSS 或 JS 后必须全量构建（`-E -a`，`tools/serve.sh` 已默认这样做）；增量构建不会重新复制静态文件。
+- 依赖版本全部锁定在 `requirements-docs.txt`。Python 3.10 下 Sphinx 最高为 8.1.x。
 
 ## 目录
 
 | 路径 | 内容 |
 |---|---|
-| `docs/` | 站点页面，目录规则见 CONVENTIONS.md 第 1 节 |
-| `docs/assets/` | 图片、自托管脚本 |
-| `docs/stylesheets/` | 自定义样式 |
-| `examples/` | 示例代码，按 Isaac Lab 版本分目录 |
-| `tasks/` | 任务卡 |
-| `reviews/` | 校验报告 |
-| `mkdocs.yml` | 站点配置 |
+| `docs/` | Sphinx 站点源：`conf.py`、`index.md`（含各部分 toctree）、各部分目录、`_static/`、`_templates/` |
+| `docs/_static/` | 样式 `css/academy.css`、自托管的 Mermaid 与脚本、站点标识 |
+| `docs/MIGRATION-NOTES.md` | Material for MkDocs → MyST 的语法对照（迁移时的记录，不参与构建） |
+| `examples/` | 示例代码，按 Isaac Lab 版本分目录，每个示例带 README |
+| `tools/` | 构建检查与预览脚本 |
+| `tools/legacy/` | 已退役的迁移工具（`md2myst.py`、`gen_site.py`），仅作记录，不再使用 |
+| `tasks/`、`reviews/` | 任务卡与校验报告 |
 
 ## 协作
 

@@ -1,7 +1,6 @@
-site/
+docs/_build/
 __pycache__/
 *.pyc
 .venv/
 venv/
 .cache/
-site-sphinx/_build/
