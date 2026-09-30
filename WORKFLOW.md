@@ -4,7 +4,7 @@
 
 ## 角色
 
-### 设计 session（`isaac-tutor-de`）
+### 设计 session（当前名 `isaac-tutor-10`，重启后可能变化，以 ListAgents 为准）
 - 维护 `OUTLINE.md`、`CONVENTIONS.md`、`WORKFLOW.md`、`CLAUDE.md`、`DECISIONS.md`。
 - 为每个页面/示例写任务卡 `tasks/T-<编号>.md`。
 - 处理 `DECISIONS.md` 中的"待裁断"条目。
