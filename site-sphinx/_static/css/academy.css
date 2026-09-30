@@ -67,13 +67,13 @@ html {
   --pst-font-size-h6: 1rem;                                   /* [nv:--pst-font-size-h6] */
   --pst-font-weight-heading: 700;                             /* [nv:--pst-font-weight-heading] */
   --pst-header-height: 3rem;                                  /* [nv:--pst-header-height] */
-  /* 字体：官方站用 NVIDIA Sans / RobotoMono（从 images.nvidia.com 加载），本站不用，改为系统字体栈（同 T-SITE-02） */
-  --pst-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-    "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC",
-    "WenQuanYi Micro Hei", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* 字体：官方站为 NVIDIA,Arial,Helvetica,Sans-Serif 与 RobotoMono,SFMono-Regular,…（实测）。
+     NVIDIA Sans 为专有字体不能用，改用 Inter；中文 Noto Sans SC；其后保留官方站的后备字体。
+     Roboto Mono 使用 Google Fonts 的开源版本（Apache-2.0），不是 NVIDIA 托管的文件。 */
+  --pst-font-family-base: "Inter", "Noto Sans SC", Arial, Helvetica, sans-serif;
   --pst-font-family-heading: var(--pst-font-family-base);
-  --pst-font-family-monospace: "SFMono-Regular", Menlo, Consolas, "Liberation Mono",
-    "DejaVu Sans Mono", "Noto Sans Mono CJK SC", monospace;
+  --pst-font-family-monospace: "Roboto Mono", "Noto Sans SC", SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", Courier, monospace;
   overflow-y: scroll;                                         /* [nv:html overflow-y] */
 }
 
@@ -93,22 +93,25 @@ html {
 nav.bd-links .current > a {
   box-shadow: inset max(3px, .1875rem, .12em) 0 0 var(--nv-color-green); /* [nv:当前项左侧绿条] */
 }
-.bd-footer { color: var(--pst-color-text-muted); }               /* [nv:.bd-footer] */
+.bd-footer { color: var(--pst-color-text-muted); font-size: var(--pst-sidebar-font-size-mobile); } /* [nv:.bd-footer] 实测 14.4px */
+@media (min-width: 960px) { .bd-footer { font-size: var(--pst-sidebar-font-size); } }
 .caption-number:after { content: "："; margin-left: -.25rem; }    /* [nv:.caption-number:after]，改用中文冒号 */
 
 /* ---- 本站自加 ---- */
-.academy-toc-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--pst-color-heading);
+.academy-toc-title {              /* 实测官方站 "Table of Contents"：19.2px / 600 */
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--pst-color-text-base);  /* 实测官方站为正文色 #1a1a1a，不是标题色 */
   margin: 0 0 .5rem;
 }
-nav.bd-links p.caption {             /* 章节分组名（对应官方站左栏的粗体分组） */
-  font-weight: 700;
-  color: var(--pst-color-heading);
+nav.bd-links p.caption {             /* 章节分组名；实测官方站为 600、正文色 */
+  font-weight: 600;
+  color: var(--pst-color-text-base);
   text-transform: none;
 }
 .academy-footer { margin: 0; }
+/* 搜索：官方站为 34×34 的图标按钮（[nv:.search-button-field span{display:none}]），文字与快捷键提示隐藏 */
+.search-button-field span { display: none; }
 /* 顶栏：站名靠左，搜索框与深浅色切换靠右（官方站布局） */
 .bd-header .navbar-header-items__end { margin-left: auto; justify-content: flex-end; }
 .bd-content .mermaid { text-align: center; }

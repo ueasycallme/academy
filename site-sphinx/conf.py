@@ -38,7 +38,12 @@ mermaid_dark_theme = "dark"
 html_theme = "pydata_sphinx_theme"
 html_title = "Isaac Academy"
 html_static_path = ["_static"]
-html_css_files = ["css/academy.css"]
+html_css_files = [
+    # 字体（D-015 允许 CDN）：官方站用 NVIDIA Sans / RobotoMono（专有、NVIDIA 托管，不能用），
+    # 这里用度量相近的开源字体：Inter 替代 NVIDIA Sans，Roboto Mono（Apache-2.0）同名开源版，中文 Noto Sans SC。
+    "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap",
+    "css/academy.css",
+]
 html_js_files = ["js/mermaid-size.js"]
 html_templates_path = ["_templates"]
 templates_path = ["_templates"]
@@ -67,6 +72,6 @@ html_theme_options = {
     "pygments_dark_style": "monokai",
     "show_prev_next": True,
 }
-# pydata-sphinx-theme 0.16 通过 html_context 设置默认深浅色
-html_context = {"default_mode": "dark"}
+# pydata-sphinx-theme 0.16 通过 html_context 设置默认深浅色；官方站为 auto（跟随系统），本站按用户要求固定默认浅色
+html_context = {"default_mode": "light"}  # 默认浅色（T-SITE-04 用户要求）
 html_sidebars = {"**": ["academy-toc-title", "academy-nav"]}
