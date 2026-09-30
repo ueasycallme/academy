@@ -7,6 +7,8 @@ site_dir: site
 theme:
   name: material
   language: zh
+  # 不加载 Google Fonts，改用系统字体栈（见 stylesheets/extra.css）
+  font: false
   features:
     - navigation.tabs
     - navigation.sections
@@ -36,6 +38,11 @@ theme:
 
 extra_css:
   - stylesheets/extra.css
+
+# 自托管 Mermaid：Material 检测到全局 mermaid 已存在时不再从 unpkg 加载
+# 版本 11.17.2（npm registry tarball），与 Material 9.7.7 默认的 mermaid@11 同一大版本
+extra_javascript:
+  - assets/js/mermaid.min.js
 
 plugins:
   # 中文分词：Material 内置 search 插件在安装 jieba 时自动用 jieba 分词
