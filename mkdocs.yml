@@ -80,7 +80,6 @@ not_in_nav: |
   /0-map/0.4-isaac-names.md
   /1-env/1.1-compat-matrix.md
   /8-frontier/8.1-what-changed.md
-  /0-map/0.5-sim-lab-boundary.md
   /3-isaacsim/3.3-rigid-collision.md
   /3-isaacsim/3.4-articulation.md
   /5-rl/5.8-training-debug.md
@@ -90,10 +89,13 @@ not_in_nav: |
   /4-isaaclab/4.14-direct-env.md
   /5-rl/5.4-parallel-envs.md
   /9-source/9.1-rl-env-step.md
+  /3-isaacsim/3.11-api-map.md
+  /4-isaaclab/4.2-repo-map.md
 
 nav:
   - 首页: index.md
   - 全景地图:
       - 0-map/index.md
       - 0.2 分层依赖图: 0-map/0.2-layers.md
+      - 0.5 Isaac Sim 与 Isaac Lab 的边界: 0-map/0.5-sim-lab-boundary.md
       - 0.6 一个 RL step 里发生了什么: 0-map/0.6-one-step.md
