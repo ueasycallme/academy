@@ -24,7 +24,7 @@
 6. Galbot 的 MJCF 在 5.1 上需手动启用导入扩展，转出两个 Articulation 根，且失败时返回码仍为 0（reviews/T-3.5.md）。
 7. 默认关节位置越限时 Isaac Lab 抛 `ValueError`（reviews/T-3.4.md）。
 8. URDF 导入器生成的 mimic 约束默认很软（naturalFrequency 25、dampingRatio 0.005，来源 Isaac Sim v5.1.0 `UrdfImporter.cpp` 与 `UrdfTypes.h`），Galbot 夹爪在重力下跟不住；项目的 `convert_galbot.py` 在转换后把它改为 1000 / 1.0，实测跟随误差 ≤ 0.004 rad。**凡是重新转换资产的页面都依赖这一步**（已由 reviews/T-6.1.2.md 复核：默认参数下跟随误差 1.242 rad，频率 100 / 250 / 1000 时为 0.212 / 0.039 / 0.004）。
-9. 轮式 URDF 转换后在仿真里出现 NaN，原因是 40 个被动滚子的阻尼为 0（转换时用 `target_type="none"`，刚度与阻尼都为 0）。校验方反证：把滚子阻尼从 0 改为 0.1（刚度仍为 0），NaN 消失，结果与固定底座版相同（reviews/T-6.1.3.md）。凡是用到轮式变体的页面，被动滚子必须给一个小阻尼。
+9. **（存疑，复核中，见 DECISIONS P-003；结论出来前任何页面不得引用）** 轮式自导入版在仿真里出现 NaN 的原因。校验方的反证指向"被动滚子零阻尼"；实现方随后的实测指向"固定根在 z=0 且有地面时轮子被压进地面"，并显示滚子阻尼不是决定因素。
 
 ## 范围与取舍
 
