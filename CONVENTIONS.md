@@ -149,7 +149,7 @@ MyST 要点：
 ## 5. 代码规范
 
 - 示例代码放 `examples/isaaclab-2.3/<页面编号>-<slug>/`，页面里只嵌入关键片段，并注明完整文件路径。
-- 每个示例目录含 `README.md`：运行命令、预期输出、显存需求、运行时长。显存数字注明测量口径（按进程还是整卡峰值、`num_envs`、是否 headless），优先按进程测量。
+- 每个示例目录含 `README.md`：运行命令、预期输出、显存需求、运行时长。显存数字注明测量口径（按进程还是整卡峰值、`num_envs`、是否 headless），优先按进程测量，统一用 `reviews/scripts/gpu-mem-per-process.sh`（实现与校验两边同一脚本）。
 - 文件头注释标明：验证版本、验证日期、GPU 型号。未运行过的写 `# 未验证`。
 - 用 Isaac Lab 2.3.2 的 API 命名（`isaaclab.*`、`isaacsim.*`），不用 `omni.isaac.*` 旧命名，除非是在讲迁移。
 - `num_envs` 默认值保守（≤ 1024），页面里说明如何调大。
