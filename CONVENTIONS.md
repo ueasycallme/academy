@@ -149,7 +149,11 @@ MyST 要点：
 - 文件头注释标明：验证版本、验证日期、GPU 型号。未运行过的写 `# 未验证`。
 - 用 Isaac Lab 2.3.2 的 API 命名（`isaaclab.*`、`isaacsim.*`），不用 `omni.isaac.*` 旧命名，除非是在讲迁移。
 - `num_envs` 默认值保守（≤ 1024），页面里说明如何调大。
-- 启动了 `SimulationApp` / `AppLauncher` 的脚本：用 `main()` 写法（不在模块顶层创建 SimulationContext）；在 `simulation_app.close()` 之前调用 `sys.stdout.flush()`，否则输出重定向到文件或管道时会丢失（校验实测，reviews/T-2.4.md）。
+- 启动了 `SimulationApp` / `AppLauncher` 的脚本，退出前按顺序做三件事（均为本站实测，reviews/T-2.4.md、reviews/T-3.2.md）：
+  1. 用了 Isaac Lab 的 `SimulationContext` 时，调用 `sim.clear_all_callbacks()` 与 `sim.clear_instance()` 释放它，否则会卡在 `close()`（Isaac Sim 的 `World` 不需要）；
+  2. `sys.stdout.flush()`，否则输出重定向到文件或管道时会丢失；
+  3. `simulation_app.close()`。
+  仿真对象统一建在 `main()` 里，便于退出前释放。
 - Python 遵循 Isaac Lab 仓库的风格（type hints、docstring），不引入额外依赖。
 
 ## 6. 实现自检清单（写在任务卡附记区，逐条打勾）
