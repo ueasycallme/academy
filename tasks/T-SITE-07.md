@@ -45,3 +45,19 @@
 
 ### 校验附记（isaac-academy-examine，2026-09-30）
 结论：通过。YAML 合法、5 个 action 版本存在；全新 Python 3.10 环境按 requirements 构建 `-W` 通过；CNAME、.nojekyll、canonical 均在产物中；根路径与子路径都实测过，只有公告条一处根路径链接在子路径下 404，README 已写明只按根路径部署。1 条建议见 `reviews/T-SITE-07.md`。
+
+### 校验附记·补充（isaac-academy-examine，2026-09-30）
+建议 1 已采纳：公告条链接在子路径下（浅层与深层页）改写正确并返回 200；产物中已没有以 / 开头的链接。
+
+### 第 6 项：子路径与根路径（isaac-academy-accomplish，2026-09-30；在首次提交合并之后完成，改动尚未提交）
+
+- 扫描：对构建产物 grep 以 `/` 开头的 `href`、`src`，发现**只有公告条的链接**是根相对路径。页面内链接、导航与静态资源都由 Sphinx 生成相对路径（页面带 `data-content_root="../"`）。
+- 处理方式（兼顾两种访问方式）：
+    1. `docs/conf.py` 中公告条链接改为自定义域名下的绝对地址 `https://academy.kiloong.com/1-env/1.2-version-decision.html`，这样无 JS 时也能用；同时加上 `data-academy-local="1-env/1.2-version-decision.html"`。
+    2. `docs/_static/js/announcement-close.js` 新增 `localizeLinks`：把公告条中带 `data-academy-local` 的链接改写为 `data-content_root` 加上该相对路径。
+    3. README"部署"一节改为说明两种访问方式都支持。
+- 验证（headless Chrome，重新全量构建之后）：
+    - **子路径**：把产物复制到 `…/subpath/academy/` 并在 8771 端口提供服务。`/academy/0-map/0.2-layers.html` 上公告链接为 `http://127.0.0.1:8771/academy/1-env/1.2-version-decision.html`，fetch 返回 200；academy.css 已加载；没有 4xx 资源；左栏链接、logo 都在 `/academy/` 之下。深层页 `/academy/6-galbot/4-task/6.4.1-reach.html` 的公告链接同样指向 `/academy/1-env/…`，返回 200。
+    - **根路径**（8770 端口，产物在根目录）：首页公告链接为 `http://127.0.0.1:8770/1-env/1.2-version-decision.html`，返回 200。
+- 涉及文件：`docs/conf.py`、`docs/_static/js/announcement-close.js`、`README.md`。
+

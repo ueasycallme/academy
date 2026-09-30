@@ -48,7 +48,7 @@ tools/check_head_build.sh --worktree   # 检查当前工作区
 - [ ] 仓库 Settings → Pages → Custom domain 填 `academy.kiloong.com`，DNS 检查通过后勾选 **Enforce HTTPS**。
 - [ ] 第一次推送后，在 Actions 页面确认 "Deploy site to GitHub Pages" 运行成功。
 
-注意：站点按"部署在域名根目录"配置（公告条里的链接使用 `/1-env/...` 这样的根相对路径）。如果改为部署在 `ueasycallme.github.io/academy/` 这类子路径下，需要同步修改这些链接与 `html_baseurl`。
+站点在域名根目录（academy.kiloong.com）与子路径（`ueasycallme.github.io/academy/`）下都能正常浏览：页面内链接与静态资源都是 Sphinx 生成的相对路径；公告条是原样输出的 HTML，它的站内链接由 `_static/js/announcement-close.js` 按页面的 `data-content_root` 改写为相对路径（无 JS 时回退为自定义域名下的绝对地址）。`html_baseurl` 固定为自定义域名，用于 canonical 链接。
 
 ## 协作
 

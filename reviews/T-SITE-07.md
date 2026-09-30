@@ -17,3 +17,11 @@
 | # | 意见 |
 |---|---|
 | 1 | 在配置好自定义域名之前（或 DNS 生效前），访客从 `ueasycallme.github.io/academy/` 进入时，全站 125 页的公告条链接都会 404。修复只涉及一处：公告条是 `conf.py` 里的一段 HTML 字符串，不能用 `pathto()`，可以在已有的 `announcement-close.js` 里，按 `DOCUMENTATION_OPTIONS.URL_ROOT` / `document.documentElement.dataset.content_root` 把这个链接改写成相对路径。不改也可以，前提是用户按 README 先完成自定义域名的设置 |
+
+---
+
+# 补充复核（2026-09-30，建议 1 已采纳）
+- 公告条链接在 HTML 源中改为自定义域名的绝对地址（无 JS 时也能用），由 `announcement-close.js` 按 `data-content_root` 改写为相对路径。
+- 重建后扫描产物：以 `/` 开头的站内链接已为 **0**。
+- `/academy/` 子路径实测（headless Chrome 执行 JS 后读取 DOM）：首页 → `./1-env/…`；0.2 页 → `../1-env/…`；两层深的 6.1.2 页 → `../../1-env/…`；三者解析后都是 `/academy/1-env/1.2-version-decision.html`，返回 200。
+- 结论不变：**通过**，建议已处理。
