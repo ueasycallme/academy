@@ -1,6 +1,6 @@
 # T-ENV-01b 兼容矩阵支持状态措辞
 
-状态: 待实现
+状态: 已合并
 优先级: P1
 类型: 微任务（D-014，源自 reviews/T-ENV-01.md）
 产出: 修改 `docs/1-env/1.1-compat-matrix.md`
@@ -16,3 +16,15 @@
 ## 附记
 
 （实现/校验 session 写）
+
+### 实现附记（isaac-academy-accomplish，2026-09-30）
+
+1. `docs/1-env/1.1-compat-matrix.md` 表 2 的"官方支持状态"列：
+    - 6.0 与 6.1 的"支持中"改为"未标注停止支持（2026-09 核对文档页无横幅）"，仍用 `[^support6]` 脚注；
+    - 5.1 改为"已停止支持（官方横幅）"。
+2. 顺带完成 T-ENV-01 第 5 项（设计 session 在 T-ENV-01 合并后追加）：`docs/index.md`"从哪里开始"改为指向 [Isaac 体系一页看懂](0-map/0.1-overview.md)。T-ENV-01 已合并，所以这一项合并到本微任务交付。
+
+`tools/check_head_build.sh --worktree` 构建通过。
+
+### 校验附记（isaac-academy-examine，2026-09-30）
+结论：通过。支持状态措辞改为陈述核对事实；首页入口改指 0.1；构建通过。

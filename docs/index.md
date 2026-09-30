@@ -23,7 +23,7 @@ Isaac Academy 是 Isaac Sim / Isaac Lab 的中文学习网站，定位是官方�
 
 ## 从哪里开始
 
-先读 [分层依赖图](0-map/0.2-layers.md)，建立对整个体系的认识。
+先读 [Isaac 体系一页看懂](0-map/0.1-overview.md)，它是全景地图的入口，也列出了之后该读哪些页。
 
 <!-- toctree:begin -->
 ```{toctree}

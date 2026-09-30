@@ -62,7 +62,10 @@ html_theme_options = {
     "navbar_end": ["search-button-field", "theme-switcher", "navbar-icon-links"],
     "navbar_persistent": [],
     "icon_links": [{"name": "GitHub", "url": "https://github.com/ueasycallme/academy", "icon": "fa-brands fa-github", "type": "fontawesome"}],
-    "announcement": "主线：Isaac Sim 5.1.0（官方已停止支持）+ Isaac Lab 2.3.2；3.0 前沿专栏基于 EA。<a href='/1-env/1.2-version-decision.html'>为何仍选 5.1.0 →</a>",
+    # 公告条是原样输出的 HTML，Sphinx 不会按页面层级改写其中的链接。这里写成自定义域名下的绝对地址
+    # （无 JS 时也可用）；_static/js/announcement-close.js 会把它改写为相对 data-content_root 的路径，
+    # 使站点在子路径（如 ueasycallme.github.io/academy/）或本地预览下同样可用。
+    "announcement": "主线：Isaac Sim 5.1.0（官方已停止支持）+ Isaac Lab 2.3.2；3.0 前沿专栏基于 EA。<a href='https://academy.kiloong.com/1-env/1.2-version-decision.html' data-academy-local='1-env/1.2-version-decision.html'>为何仍选 5.1.0 →</a>",
     "primary_sidebar_end": [],
     "secondary_sidebar_items": ["page-toc"],
     "footer_start": ["academy-footer"],
