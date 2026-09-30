@@ -19,7 +19,8 @@
 2. **版式对齐官方站**（对照 https://docs.isaacsim.omniverse.nvidia.com/5.1.0/ 逐项）：
    - 顶部导航栏：左侧站名"Isaac Academy"文字 logo（不用任何 NVIDIA 素材），右侧搜索框、深浅色切换、GitHub 图标可留空
    - 左侧为可折叠的章节树（按 OUTLINE 部分分组），右侧为"本页目录"
-   - 默认深色，可切换浅色；主色调取官方站的绿色系（用取色器读官方站 CSS 变量，记录数值来源），链接色、代码块、admonition 的配色逼近官方站
+   - 默认深色，可切换浅色；**配色采用 NVIDIA 色彩体系**（用户明确要求）：品牌绿 `#76B900` 为主色，深色模式背景、面板、边框、链接、代码块、admonition 的色值直接读官方站的 CSS 变量（`_static/styles/nvidia-sphinx-theme.css`、`custom.css`），逐项记录来源；浅色模式同理。只取色值，不复制主题文件
+   - 页脚固定一行声明："本站为第三方学习站点，与 NVIDIA 无隶属关系；Isaac Sim、Isaac Lab、Omniverse 为 NVIDIA 的商标。"（避免被误认为官方站）
    - 正文宽度、行高、标题字号逼近官方站；中文用系统字体栈（同 T-SITE-02）
    - 页脚只放本站信息
 3. **内容迁移（只迁 3 页做原型）**：`index.md`、`0-map/0.2-layers.md`、`_template-check.md` 转为 MyST 语法：`!!! abstract` → ` ```{admonition} 学习目标\n:class: abstract` 等；pymdownx tabs → sphinx-design `tab-set`；脚注、attr_list 锚点、frontmatter 按 MyST 方式。写一份 `site-sphinx/MIGRATION-NOTES.md` 记录 Material → MyST 的语法对照表，供日后全量迁移用。
