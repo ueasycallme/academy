@@ -1,0 +1,81 @@
+site_name: Isaac Academy
+site_url: https://academy.kiloong.com
+site_description: Isaac Sim / Isaac Lab 中文导读：体系框架、核心概念与工程落地
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: 切换到深色模式
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到浅色模式
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  # 中文分词：Material 内置 search 插件在安装 jieba 时自动用 jieba 分词
+  - search:
+      lang:
+        - zh
+        - en
+      separator: '[\s​\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+not_in_nav: |
+  /0-map/_template-check.md
+  /0-map/0.3-lineage.md
+  /0-map/0.4-isaac-names.md
+  /1-env/1.1-compat-matrix.md
+  /8-frontier/8.1-what-changed.md
+
+nav:
+  - 首页: index.md
+  - 全景地图:
+      - 0-map/index.md
+      - 0.2 分层依赖图: 0-map/0.2-layers.md

@@ -1,0 +1,5 @@
+/* Mermaid 图居中，窄屏可横向滚动 */
+.md-typeset .mermaid {
+  text-align: center;
+  overflow-x: auto;
+}
