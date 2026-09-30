@@ -75,6 +75,25 @@ markdown_extensions:
       alternate_style: true
 
 not_in_nav: |
+  /5-rl/5.7-il-vs-rl.md
+  /5-rl/5.3-ppo.md
+  /5-rl/5.2-policy-value.md
+  /7-infra/7.1-headless-remote.md
+  /4-isaaclab/4.11-reward-termination-curriculum.md
+  /4-isaaclab/4.6-assets.md
+  /4-isaaclab/4.13-command-manager.md
+  /4-isaaclab/4.10-observation-action.md
+  /4-isaaclab/4.5-interactive-scene.md
+  /4-isaaclab/4.3-configclass.md
+  /4-isaaclab/4.16-rl-wrappers.md
+  /4-isaaclab/4.7-actuators.md
+  /4-isaaclab/4.12-event-randomization.md
+  /4-isaaclab/4.20-teleop-devices.md
+  /4-isaaclab/4.1-why-isaac-lab.md
+  /2-usd-kit/2.7-extensions.md
+  /2-usd-kit/2.3-layers-composition.md
+  /3-isaacsim/3.7-cloner.md
+  /6-galbot/7-deploy/6.7.3-sim2real-checklist.md
   /5-rl/5.1-mdp.md
   /1-env/1.4-install-51-232.md
   /2-usd-kit/2.2-usd-concepts.md
@@ -114,7 +133,6 @@ not_in_nav: |
   /6-galbot/4-task/6.4.7-mimic.md
   /8-frontier/8.3-newton.md
   /2-usd-kit/2.8-nucleus.md
-  /0-map/0.8-glossary.md
   /6-galbot/1-asset/6.1.1-galbot-repo.md
 
 nav:
@@ -128,3 +146,4 @@ nav:
       - 0.5 Isaac Sim 与 Isaac Lab 的边界: 0-map/0.5-sim-lab-boundary.md
       - 0.6 一个 RL step 里发生了什么: 0-map/0.6-one-step.md
       - 0.7 学习路线图: 0-map/0.7-learning-paths.md
+      - 0.8 术语表（中英对照）: 0-map/0.8-glossary.md
