@@ -1,0 +1,9 @@
+# 上游 Galbot 描述仓库（读者用 scripts/fetch_galbot.sh 自行克隆，不随本项目分发）
+third_party/
+# 本项目生成的资产（转换得到的 USD 等派生物）
+generated/
+# 训练输出
+logs/
+outputs/
+*.egg-info/
+__pycache__/
