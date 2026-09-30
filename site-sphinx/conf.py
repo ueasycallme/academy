@@ -53,12 +53,14 @@ html_search_language = "zh"  # 依赖 jieba 分词
 
 html_theme_options = {
     # 版式对齐 docs.isaacsim.omniverse.nvidia.com：左侧标题，右侧搜索框 + 深浅色切换，无顶部导航标签
-    "logo": {"text": "Isaac Academy"},
-    "navbar_start": ["navbar-logo"],
+    "logo": {"text": "Isaac Academy", "image_light": "_static/img/academy-logo.svg", "image_dark": "_static/img/academy-logo.svg", "alt_text": "Isaac Academy"},
+    "navbar_start": ["navbar-logo", "academy-subtitle"],
     "navbar_center": [],
-    "navbar_end": ["search-button-field", "theme-switcher"],
+    "navbar_end": ["search-button-field", "theme-switcher", "navbar-icon-links"],
     "navbar_persistent": [],
-    "icon_links": [],
+    # 仓库地址待用户提供（T-SITE-05），暂指向 GitHub 首页
+    "icon_links": [{"name": "GitHub", "url": "https://github.com", "icon": "fa-brands fa-github", "type": "fontawesome"}],
+    "announcement": "主线版本：Isaac Sim 5.1.0 + Isaac Lab 2.3.2；3.0 前沿专栏基于 Isaac Lab 3.0.0-EA，内容可能变动。",
     "primary_sidebar_end": [],
     "secondary_sidebar_items": ["page-toc"],
     "footer_start": ["academy-footer"],

@@ -11,7 +11,7 @@ sources_checked: 2026-09-30
 本页不进导航，用于确认站点的 Markdown 扩展渲染正常，也可作为写作模板参考。
 
 :::{admonition} 学习目标
-:class: hint
+:class: lead-goals
 
 读完本页你能：
 
@@ -19,7 +19,7 @@ sources_checked: 2026-09-30
 :::
 
 :::{admonition} 前置知识
-:class: note
+:class: lead-prereq
 
 - 无
 :::

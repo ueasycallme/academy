@@ -121,3 +121,125 @@ nav.bd-links p.caption {             /* 章节分组名；实测官方站为 600
    让图按原始尺寸显示（不超过正文宽度），与 MkDocs 站的观感一致。 */
 .bd-content pre.mermaid { background: transparent; border: none; }
 .bd-content pre.mermaid > svg { height: auto; display: block; margin: 0 auto; }
+
+/* ======================= T-SITE-05 ======================= */
+
+/* ---- 0. 宽度：对齐参考站（isaac.kiloong.com/zh，实测 2560 / 1920 / 1440） ----
+   pydata 默认 .bd-page-width 为 88rem、正文容器约 60em 上限，会把正文锁窄。 */
+.bd-page-width { max-width: 100rem; }                          /* 参考站 1600px */
+.bd-main .bd-content .bd-article-container { max-width: none; } /* 参考站无上限 */
+.bd-sidebar-secondary { flex: 0 0 15rem; width: 15rem; min-width: 15rem; } /* 参考站 240px（覆盖前面 min-width: var(--pst-sidebar-secondary)） */
+
+/* ---- 2. 顶栏身份 ---- */
+.navbar-brand img.logo__image { height: 28px; width: auto; }   /* 参考站 logo 图 48px 含留白，可见图形约 22px；自制方形标识取 28px */
+.navbar-brand .logo__title { font-size: 20px; font-weight: 700; } /* 实测参考站标题 20px / 700 */
+.bd-header .navbar-header-items__start { flex-wrap: nowrap; align-items: center; }
+.bd-header .navbar-header-items__start .navbar-item { display: flex; align-items: center; flex-shrink: 0; }
+.bd-header .navbar-brand { margin-right: 1rem !important; }
+.bd-header .navbar-brand .logo__title { white-space: nowrap; }
+.academy-subtitle {
+  font-size: 14px;                                             /* 实测参考站版本号 14px / 400 */
+  font-weight: 400;
+  color: var(--pst-color-text-muted);
+  margin-left: 0;
+  white-space: nowrap;
+  align-self: center;
+}
+@media (max-width: 960px) { .academy-subtitle { display: none; } }
+.bd-header-announcement {
+  background-color: var(--pst-color-surface);
+  color: var(--pst-color-text-base);
+  font-size: .875rem;
+  min-height: 2.25rem;
+}
+.bd-header-announcement::after { background-color: transparent; }
+
+/* ---- 3. 页首引导块：学习目标 / 前置知识（MyST 仍用 admonition，只改样式） ----
+   参考站 .isaacsim-section-lead：0.98rem、行高 1.7、正文次要色；这里加左侧细绿线与小号灰色标题。 */
+.bd-article div.admonition.lead-goals,
+.bd-article div.admonition.lead-prereq {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-left: 2px solid var(--nv-color-green) !important;
+  border-radius: 0 !important;
+  overflow: visible;
+  padding: .1rem 0 .1rem 1rem;
+  margin: 0 0 0 0;
+  max-width: 760px;
+  color: var(--pst-color-text-muted);
+  font-size: .98rem;
+  line-height: 1.7;
+}
+.bd-article .admonition.lead-goals { margin-top: .5rem; padding-bottom: .4rem; }
+.bd-article .admonition.lead-prereq { margin-bottom: 1.6rem; padding-top: 0; }
+.bd-article .admonition.lead-goals > .admonition-title,
+.bd-article .admonition.lead-prereq > .admonition-title {
+  background: transparent;
+  color: var(--pst-color-text-muted);
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  padding: 0;
+  margin: 0 0 .2rem 0;
+}
+.bd-article .admonition.lead-goals > .admonition-title::after,
+.bd-article .admonition.lead-prereq > .admonition-title::after { display: none; }
+.bd-article .admonition.lead-goals > .admonition-title::before,
+.bd-article .admonition.lead-prereq > .admonition-title::before { display: none; }
+.bd-article .admonition.lead-goals p,
+.bd-article .admonition.lead-goals ul { margin-bottom: .2rem; }
+/* "前置知识"压成一行：标题与列表同行，列表项以顿号相连 */
+.bd-article .admonition.lead-prereq { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 .5rem; }
+.bd-article .admonition.lead-prereq > .admonition-title { margin: 0; }
+.bd-article .admonition.lead-prereq > .admonition-title::after { content: "："; display: inline; position: static; background: none; width: auto; height: auto; }
+.bd-article .admonition.lead-prereq ul { display: inline; padding: 0; margin: 0; list-style: none; }
+.bd-article .admonition.lead-prereq li { display: inline; }
+.bd-article .admonition.lead-prereq li + li::before { content: "、"; }
+
+/* ---- 5. Mermaid：白底细灰边圆角节点、正文字体、品牌绿强调；深浅色都跟随主题变量 ---- */
+.bd-content pre.mermaid svg { font-family: var(--pst-font-family-base) !important; }
+.bd-content pre.mermaid svg .node rect,
+.bd-content pre.mermaid svg .node polygon,
+.bd-content pre.mermaid svg .node circle,
+.bd-content pre.mermaid svg .actor,
+.bd-content pre.mermaid svg rect.actor {
+  fill: var(--pst-color-background) !important;
+  stroke: var(--pst-color-border) !important;
+  stroke-width: 1px !important;
+}
+.bd-content pre.mermaid svg .node rect { rx: 6px; ry: 6px; }
+.bd-content pre.mermaid svg .cluster rect {
+  fill: var(--pst-color-surface) !important;
+  stroke: var(--pst-color-border) !important;
+  rx: 8px; ry: 8px;
+}
+.bd-content pre.mermaid svg .nodeLabel,
+.bd-content pre.mermaid svg .cluster-label,
+.bd-content pre.mermaid svg .cluster-label span,
+.bd-content pre.mermaid svg .edgeLabel,
+.bd-content pre.mermaid svg text.actor,
+.bd-content pre.mermaid svg .messageText,
+.bd-content pre.mermaid svg .loopText,
+.bd-content pre.mermaid svg .labelText,
+.bd-content pre.mermaid svg .noteText {
+  color: var(--pst-color-text-base) !important;
+  fill: var(--pst-color-text-base) !important;
+}
+.bd-content pre.mermaid svg .edgeLabel,
+.bd-content pre.mermaid svg .edgeLabel rect,
+.bd-content pre.mermaid svg .labelBkg { background-color: var(--pst-color-background) !important; fill: var(--pst-color-background) !important; }
+.bd-content pre.mermaid svg .flowchart-link,
+.bd-content pre.mermaid svg .messageLine0,
+.bd-content pre.mermaid svg .messageLine1,
+.bd-content pre.mermaid svg .actor-line { stroke: var(--pst-color-text-muted) !important; stroke-width: 1px !important; }
+.bd-content pre.mermaid svg marker path,
+.bd-content pre.mermaid svg .arrowheadPath,
+.bd-content pre.mermaid svg #arrowhead path { fill: var(--pst-color-text-muted) !important; stroke: var(--pst-color-text-muted) !important; }
+.bd-content pre.mermaid svg .loopLine { stroke: var(--nv-color-green) !important; }
+.bd-content pre.mermaid svg .note { fill: var(--pst-color-surface) !important; stroke: var(--nv-color-green) !important; }
+/* 图内用 classDef user 标出的"用户代码"节点：保留自定义描边颜色（橙色） */
+.bd-content pre.mermaid svg .node.user rect { stroke: #f57c00 !important; stroke-width: 3px !important; }
+.bd-content pre.mermaid svg .edgeLabel p,
+.bd-content pre.mermaid svg .edgeLabel span,
+.bd-content pre.mermaid svg .edgeLabel div { background-color: transparent !important; }

@@ -1,7 +1,5 @@
 ---
 title: 常见错误信息索引
-orphan: true
-updated: 2026-09-30
 ---
 
 # 常见错误信息索引

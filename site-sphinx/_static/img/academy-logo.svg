@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Isaac Academy">
+  <!-- 自制站点标识：三层台阶（呼应"分层"），品牌绿 #76B900 与深绿 #004831；不含任何 NVIDIA 图形元素 -->
+  <rect x="4" y="4" width="56" height="56" rx="12" fill="#76B900"/>
+  <rect x="14" y="40" width="36" height="8" rx="2" fill="#004831"/>
+  <rect x="20" y="28" width="24" height="8" rx="2" fill="#ffffff"/>
+  <rect x="26" y="16" width="12" height="8" rx="2" fill="#004831"/>
+</svg>

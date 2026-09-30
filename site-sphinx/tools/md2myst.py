@@ -24,8 +24,8 @@ ADMONITION_CLASS = {
     "tip": "tip",
     "warning": "warning",
     "danger": "danger",
-    "abstract": "hint",  # 学习目标
-    "info": "note",  # 前置知识
+    "abstract": "lead-goals",  # 学习目标 → 页首引导块（T-SITE-05，样式见 academy.css）
+    "info": "lead-prereq",  # 前置知识 → 引导块底部一行
 }
 
 ADMON_RE = re.compile(r'^(?P<indent>\s*)(?P<mark>!!!|\?\?\?\+?)\s+(?P<type>\w+)(?:\s+"(?P<title>[^"]*)")?\s*$')

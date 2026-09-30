@@ -17,13 +17,17 @@ env -u PYTHONPATH .venv/bin/sphinx-build -E -a -W --keep-going -b html . _build/
 
 `-E -a` 是全量重建。增量构建不会重新复制改动过的 `_static` 文件（实测过），改了 CSS/JS 后必须全量重建。
 
+## 全站页面树
+
+`tools/gen_site.py` 从 `OUTLINE.md` 生成全部页面：docs/ 中已有正文的页面转换为 MyST，其余页面生成占位页；同时生成首页的分部 toctree（`:caption:` 为部分名）和第 6 部分 ①–⑦ 的子索引页。每次 docs/ 有新页面通过校验后，重跑该脚本即可同步。
+
 ## 语法对照表
 
 | Material（docs/） | MyST（site-sphinx/） | 方式 |
 |---|---|---|
 | `!!! note "标题"` + 4 空格缩进正文 | `:::{admonition} 标题` / `:class: note` / 正文顶格 / `:::` | 脚本 |
-| `!!! abstract "学习目标"` | 同上，`:class: hint`（pydata 的 hint 为绿色，与官方站 Hint 一致） | 脚本 |
-| `!!! info "前置知识"` | 同上，`:class: note` | 脚本 |
+| `!!! abstract "学习目标"` | 同上，`:class: lead-goals`（页首引导块样式，见 academy.css "T-SITE-05 · 3"） | 脚本 |
+| `!!! info "前置知识"` | 同上，`:class: lead-prereq`（引导块底部一行） | 脚本 |
 | `!!! tip` / `warning` / `danger` | 同上，class 不变 | 脚本 |
 | `??? note "标题"`（可折叠） | `:::{dropdown} 标题`（sphinx-design） | 脚本 |
 | `=== "Python"` 内容块（pymdownx.tabbed） | `::::{tab-set}` 包裹若干 `:::{tab-item} Python` | 脚本 |
