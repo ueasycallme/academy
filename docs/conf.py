@@ -89,3 +89,21 @@ html_context = {
     "doc_path": "docs",
 }  # 默认浅色（T-SITE-04 用户要求）
 html_sidebars = {"**": ["academy-toc-title", "academy-nav"]}
+
+
+# 术语表锚点（CONVENTIONS 第 2 节：行内写 [**术语**]{#term-xxx}）。
+# MyST 解析 `page.md#id` 形式的链接时只查标题锚点（env.metadata[doc]["myst_slugs"]），
+# 行内属性生成的 id 查不到，会报 myst.xref_missing（链接本身仍然正确）。
+# 这里在读入文档后把 term- 开头的 id 补进该表，使术语链接能通过 -W 构建。
+def _register_term_ids(app, doctree):
+    from docutils import nodes
+
+    slugs = app.env.metadata[app.env.docname].setdefault("myst_slugs", {})
+    for node in doctree.findall(nodes.Element):
+        for node_id in node.get("ids", []):
+            if node_id.startswith("term-") and node_id not in slugs:
+                slugs[node_id] = (node.line or 0, node_id, node.astext())
+
+
+def setup(app):
+    app.connect("doctree-read", _register_term_ids)
