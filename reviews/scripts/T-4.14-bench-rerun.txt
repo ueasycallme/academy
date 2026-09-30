@@ -1,0 +1,12 @@
+1024 Isaac-Cartpole-v0 #1: 1000 步用时 3.35 s：298 step/s，305,477 环境步/s
+1024 Isaac-Cartpole-v0 #2: 1000 步用时 3.40 s：294 step/s，300,906 环境步/s
+1024 Isaac-Cartpole-v0 #3: 1000 步用时 3.36 s：297 step/s，304,311 环境步/s
+1024 Isaac-Cartpole-Direct-v0 #1: 1000 步用时 3.59 s：279 step/s，285,609 环境步/s
+1024 Isaac-Cartpole-Direct-v0 #2: 1000 步用时 3.32 s：301 step/s，308,501 环境步/s
+1024 Isaac-Cartpole-Direct-v0 #3: 1000 步用时 3.17 s：315 step/s，322,831 环境步/s
+64 Isaac-Cartpole-v0 #1: 1000 步用时 2.84 s：353 step/s，22,565 环境步/s
+64 Isaac-Cartpole-v0 #2: 1000 步用时 2.89 s：346 step/s，22,118 环境步/s
+64 Isaac-Cartpole-v0 #3: 1000 步用时 2.79 s：358 step/s，22,935 环境步/s
+64 Isaac-Cartpole-Direct-v0 #1: 1000 步用时 2.90 s：344 step/s，22,047 环境步/s
+64 Isaac-Cartpole-Direct-v0 #2: 1000 步用时 2.90 s：345 step/s，22,053 环境步/s
+64 Isaac-Cartpole-Direct-v0 #3: 1000 步用时 2.88 s：347 step/s，22,217 环境步/s
