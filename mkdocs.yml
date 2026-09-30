@@ -73,6 +73,11 @@ not_in_nav: |
   /0-map/0.4-isaac-names.md
   /1-env/1.1-compat-matrix.md
   /8-frontier/8.1-what-changed.md
+  /0-map/0.5-sim-lab-boundary.md
+  /3-isaacsim/3.3-rigid-collision.md
+  /3-isaacsim/3.4-articulation.md
+  /5-rl/5.8-training-debug.md
+  /appendix/A.2-error-index.md
 
 nav:
   - 首页: index.md
