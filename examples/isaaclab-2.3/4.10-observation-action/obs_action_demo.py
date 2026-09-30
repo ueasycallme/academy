@@ -24,6 +24,7 @@ parser.add_argument("--num_envs", type=int, default=16, help="环境数量")
 parser.add_argument("--action", choices=["effort", "position"], default="effort", help="小车的动作项")
 parser.add_argument("--kp", type=float, default=0.0, help="position 模式下小车执行器的 stiffness（官方为 0）")
 parser.add_argument("--no_noise", action="store_true", help="policy 组 enable_corruption=False")
+parser.add_argument("--seed", type=int, default=42, help="随机种子（重置事件的随机起点、噪声都由它决定）")
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 simulation_app = AppLauncher(args).app
@@ -52,6 +53,7 @@ class MyCartpoleEnvCfg(CartpoleEnvCfg):
     def __post_init__(self):
         super().__post_init__()
         self.scene.num_envs = args.num_envs
+        self.seed = args.seed  # 固定种子，使输出可复现
         # 观测：policy 组的关节位置加高斯噪声，末尾追加上一步动作
         policy = self.observations.policy
         policy.joint_pos_rel.noise = GaussianNoiseCfg(mean=0.0, std=0.05)
@@ -83,7 +85,8 @@ def main() -> None:
         obs, *_ = env.step(actions)
     term = env.action_manager.get_term(env.action_manager.active_terms[0])
     print(f"原始动作 {term.raw_actions[0].tolist()} → 处理后 {term.processed_actions[0].tolist()}")
-    print(f"env 0 小车位置 {start:.3f} → {robot.data.joint_pos[0, cart].item():.3f} m")
+    steps = int(env.episode_length_buf[0])
+    print(f"env 0 小车位置 {start:.3f} → {robot.data.joint_pos[0, cart].item():.3f} m（本回合已走 {steps} 步，少于 60 说明中途被重置）")
 
     diff = (obs["policy"][:, :2] - obs["critic"][:, :2]).abs().max().item()
     print(f"policy 组形状 {tuple(obs['policy'].shape)}，critic 组形状 {tuple(obs['critic'].shape)}")
