@@ -25,3 +25,5 @@
 - 重建后扫描产物：以 `/` 开头的站内链接已为 **0**。
 - `/academy/` 子路径实测（headless Chrome 执行 JS 后读取 DOM）：首页 → `./1-env/…`；0.2 页 → `../1-env/…`；两层深的 6.1.2 页 → `../../1-env/…`；三者解析后都是 `/academy/1-env/1.2-version-decision.html`，返回 200。
 - 结论不变：**通过**，建议已处理。
+
+- 补充（2026-09-30）：第 6 项的 conf.py、JS 与 README 改动已在提交 083f495 中；README 第 51 行写明两种访问方式都支持，与实测一致；`tools/check_head_build.sh`（HEAD）构建通过。

@@ -19,7 +19,8 @@
 | RL 库 | rsl_rl_lib 3.1.2（未见 skrl / rl_games / SB3） |
 
 ## 已知问题（未修复，只记录）
-1. **editable 安装路径失效**：venv 中 isaaclab* 的 editable 安装指向 `/home/wuql/wuql_ws/IsaacLab/source/...`，该目录已不存在（仓库应已移到 `~/wuql_ws/isaac_sim/IsaacLab`）。直接 `import isaaclab` 得到空的 namespace 包（`__file__ is None`）。
+1. **editable 安装路径失效**：venv 中 isaaclab* 的 editable 安装指向 `/home/wuql/wuql_ws/IsaacLab/source/...`，该目录已不存在（仓库应已移到 `~/wuql_ws/isaac_sim/IsaacLab`）。直接 `import isaaclab` 的表现取决于当前工作目录：一般目录下为 `ModuleNotFoundError: No module named 'isaaclab'`；如果当前目录恰好有名为 `isaaclab` 的子目录（例如 `/tmp`，因为 Isaac Lab 把日志写在 `/tmp/isaaclab/logs/`；或 `IsaacLab/source/`），则得到指向该目录的空 namespace 包（`__file__ is None`）。
+   - 更正（2026-09-30）：本文件初版写成"直接 import 得到空的 namespace 包"，那是因为当时在 `/tmp` 下测试，属于偶然；实现 session 在 T-1.9 中指出，校验方已复现：cwd 为 /tmp → namespace；cwd 为 ~ → ModuleNotFoundError；cwd 为 IsaacLab/source → namespace。
    - 校验时的绕行方式（不改环境）：运行时设置
      `PYTHONPATH=$L/source/isaaclab:$L/source/isaaclab_tasks:$L/source/isaaclab_rl:$L/source/isaaclab_assets:$L/source/isaaclab_contrib:$L/source/isaaclab_mimic`（`L=~/wuql_ws/isaac_sim/IsaacLab`）。
    - 永久修复需要在该 venv 里重新 `pip install -e` 各 source 包，属于修改用户环境，留给用户决定。
