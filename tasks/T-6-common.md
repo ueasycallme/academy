@@ -23,7 +23,7 @@
 5. 只设 `effort_limit_sim` 时，显式执行器模型内部按 USD 值截断（reviews/T-4.7.md）。
 6. Galbot 的 MJCF 在 5.1 上需手动启用导入扩展，转出两个 Articulation 根，且失败时返回码仍为 0（reviews/T-3.5.md）。
 7. 默认关节位置越限时 Isaac Lab 抛 `ValueError`（reviews/T-3.4.md）。
-8. URDF 导入器生成的 mimic 约束默认很软（naturalFrequency 25、dampingRatio 0.005，来源 Isaac Sim v5.1.0 `UrdfImporter.cpp` 与 `UrdfTypes.h`），Galbot 夹爪在重力下跟不住；项目的 `convert_galbot.py` 在转换后把它改为 1000 / 1.0，实测跟随误差 ≤ 0.004 rad。**凡是重新转换资产的页面都依赖这一步**（实现方实测，待 reviews/T-6.1.2.md 复核后视为定论）。
+8. URDF 导入器生成的 mimic 约束默认很软（naturalFrequency 25、dampingRatio 0.005，来源 Isaac Sim v5.1.0 `UrdfImporter.cpp` 与 `UrdfTypes.h`），Galbot 夹爪在重力下跟不住；项目的 `convert_galbot.py` 在转换后把它改为 1000 / 1.0，实测跟随误差 ≤ 0.004 rad。**凡是重新转换资产的页面都依赖这一步**（已由 reviews/T-6.1.2.md 复核：默认参数下跟随误差 1.242 rad，频率 100 / 250 / 1000 时为 0.212 / 0.039 / 0.004）。
 
 ## 范围与取舍
 

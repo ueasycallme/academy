@@ -15,6 +15,7 @@
   - `scripts/list_envs.py` 的过滤条件由"ID 含 `Template-`"改为"ID 以 `Galbot-` 开头"：本项目的任务 ID 统一用 `Galbot-` 前缀；而只写"含 `Galbot-`"会把 Isaac Lab 自带的 `Isaac-Stack-Cube-Galbot-*` 也列出来。
   - `config/extension.toml` 的标题与描述。
 - **新增**（6.1.1）：`galbot_academy/assets/paths.py`、`scripts/fetch_galbot.sh`、`scripts/galbot_joint_stats.py`、`.gitignore`。
+- **新增**（6.1.2）：`scripts/convert_galbot.py`、`scripts/check_galbot_usd.py`。
 
 ## 资产：Galbot One Golf 描述仓库
 
@@ -56,6 +57,33 @@ python scripts/list_envs.py                      # 此时还没有任务，表�
 
 `list_envs.py` 返回码 0，约 4 秒，打印空表。把输出重定向到文件时，请设置 `PYTHONUNBUFFERED=1`，否则表格可能在 `simulation_app.close()` 前来不及写出。
 
+## 6.1.2：URDF → USD
+
+```bash
+python scripts/convert_galbot.py --headless       # 固定底座版 URDF + fix_base，输出 generated/galbot_fixed_base/galbot.usd
+python scripts/check_galbot_usd.py --headless     # 仿真检查：保持零位、夹爪 mimic 联动
+```
+
+预期输出（本站实测，转换约 6 秒、检查约 8 秒，返回码 0）：
+
+```text
+Generated USD file: <项目根>/generated/galbot_fixed_base/galbot.usd
+mimic 关节 10 个：naturalFrequency = 1000.0，dampingRatio = 1.0
+galbot.usd（fixed_base）：关节 33，刚体 34，根固定 True
+保持零位 2 s：驱动关节最大偏离 0.0355 rad（right_arm_joint2），平均 0.0050 rad
+right_gripper_joint 目标 0.8 → 实际 +0.8018
+  right_gripper_r_inner_knuckle_joint    -0.8045（期望 -0.8018）
+  right_gripper_r_finger_joint           +0.7999（期望 +0.8018）
+  right_gripper_l_knuckle_joint          +0.7999（期望 +0.8018）
+  right_gripper_l_inner_knuckle_joint    +0.7980（期望 +0.8018）
+  right_gripper_l_finger_joint           -0.8026（期望 -0.8018）
+```
+
+- 转换日志中有 30 条 `DEPRECATION WARNING: Merging bodies with inertia is deprecated`，以及 `Unresolved reference … </visuals/head_link1>` 警告，均属预期。
+- `--variant wheeled` 转换轮式 URDF 作对照（78 个刚体）。
+- 检查脚本按进程测得的显存峰值为 2315 MiB。
+- **转换失败时进程返回码仍可能为 0**，请以 `Generated USD file` 一行与输出文件是否存在为准。
+
 ## 目录
 
 ```text
@@ -63,6 +91,8 @@ python scripts/list_envs.py                      # 此时还没有任务，表�
 ├── scripts/
 │   ├── fetch_galbot.sh          # 克隆 Galbot 描述仓库并固定 commit
 │   ├── galbot_joint_stats.py    # 统计两个预置 URDF 的关节
+│   ├── convert_galbot.py        # URDF → USD（6.1.2）
+│   ├── check_galbot_usd.py      # 仿真检查转换结果（6.1.2）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 └── source/galbot_academy/
