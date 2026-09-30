@@ -13,7 +13,23 @@ examples/
   isaaclab-2.3/<页面编号>-<slug>/   每个示例一个目录，含 README.md 说明运行方式
 ```
 
-页面编号与 `OUTLINE.md` 一致。slug 用英文小写、连字符。
+页面编号与 `OUTLINE.md` 一致。slug 用英文小写、连字符。各部分目录名固定如下：
+
+| 部分 | 目录 |
+|---|---|
+| 0 全景地图 | `0-map` |
+| 1 环境与版本 | `1-env` |
+| 2 USD 与 Kit | `2-usd-kit` |
+| 3 Isaac Sim 核心 | `3-isaacsim` |
+| 4 Isaac Lab 核心 | `4-isaaclab` |
+| 5 RL 入门 | `5-rl` |
+| 6 主线项目 | `6-galbot/1-asset`、`2-scene`、`3-sim-align`、`4-task`、`5-train`、`6-eval`、`7-deploy` |
+| 7 工程基础设施 | `7-infra` |
+| 8 3.0 前沿 | `8-frontier` |
+| 9 源码导读 | `9-source` |
+| 附录 | `appendix` |
+
+已定的占位页路径：`0-map/0.3-lineage.md`、`0-map/0.4-isaac-names.md`、`1-env/1.1-compat-matrix.md`、`8-frontier/8.1-what-changed.md`。页面 slug 由任务卡指定；未指定时实现方自拟并在附记中列出。
 
 ## 2. 页面模板
 

@@ -21,3 +21,16 @@ reach → lift 用 RL；pick-and-place 走遥操作 + Mimic 模仿学习。
 
 ### D-005 P2 顺序（2026-09-30）
 第 7 部分（工程基础设施）优先于第 9 部分（源码导读）。
+
+### D-006 Isaac Sim 开源状态与 Isaac Lab 版本兼容的表述（2026-09-30，裁断 P-001）
+设计 session 已独立核实：
+1. `isaac-sim/IsaacSim` v5.1.0 的 LICENSE 明确"The Isaac Sim software in this repository is covered under the Apache 2.0 License"，并说明构建/运行需要其他许可条款下的附加组件（Kit SDK 等）。**结论：采用实现方写法——Isaac Sim 应用层自 5.0 起开源（Apache-2.0），Omniverse Kit SDK 等底层组件闭源分发。** 全站不再写"Isaac Sim 闭源"。
+2. Isaac Lab v2.3.2 README "Isaac Sim Version Dependency" 表：v2.3.X 支持 Isaac Sim 4.5 / 5.0 / 5.1。**结论：2.x 对 Isaac Sim 是"声明支持的版本集合"，不是一对一锁定；3.0 收窄为仅 6.1。** 全站统一用"兼容区间 / 支持集合"措辞，主线组合 5.1.0 + 2.3.2 仍是本站验证基准。
+3. 实现方附记第 3 条（3.0 的 Kit-less 不止 Newton）：认可，正文说明即可。
+生效范围：T-0.2 任务卡与 OUTLINE 0.2 行已由设计 session 同步修正；后续 1.7、8.1 等任务卡按此写。任务卡出现与官方来源冲突时，**以官方来源为准，按本例流程登记即可**，不必等裁断再动笔。
+
+### D-007 目录与 slug（2026-09-30，裁断 P-002）
+认可实现方自拟的 4 个占位路径为正式路径。为避免后续再逐个裁断，各部分目录名已在 CONVENTIONS.md 第 1 节固定；页面 slug 由任务卡指定，任务卡未指定时实现方自拟并在附记中列出即可，不需登记裁断。
+
+### D-008 术语表未建立前的自检（2026-09-30）
+0.8 术语表完成前，"术语与术语表一致"一项可标"待回查"并列出本页首次出现的术语；T-0.8 任务卡将包含对已完成页面的回查。

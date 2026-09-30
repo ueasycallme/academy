@@ -22,7 +22,7 @@
 | 编号 | 页面 | 类型 | 优先级 | 内容 |
 |---|---|---|---|---|
 | 0.1 | Isaac 体系一页看懂 | 概念 | P1 | 一张总图 + 一屏文字：体系解决什么问题，主要组件各自的角色。全站入口页。 |
-| 0.2 | 分层依赖图 | 概念 | P1 | 驱动/CUDA → Omniverse Kit → USD / PhysX / RTX → Isaac Sim → Isaac Lab → RL/IL 库。每层由谁维护、版本如何联动、Python 版本为何绑死。标出 3.0 Newton 路径如何绕过 Kit/PhysX。 |
+| 0.2 | 分层依赖图 | 概念 | P1 | 驱动/CUDA → Omniverse Kit → USD / PhysX / RTX → Isaac Sim → Isaac Lab → RL/IL 库。每层由谁维护、开源与闭源边界、版本如何联动（Isaac Lab 对 Isaac Sim 是支持集合而非一对一锁定）、Python 版本为何绑死。标出 3.0 Newton 路径如何绕过 Kit/PhysX。 |
 | 0.3 | 产品谱系与改名史 | 概念 | P1 | Isaac Gym → IsaacGymEnvs → OmniIsaacGymEnvs → Orbit → Isaac Lab 的时间线；哪些已废弃；搜到旧资料时如何判断和换算。 |
 | 0.4 | 名字带 Isaac 但不是一回事 | 概念 | P1 | Isaac ROS（真机感知加速）vs Isaac Sim ROS 2 bridge；Replicator、Newton、Warp、cuRobo、GR00T、Cosmos 各处什么位置，与 Isaac Lab 什么关系。 |
 | 0.5 | Isaac Sim 与 Isaac Lab 的边界 | 概念 | P1 | 什么事情在哪一层做；为何 Isaac Lab 不是"Isaac Sim 的一个功能"；两者各自的 API 命名空间（`isaacsim.*` / `isaaclab.*`）。 |
