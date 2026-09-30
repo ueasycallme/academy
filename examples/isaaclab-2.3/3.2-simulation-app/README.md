@@ -33,6 +33,7 @@ sim time 2.02 s, cube z = 0.050 m
 
 ## 验证说明
 
-- headless 已验证；`--gui` 与不带 `--headless` 的 GUI 运行需要桌面环境，未验证。
+- 两个脚本在 headless 与 GUI 下都用 `step(render=False)` 推进物理，GUI 时每两步另调一次 `render()`，因此两种模式的仿真时长都是 2 秒。`step(render=True)` 一次推进一个 `rendering_dt`（1/60 s），循环 240 次会变成 4 秒，见页面 3.1 "时间参数"。
+- headless：实现方验证。GUI 代码路径：实现方在取消 `DISPLAY` 的情况下运行 `--gui` 与不带 `--headless`（SimulationApp 自动改为无窗口），输出同样为 2.02 s。真正打开窗口的运行由校验方在桌面环境验证（reviews/T-3.2.md）。
 - 两个脚本都在 `close()` 前调用 `sys.stdout.flush()`，输出重定向到文件或管道时不会丢失。
 - 两个脚本都在退出前释放仿真上下文。去掉 `isaaclab_minimal.py` 中的 `clear_all_callbacks()` 与 `clear_instance()` 后，进程会卡在 `close()`（本站实测，90 秒后被强制结束）。
