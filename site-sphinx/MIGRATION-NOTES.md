@@ -38,6 +38,7 @@ env -u PYTHONPATH .venv/bin/sphinx-build -E -a -W --keep-going -b html . _build/
 | GFM 表格 | 原样 | 原样 |
 | 相对链接 `[x](../1-env/1.1-compat-matrix.md)` | 原样；目标文件必须存在，否则 `-W` 报错 | 原样 |
 | 锚点链接 `[x](page.md#中文标题)` | 原样；依赖 `conf.py` 中 `myst_heading_anchors = 3` | 原样 |
+| 行内锚点 `**术语**{ #term-x }`（attr_list） | `[**术语**]{#term-x}`（MyST `attrs_inline` 只作用于 span，不作用于粗体） | 脚本 |
 | `{ .class }` 属性（attr_list） | `{.class}`；已启用 `attrs_inline`、`attrs_block` | 手工核对 |
 | `mkdocs.yml` 的 `nav` | 父页面里的 `{toctree}` 指令，`:caption:` 写部分名（如"第 0 部分 · 全景地图"） | 手工 |
 | `not_in_nav`（占位页、渲染检查页） | frontmatter 加 `orphan: true` | 手工 |

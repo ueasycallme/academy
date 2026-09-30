@@ -8,6 +8,7 @@
     ??? type "标题"        → :::{dropdown} 标题（sphinx-design）
     === "标签"             → ::::{tab-set} / :::{tab-item} 标签
     ```mermaid            → ```{mermaid}
+    **术语**{ #id }       → [**术语**]{#id}（MyST 行内锚点）
     YAML frontmatter、脚注、GFM 表格、相对 .md 链接：MyST 原生支持，原样保留
 
 只做行级机械转换，不理解语义；转换后请跑 `sphinx-build -W` 检查。
@@ -30,6 +31,8 @@ ADMONITION_CLASS = {
 
 ADMON_RE = re.compile(r'^(?P<indent>\s*)(?P<mark>!!!|\?\?\?\+?)\s+(?P<type>\w+)(?:\s+"(?P<title>[^"]*)")?\s*$')
 TAB_RE = re.compile(r'^(?P<indent>\s*)===\s+"(?P<label>[^"]*)"\s*$')
+# attr_list 行内锚点：**术语**{ #term-x } → MyST 的 span 语法 [**术语**]{#term-x}
+ANCHOR_RE = re.compile(r"\*\*([^*]+)\*\*\{\s*#([\w-]+)\s*\}")
 FENCE_RE = re.compile(r"^(?P<indent>\s*)(?P<fence>`{3,})(?P<info>.*)$")
 
 
@@ -120,7 +123,7 @@ def convert(lines: list[str], depth: int = 0) -> list[str]:
             out.append("")
             continue
 
-        out.append(line)
+        out.append(ANCHOR_RE.sub(r"[**\1**]{#\2}", line))
         i += 1
     return out
 
