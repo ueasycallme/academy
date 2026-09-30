@@ -1,6 +1,6 @@
 # T-SITE-05 视觉第三轮：对齐用户指定的两个参考页
 
-状态: 待实现
+状态: 实现中
 优先级: P1（用户直接反馈；T-0.4 交校验后立即做）
 类型: 基础设施
 依赖: T-SITE-04
@@ -14,6 +14,20 @@
 设计 session 用 headless Chrome（1440 宽）截了参考页与原型，逐项比较，结论：**主题的样式数值已经接近，差距主要在"页面是否像一个真实文档站"**。以下按影响大小排序，全部必做。
 
 ## 必须完成
+
+### 0. 正文区宽度（用户在 2560×1440 屏幕上指出的最明显差距）
+用户的屏幕是 2560×1440，参考页正文区明显比原型宽。原因已定位：原型只复制了 `nvidia-sphinx-theme.css` 的侧栏规则，**漏掉了参考站 `isaacsim-design.css` 里的整体宽度覆盖**：
+
+```css
+.bd-page-width { max-width: 100rem !important; }        /* pydata 默认 88rem */
+.bd-article-container { max-width: none !important; }    /* pydata 默认约 60em，把正文锁窄 */
+.bd-sidebar-secondary { flex: 0 0 15rem !important; width: 15rem !important; min-width: 0 !important; padding-right: 0.25rem !important; }
+```
+
+- 把这三条加进 `academy.css`，并核对 `isaacsim-design.css` 中其余影响布局的规则（grep `bd-`、`max-width`、`flex`），凡影响三栏宽度的一并对齐。
+- **实测口径改为以 2560×1440 为主**，1920 与 1440 为辅：在三个宽度下分别量参考页与原型的左栏、正文、右栏像素宽度，做成表写入附记，差异 ≤ 8px。
+- 正文变宽后检查：段落行长是否与参考页一致（参考页不限制行长）；Mermaid 图与表格是否随之变化；`mermaid-size.js` 的 max-width 逻辑是否仍正确。
+
 
 ### 1. 左侧章节树填满（最大差距）
 原型的左栏只有"第 0 部分 · 全景地图 → 分层依赖图"一条，空荡是"怪"的首要来源。参考页左栏是完整的多级树：分组标题（粗体黑）、条目（灰）、当前页（绿字 + 左侧绿条）、可折叠箭头。
@@ -44,7 +58,7 @@
 
 ## 验收标准
 
-- 1440 与 1920 宽下，原型 0.2 页与参考页 `reference_architecture` 并排截图，附记中逐项说明上述 6 点的对齐情况。
+- 2560、1920、1440 宽下，原型 0.2 页与参考页 `reference_architecture` 并排截图（2560 为主），附记中逐项说明上述 6 点的对齐情况。
 - 左栏为完整的多级目录树，当前页高亮与参考页一致。
 - `sphinx-build -W` 零警告（占位页数量约 110，确保 toctree 无孤儿警告）。
 - 不使用 NVIDIA logo、字体、主题文件。
