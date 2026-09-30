@@ -76,7 +76,6 @@ markdown_extensions:
 
 not_in_nav: |
   /0-map/_template-check.md
-  /0-map/0.4-isaac-names.md
   /1-env/1.1-compat-matrix.md
   /8-frontier/8.1-what-changed.md
   /3-isaacsim/3.3-rigid-collision.md
@@ -90,6 +89,12 @@ not_in_nav: |
   /9-source/9.1-rl-env-step.md
   /3-isaacsim/3.11-api-map.md
   /4-isaaclab/4.2-repo-map.md
+  /3-isaacsim/3.10-ros2-bridge.md
+  /3-isaacsim/3.9-replicator.md
+  /4-isaaclab/4.19-mimic.md
+  /6-galbot/4-task/6.4.7-mimic.md
+  /8-frontier/8.3-newton.md
+  /2-usd-kit/2.8-nucleus.md
 
 nav:
   - 首页: index.md
@@ -97,5 +102,6 @@ nav:
       - 0-map/index.md
       - 0.2 分层依赖图: 0-map/0.2-layers.md
       - 0.3 产品谱系与改名史: 0-map/0.3-lineage.md
+      - 0.4 名字带 Isaac 但不是一回事: 0-map/0.4-isaac-names.md
       - 0.5 Isaac Sim 与 Isaac Lab 的边界: 0-map/0.5-sim-lab-boundary.md
       - 0.6 一个 RL step 里发生了什么: 0-map/0.6-one-step.md
