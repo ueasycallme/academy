@@ -46,3 +46,7 @@
 - `formal-pages.txt`：20 个非占位页；切换前 11 个正式页的 docs/ 与 site-sphinx/ 版本已确认一致（md2myst diff = 0），因此以 site-sphinx 为准不会丢内容。
 - `pre-0.2-2560.png`：切换前 0.2 页在 2560×1440 下的截图（全新 profile）。
 - 还要检查：`tools/check_head_build.sh`、WORKFLOW / CONVENTIONS / README 中 mkdocs 的相关说明已更新；`examples/*/README.md` 中引用的 `docs/…` 路径仍然有效；旧 docs/ 的 `assets/js/mermaid.min.js` 等自托管资源在新站中有对应文件。
+
+## 带 SimulationApp 的示例：固定检查项（源自 T-2.4）
+- 输出必须在三种方式下都完整：终端（`script -qc "python …" /dev/null`）、管道（`python … | cat`）、重定向到文件（`python … > log`）。`simulation_app.close()` 退出时不刷新 stdout，代码需在 close() 前 `sys.stdout.flush()`（CONVENTIONS 第 5 节）。
+- 用 `timeout` 限时运行 Kit 进程时要用 `-s KILL`（Kit 忽略 SIGTERM，见 T-1.9）。
