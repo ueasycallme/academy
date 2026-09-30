@@ -37,7 +37,8 @@ reach → lift 用 RL；pick-and-place 走遥操作 + Mimic 模仿学习。
 
 ### D-009 `omni.isaac.*` 旧命名在各版本上的状态（2026-09-30，源自 reviews/T-0.2.md C1）
 全站统一口径：扩展自 Isaac Sim 4.5 起由 `omni.isaac.*` 改名为 `isaacsim.*`；**5.x 中旧名以弃用扩展形式保留（`extsDeprecated/`，可导入，打印弃用警告）**；官方 5.1.0 Release Notes 声明将在 6.0 完全移除。不得写"5.0 已移除"。6.x 上是否确已移除，须在写第 8 部分或 3.11 页时实测后才可断言。本站示例一律使用新命名。
-依据：5.1.0 Release Notes；校验 session 在 5.1.0 pip 包上实测（reviews/T-0.2.md 代码运行第 1、3 行）。
+**补充（2026-09-30，源自 reviews/T-0.3.md）**："弃用但可用"的前提是 Kit 已启动或已 `import isaacsim`。pip 安装下，旧脚本首行 `from omni.isaac.kit import SimulationApp` 直接报 `ModuleNotFoundError`（校验实测）；必须先 `import isaacsim`（或改用 `from isaacsim import SimulationApp`）之后，`omni.isaac.*` 弃用扩展才在搜索路径上。涉及旧脚本兼容性的页面（0.3、3.11、1.9）必须写明这一前提。
+依据：5.1.0 Release Notes；校验 session 在 5.1.0 pip 包上实测（reviews/T-0.2.md 代码运行第 1、3 行；reviews/T-0.3.md）。
 
 ### D-010 依赖图的箭头语义（2026-09-30，源自 C2）
 全站架构图中箭头统一表示"构建在……之上 / 运行在……之中"，图说明必须写明这一语义。USD、RTX 是 Kit 的组成部分，PhysX 通过 `omni.physx` 扩展接入（该扩展单独发版、针对特定 Kit 版本构建、随 Isaac Sim 分发，不属于 Kit SDK 本体）。T-0.2 任务卡第 2 点措辞已同步修正。
