@@ -75,3 +75,6 @@ reach → lift 用 RL；pick-and-place 走遥操作 + Mimic 模仿学习。
 用户确认：① 正式切换到 Sphinx + MyST + pydata-sphinx-theme，MkDocs 版退役；② D-019 主线暂不变的裁断确认；③ GitHub 仓库 https://github.com/ueasycallme/academy ，托管 GitHub Pages，域名 academy.kiloong.com；④ 顶部公告条保留，但要有关闭按钮（关闭状态记 localStorage）；⑤ 站点标识保持品牌绿方块。
 执行：T-SITE-06（切换与迁移）、T-SITE-07（GitHub Pages 部署）、T-SITE-08（中文短语搜索）。切换合并后，所有页面直接用 MyST 语法写，CONVENTIONS 页面模板随 T-SITE-06 更新。
 
+### D-021 篇幅口径补充（2026-09-30，源自 T-2.2）
+D-016 已定篇幅不是硬门槛。补充：任务卡"必须覆盖"项多的页面（如 2.2，五个概念各一节 + 实例 + 常见坑，正文约 4000 字）按覆盖要求为准，不为凑篇幅删内容；设计 session 今后给实操页与黄金路径页的篇幅上限放宽到 3500 字。2.2 维持现状；写 2.5（用 Python 操作 USD）时，把 2.2 中"GUI 查看方式"一段与常见坑第 4 条迁过去，届时 2.2 留一句链接。
+
