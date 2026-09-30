@@ -16,6 +16,7 @@
   - `config/extension.toml` 的标题与描述。
 - **新增**（6.1.1）：`galbot_academy/assets/paths.py`、`scripts/fetch_galbot.sh`、`scripts/galbot_joint_stats.py`、`.gitignore`。
 - **新增**（6.1.2）：`scripts/convert_galbot.py`、`scripts/check_galbot_usd.py`。
+- **新增**（6.1.3）：`scripts/compare_usd.py`、`scripts/hold_pose.py`。
 
 ## 资产：Galbot One Golf 描述仓库
 
@@ -84,6 +85,30 @@ right_gripper_joint 目标 0.8 → 实际 +0.8018
 - 检查脚本按进程测得的显存峰值为 2315 MiB。
 - **转换失败时进程返回码仍可能为 0**，请以 `Generated USD file` 一行与输出文件是否存在为准。
 
+## 6.1.3：厂商 USD 与自导入 USD 的对比
+
+```bash
+python scripts/compare_usd.py                     # 只需 usd-core；比较厂商 USD 与 generated/ 下的两份转换结果
+python scripts/hold_pose.py --headless --usd generated/galbot_fixed_base/galbot.usd
+python scripts/hold_pose.py --headless --usd third_party/galbot_one_golf_description/usd/galbot_one_golf.usda --fix_root
+```
+
+`compare_usd.py` 需要先运行 6.1.2 的两种 variant 转换（`--variant wheeled` 也要转一次）。`hold_pose.py` 的预期输出（本站实测，约 14–25 秒，返回码 0，按进程显存 2315 MiB）：
+
+```text
+galbot.usd：关节 33，刚体 34，根固定 True
+left_arm_joint1 生效的 stiffness 400.0 N·m/rad，damping 40.0，力矩上限 60.0 N·m
+保持零位 5 s：驱动关节最大偏离 0.0355 rad（right_arm_joint2），根高度变化 +0.0000 m，数值有限 True
+right_gripper_joint 目标 0.8 → 实际 +0.8018，mimic 最大跟随误差 0.0038 rad
+
+galbot_one_golf.usda：关节 77，刚体 78，根固定 True
+left_arm_joint1 生效的 stiffness 5729578.0 N·m/rad，damping 572957.8，力矩上限 1000.0 N·m
+保持零位 5 s：驱动关节最大偏离 0.0029 rad（right_gripper_joint），根高度变化 +0.0000 m，数值有限 True
+right_gripper_joint 目标 0.8 → 实际 +0.8017，mimic 最大跟随误差 0.0006 rad
+```
+
+对轮式 URDF 的转换结果（`generated/galbot_wheeled/galbot.usd`）运行时出现 NaN，见 6.1.3。
+
 ## 目录
 
 ```text
@@ -93,6 +118,8 @@ right_gripper_joint 目标 0.8 → 实际 +0.8018
 │   ├── galbot_joint_stats.py    # 统计两个预置 URDF 的关节
 │   ├── convert_galbot.py        # URDF → USD（6.1.2）
 │   ├── check_galbot_usd.py      # 仿真检查转换结果（6.1.2）
+│   ├── compare_usd.py           # 比较两份 USD（6.1.3）
+│   ├── hold_pose.py             # 保持零位的稳定性测试（6.1.3）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 └── source/galbot_academy/
