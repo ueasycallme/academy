@@ -76,7 +76,6 @@ markdown_extensions:
 
 not_in_nav: |
   /0-map/_template-check.md
-  /0-map/0.3-lineage.md
   /0-map/0.4-isaac-names.md
   /1-env/1.1-compat-matrix.md
   /8-frontier/8.1-what-changed.md
@@ -97,5 +96,6 @@ nav:
   - 全景地图:
       - 0-map/index.md
       - 0.2 分层依赖图: 0-map/0.2-layers.md
+      - 0.3 产品谱系与改名史: 0-map/0.3-lineage.md
       - 0.5 Isaac Sim 与 Isaac Lab 的边界: 0-map/0.5-sim-lab-boundary.md
       - 0.6 一个 RL step 里发生了什么: 0-map/0.6-one-step.md
