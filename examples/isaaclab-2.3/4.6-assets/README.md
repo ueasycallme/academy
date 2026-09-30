@@ -35,3 +35,29 @@ joint_stiffness[0] = [0.0, 0.0], joint_damping[0] = [10.0, 0.0]
 ## 资源与耗时
 
 显存占用很小。本站实测（2026-09-30，RTX 5070，headless）约 6 秒，返回码 0；经管道运行时输出完整。脚本按退出三步释放 SimulationContext → flush → close。
+
+---
+
+## 探针：第一次 `reset()` 后关节速度为 0（`first_reset_velocity.py`）
+
+对应页面 4.6 常见坑四（T-4.6b）。在官方 Cartpole（2 个环境，种子 42）上依次打印 `data.soft_joint_vel_limits` 与 env 0 的观测（位置、速度）：构造完成后、第一次 `reset()`、第 1 步之后、`step()` 内因超时重置、第二次 `reset()`。
+
+```bash
+python examples/isaaclab-2.3/4.6-assets/first_reset_velocity.py --headless
+python examples/isaaclab-2.3/4.6-assets/first_reset_velocity.py --headless --device cpu
+```
+
+预期输出（本站实测，每种设备两次运行逐字一致）：
+
+```text
+device cuda:0；速度上限即 data.soft_joint_vel_limits（小车、摆杆），位置与速度取自 env 0 的观测
+  构造完成后            | 速度上限 [0.0, 0.0]
+  第一次 reset()      | 速度上限 [100.0, 8.0] | 位置 [0.226, 0.512] | 速度 [0.0, 0.0]
+  第 1 步之后          | 速度上限 [100.0, 8.0] | 位置 [0.226, 0.514] | 速度 [0.032, 0.167]
+  step 内重置（超时 2 个） | 速度上限 [100.0, 8.0] | 位置 [-0.347, -0.431] | 速度 [-0.185, -0.222]
+  第二次 reset()      | 速度上限 [100.0, 8.0] | 位置 [0.096, 0.039] | 速度 [-0.234, -0.271]
+```
+
+`--device cpu` 时数值不同，但规律相同：第一次 `reset()` 的速度为 0（显示为 `-0.0`），其余三行的速度都不为 0。"第一次 reset()"一行显示的速度上限已是 100 / 8，因为 `reset()` 在事件之后调用了 `write_data_to_sim()`；事件运行时上限仍是 0（见"构造完成后"一行）。
+
+资源与耗时：GPU 约 8–9 秒，按进程显存峰值 2315 MiB；CPU 约 6–7 秒，按进程显存峰值 253 MiB；返回码均为 0（2026-09-30，RTX 5070，headless）。显存测量方法：每 0.5 秒执行一次 `nvidia-smi --query-compute-apps=pid,used_memory --format=csv`，只累加本脚本进程树的用量。
