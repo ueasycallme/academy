@@ -1,0 +1,72 @@
+"""Isaac Academy — Sphinx 原型（T-SITE-03）。
+
+与 docs/ 下的 MkDocs 站并存；用户对比后再决定是否切换。
+不使用 nvidia-sphinx-theme 及 NVIDIA 的 logo、字体、图标；只借用官方站的色值（见 _static/css/academy.css）。
+"""
+
+project = "Isaac Academy"
+author = "Isaac Academy"
+copyright = "2026, Isaac Academy"
+language = "zh_CN"
+
+extensions = [
+    "myst_parser",
+    "sphinx_design",
+    "sphinx_copybutton",
+    "sphinxcontrib.mermaid",
+]
+
+source_suffix = {".md": "markdown"}
+exclude_patterns = ["_build", ".venv", "tools", "MIGRATION-NOTES.md", "requirements-sphinx.txt"]
+
+# -- MyST ---------------------------------------------------------------------
+myst_enable_extensions = ["colon_fence", "attrs_inline", "attrs_block", "deflist"]
+myst_heading_anchors = 3  # 让 [..](page.md#标题) 形式的链接可以解析
+myst_footnote_transition = False
+
+# -- Mermaid（本地，不走 CDN）--------------------------------------------------
+mermaid_use_local = "js/mermaid-shim.mjs"
+mermaid_version = ""  # 与 use_local 配合：不生成任何 CDN 地址
+mermaid_include_elk = False
+mermaid_d3_zoom = False
+mermaid_fullscreen = False
+mermaid_height = "auto"
+mermaid_light_theme = "neutral"  # 灰黑配色，比 default 的紫/黄更接近官方站的中性色调
+mermaid_dark_theme = "dark"
+
+# -- HTML ---------------------------------------------------------------------
+html_theme = "pydata_sphinx_theme"
+html_title = "Isaac Academy"
+html_static_path = ["_static"]
+html_css_files = ["css/academy.css"]
+html_js_files = ["js/mermaid-size.js"]
+html_templates_path = ["_templates"]
+templates_path = ["_templates"]
+html_show_sourcelink = False
+html_copy_source = False
+html_search_language = "zh"  # 依赖 jieba 分词
+
+html_theme_options = {
+    # 版式对齐 docs.isaacsim.omniverse.nvidia.com：左侧标题，右侧搜索框 + 深浅色切换，无顶部导航标签
+    "logo": {"text": "Isaac Academy"},
+    "navbar_start": ["navbar-logo"],
+    "navbar_center": [],
+    "navbar_end": ["search-button-field", "theme-switcher"],
+    "navbar_persistent": [],
+    "icon_links": [],
+    "primary_sidebar_end": [],
+    "secondary_sidebar_items": ["page-toc"],
+    "footer_start": ["academy-footer"],
+    "footer_center": [],
+    "footer_end": [],
+    "show_toc_level": 2,
+    "navigation_depth": 3,
+    "collapse_navigation": False,
+    "show_nav_level": 1,
+    "pygments_light_style": "tango",
+    "pygments_dark_style": "monokai",
+    "show_prev_next": True,
+}
+# pydata-sphinx-theme 0.16 通过 html_context 设置默认深浅色
+html_context = {"default_mode": "dark"}
+html_sidebars = {"**": ["academy-toc-title", "academy-nav"]}

@@ -1,0 +1,120 @@
+/*
+ * Isaac Academy 原型样式（T-SITE-03）。
+ *
+ * 色值取自 Isaac Sim 5.1.0 官方文档站的 CSS 变量（2026-09-30 读取）：
+ *   https://docs.isaacsim.omniverse.nvidia.com/5.1.0/_static/styles/nvidia-sphinx-theme.css?v=df3ac72c
+ * 只取色值、字号、尺寸等数值，没有复制该文件（其许可为 NVIDIA 专有）。
+ * 逐项来源见本文件注释中的 [nv:…] 标记，对应上面文件里同名变量或选择器。
+ * 该站 custom.css 只含 rubric 标题、表格与文字方向的工具类，没有配色，未取用。
+ * admonition、代码块、表格斑马纹等未被覆盖的颜色，官方站用的是 pydata-sphinx-theme 0.16.1 的默认值；
+ * 本站锁定同一版本，因此这些颜色自动一致，不在此重复定义。
+ */
+
+/* ---- 色板：浅色（官方站 html:not([data-theme]),html[data-theme=light]） ---- */
+html:not([data-theme]),
+html[data-theme="light"] {
+  --nv-color-green: #76b900;                                  /* [nv:--nv-color-green] 品牌绿 */
+  --nv-color-green-2: #004831;                                /* [nv:--nv-color-green-2] 深绿 */
+  --pst-color-background: #fff;                               /* [nv:--pst-color-background] 页面背景 */
+  --pst-color-on-background: #fff;                            /* [nv:--pst-color-on-background] 顶栏背景 */
+  --pst-color-shadow: #ccc;                                   /* [nv:--pst-color-shadow] */
+  --pst-color-heading: #000;                                  /* [nv:--pst-color-heading] 标题 */
+  --pst-color-text-base: #1a1a1a;                             /* [nv:--pst-color-text-base] 正文 */
+  --pst-color-text-muted: #666;                               /* [nv:--pst-color-text-muted] 次要文字 */
+  --pst-color-surface: #f7f7f7;                               /* [nv:--pst-color-surface] 面板、代码块外框 */
+  --pst-color-on-surface: #333;                               /* [nv:--pst-color-on-surface] 边框 */
+  --pst-color-primary: var(--nv-color-green-2);               /* [nv:--pst-color-primary] 浅色下主色为深绿 */
+  --pst-color-table-row-hover-bg: var(--nv-color-green);      /* [nv:--pst-color-table-row-hover-bg] */
+  --pst-color-link: var(--pst-color-text-base);               /* [nv:--pst-color-link] 链接文字同正文色，靠绿色下划线区分 */
+  --pst-color-link-hover: var(--pst-color-text-base);         /* [nv:--pst-color-link-hover] */
+  --pst-color-inline-code: var(--pst-color-primary);          /* [nv:--pst-color-inline-code] */
+  --pst-color-inline-code-links: var(--pst-color-primary);    /* [nv:--pst-color-inline-code-links] */
+  --pst-color-secondary: var(--pst-color-primary);            /* [nv:--pst-color-secondary] */
+  --pst-color-secondary-bg: var(--nv-color-green);            /* [nv:--pst-color-secondary-bg] */
+  --pst-color-accent: var(--nv-color-green);                  /* [nv:--pst-color-accent] */
+}
+
+/* ---- 色板：深色（官方站 html[data-theme=dark]） ---- */
+html[data-theme="dark"] {
+  --nv-color-green: #76b900;                                  /* [nv:--nv-color-green] */
+  --nv-color-green-2: #004831;                                /* [nv:--nv-color-green-2] */
+  --pst-color-background: #111;                               /* [nv:--pst-color-background] */
+  --pst-color-on-background: #000;                            /* [nv:--pst-color-on-background] 顶栏近黑 */
+  --pst-color-shadow: #000;                                   /* [nv:--pst-color-shadow] */
+  --pst-color-heading: #fff;                                  /* [nv:--pst-color-heading] */
+  --pst-color-text-base: #eee;                                /* [nv:--pst-color-text-base] */
+  --pst-color-text-muted: #999;                               /* [nv:--pst-color-text-muted] */
+  --pst-color-surface: #1a1a1a;                               /* [nv:--pst-color-surface] */
+  --pst-color-on-surface: #ddd;                               /* [nv:--pst-color-on-surface] */
+  --pst-color-primary: var(--nv-color-green);                 /* [nv:--pst-color-primary] 深色下主色为品牌绿 */
+  --pst-color-table-row-hover-bg: var(--nv-color-green-2);    /* [nv:--pst-color-table-row-hover-bg] */
+  --pst-color-link: var(--pst-color-text-base);               /* [nv:--pst-color-link] */
+  --pst-color-link-hover: var(--pst-color-text-base);         /* [nv:--pst-color-link-hover] */
+  --pst-color-inline-code: var(--pst-color-primary);          /* [nv:--pst-color-inline-code] */
+  --pst-color-inline-code-links: var(--pst-color-primary);    /* [nv:--pst-color-inline-code-links] */
+  --pst-color-secondary: var(--pst-color-primary);            /* [nv:--pst-color-secondary] */
+  --pst-color-secondary-bg: var(--nv-color-green-2);          /* [nv:--pst-color-secondary-bg] */
+  --pst-color-accent: var(--nv-color-green);                  /* [nv:--pst-color-accent] */
+}
+
+/* ---- 字号与尺寸（官方站 html{…}） ---- */
+html {
+  --pst-font-size-h1: 2.25rem;                                /* [nv:--pst-font-size-h1] */
+  --pst-font-size-h2: 1.75rem;                                /* [nv:--pst-font-size-h2] */
+  --pst-font-size-h3: 1.5rem;                                 /* [nv:--pst-font-size-h3] */
+  --pst-font-size-h4: 1.25rem;                                /* [nv:--pst-font-size-h4] */
+  --pst-font-size-h5: 1.125rem;                               /* [nv:--pst-font-size-h5] */
+  --pst-font-size-h6: 1rem;                                   /* [nv:--pst-font-size-h6] */
+  --pst-font-weight-heading: 700;                             /* [nv:--pst-font-weight-heading] */
+  --pst-header-height: 3rem;                                  /* [nv:--pst-header-height] */
+  /* 字体：官方站用 NVIDIA Sans / RobotoMono（从 images.nvidia.com 加载），本站不用，改为系统字体栈（同 T-SITE-02） */
+  --pst-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC",
+    "WenQuanYi Micro Hei", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --pst-font-family-heading: var(--pst-font-family-base);
+  --pst-font-family-monospace: "SFMono-Regular", Menlo, Consolas, "Liberation Mono",
+    "DejaVu Sans Mono", "Noto Sans Mono CJK SC", monospace;
+  overflow-y: scroll;                                         /* [nv:html overflow-y] */
+}
+
+/* ---- 结构细节（对应官方站同名选择器） ---- */
+.bd-article h1, .bd-article h2, .bd-article h3,
+.bd-article h4, .bd-article h5, .bd-article h6 {
+  color: var(--pst-color-heading);                            /* [nv:.bd-article h1…h6] */
+  word-wrap: break-word;
+}
+.bd-article a { text-decoration-color: var(--nv-color-green); } /* [nv:.bd-article a] 绿色下划线 */
+.bd-article a.headerlink { color: var(--pst-color-primary); }   /* [nv:.bd-article a.headerlink] */
+.navbar-brand { font-weight: 700; padding: 0; }                  /* [nv:.navbar-brand] */
+.bd-sidebar-primary { flex-basis: 20%; min-width: var(--pst-sidebar-secondary); }   /* [nv:.bd-sidebar-primary] */
+.bd-sidebar-secondary { flex-basis: 25%; min-width: var(--pst-sidebar-secondary); } /* [nv:.bd-sidebar-secondary] */
+.bd-sidebar .nav-item__separator { display: none; }              /* [nv:.bd-sidebar .nav-item__separator] */
+.toc-entry a.nav-link.active,
+nav.bd-links .current > a {
+  box-shadow: inset max(3px, .1875rem, .12em) 0 0 var(--nv-color-green); /* [nv:当前项左侧绿条] */
+}
+.bd-footer { color: var(--pst-color-text-muted); }               /* [nv:.bd-footer] */
+.caption-number:after { content: "："; margin-left: -.25rem; }    /* [nv:.caption-number:after]，改用中文冒号 */
+
+/* ---- 本站自加 ---- */
+.academy-toc-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--pst-color-heading);
+  margin: 0 0 .5rem;
+}
+nav.bd-links p.caption {             /* 章节分组名（对应官方站左栏的粗体分组） */
+  font-weight: 700;
+  color: var(--pst-color-heading);
+  text-transform: none;
+}
+.academy-footer { margin: 0; }
+/* 顶栏：站名靠左，搜索框与深浅色切换靠右（官方站布局） */
+.bd-header .navbar-header-items__end { margin-left: auto; justify-content: flex-end; }
+.bd-content .mermaid { text-align: center; }
+
+/* Mermaid：sphinxcontrib-mermaid 注入的样式把 SVG 拉伸到 100% 宽（max-width: 100% !important），
+   小图会被放大、超出一屏。js/mermaid-size.js 在每次渲染后按 viewBox 宽度设置 max-width，
+   让图按原始尺寸显示（不超过正文宽度），与 MkDocs 站的观感一致。 */
+.bd-content pre.mermaid { background: transparent; border: none; }
+.bd-content pre.mermaid > svg { height: auto; display: block; margin: 0 auto; }
