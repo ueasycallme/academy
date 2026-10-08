@@ -1,0 +1,90 @@
+# 校验方复跑 T-6.1.4（clean14，RTX 5070，2026-10-01）
+off rc=0 t=104s mem=2315MiB
+nofilter rc=0 t=281s mem=2379MiB
+filter rc=0 t=158s mem=2379MiB
+offset rc=0 t=12s mem=2315MiB
+render rc=0 t=23s mem=1459MiB
+DONE
+== off
+自碰撞 False；接触传感器覆盖 34 个刚体
+生效的接触偏移 0.0014–0.0053 m，静止偏移 0.0000–0.0000 m（184 个形状）
+[1] 第 1 步有接触的刚体对：无
+[2] 零位 2 s：最大偏离 0.0355 rad（right_arm_joint2），末 0.5 s 最大 |关节速度| 0.1331 rad/s，接触 无
+[3] 右臂随机姿态 20 组：有接触 0 组；数值有限 True；末 0.5 s 最大 |关节速度| 1.500 rad/s
+    臂关节最大跟踪误差：无接触的姿态 1.4503 rad，有接触的姿态 nan rad
+    出现接触的刚体对（姿态数）：无
+[4] 右夹爪目标 1.703（上限）→ 实际 1.7023；夹爪各关节末 0.5 s 最大 |速度| 0.1205 rad/s；接触 无
+== nofilter
+自碰撞 True；接触传感器覆盖 34 个刚体
+生效的接触偏移 0.0014–0.0053 m，静止偏移 0.0000–0.0000 m（184 个形状）
+[1] 第 1 步有接触的刚体对：['head_link2–leg_link5']
+[2] 零位 2 s：最大偏离 0.1808 rad（head_joint2），末 0.5 s 最大 |关节速度| 1.7171 rad/s，接触 ['head_link2–leg_link5']
+[3] 右臂随机姿态 20 组：有接触 20 组；数值有限 True；末 0.5 s 最大 |关节速度| 5.077 rad/s
+    臂关节最大跟踪误差：无接触的姿态 nan rad，有接触的姿态 1.5733 rad
+    出现接触的刚体对（姿态数）：{'head_link2–leg_link5': 20, 'right_arm_link5–right_arm_link7': 10, 'right_gripper_l_inner_knuckle_link–right_gripper_l_knuckle_link': 3, 'base_link–right_arm_link7': 2, 'base_link–right_gripper_r_finger_link': 1, 'base_link–right_gripper_r_knuckle_link': 1, 'right_gripper_r_inner_knuckle_link–right_gripper_r_knuckle_link': 1, 'head_link2–right_arm_link7': 1}
+[4] 右夹爪目标 1.703（上限）→ 实际 1.7024；夹爪各关节末 0.5 s 最大 |速度| 0.2525 rad/s；接触 ['head_link2–leg_link5']
+== filter
+自碰撞 True；接触传感器覆盖 34 个刚体
+生效的接触偏移 0.0014–0.0053 m，静止偏移 0.0000–0.0000 m（184 个形状）
+[1] 第 1 步有接触的刚体对：无
+[2] 零位 2 s：最大偏离 0.0355 rad（right_arm_joint2），末 0.5 s 最大 |关节速度| 0.1331 rad/s，接触 无
+[3] 右臂随机姿态 20 组：有接触 3 组；数值有限 True；末 0.5 s 最大 |关节速度| 9.079 rad/s
+    臂关节最大跟踪误差：无接触的姿态 1.4503 rad，有接触的姿态 1.1105 rad
+    出现接触的刚体对（姿态数）：{'base_link–right_arm_link7': 1, 'base_link–right_gripper_r_knuckle_link': 1, 'head_link2–right_arm_link7': 1}
+[4] 右夹爪目标 1.703（上限）→ 实际 1.7023；夹爪各关节末 0.5 s 最大 |速度| 0.1205 rad/s；接触 无
+== offset
+00:20:56 [prims.py] WARNING: Could not perform 'modify_collision_properties' on any prims under: '/World/Galbot'. This might be because of the following reasons:
+自碰撞 False；接触传感器覆盖 34 个刚体
+生效的接触偏移 0.0014–0.0053 m，静止偏移 0.0000–0.0000 m（184 个形状）
+[1] 第 1 步有接触的刚体对：无
+[2] 零位 2 s：最大偏离 0.0355 rad（right_arm_joint2），末 0.5 s 最大 |关节速度| 0.1331 rad/s，接触 无
+[3] 右臂随机姿态 0 组：有接触 0 组；数值有限 True；末 0.5 s 最大 |关节速度| 0.000 rad/s
+    臂关节最大跟踪误差：无接触的姿态 nan rad，有接触的姿态 nan rad
+    出现接触的刚体对（姿态数）：无
+[4] 右夹爪目标 1.703（上限）→ 实际 1.7023；夹爪各关节末 0.5 s 最大 |速度| 0.1204 rad/s；接触 无
+== hold probe 4.0 s（自碰撞关）
+    POSE hold=4.0 worst=right_arm_joint1 err=0.0496 dist=0.603 maxdist=2.775
+    POSE hold=4.0 worst=right_arm_joint2 err=0.0337 dist=0.853 maxdist=3.567
+    POSE hold=4.0 worst=right_arm_joint1 err=0.1922 dist=5.756 maxdist=5.756
+    POSE hold=4.0 worst=right_arm_joint2 err=0.0283 dist=2.059 maxdist=4.422
+    POSE hold=4.0 worst=right_arm_joint1 err=0.0448 dist=0.893 maxdist=2.781
+    POSE hold=4.0 worst=right_arm_joint1 err=0.0435 dist=2.954 maxdist=5.217
+    POSE hold=4.0 worst=right_arm_joint1 err=0.0337 dist=1.625 maxdist=2.546
+    POSE hold=4.0 worst=right_arm_joint1 err=0.0373 dist=0.362 maxdist=1.318
+    POSE hold=4.0 worst=right_arm_joint2 err=0.0485 dist=2.119 maxdist=2.686
+    POSE hold=4.0 worst=right_arm_joint1 err=0.0582 dist=2.036 maxdist=2.036
+    POSE hold=4.0 worst=right_arm_joint2 err=0.0677 dist=0.828 maxdist=3.201
+    POSE hold=4.0 worst=right_arm_joint1 err=0.0656 dist=1.285 maxdist=2.913
+    POSE hold=4.0 worst=right_arm_joint1 err=0.0282 dist=0.036 maxdist=2.461
+    POSE hold=4.0 worst=right_arm_joint3 err=1.4503 dist=2.455 maxdist=3.988
+    POSE hold=4.0 worst=right_arm_joint1 err=0.0636 dist=1.978 maxdist=2.727
+    POSE hold=4.0 worst=right_arm_joint4 err=0.0195 dist=1.811 maxdist=3.787
+    POSE hold=4.0 worst=right_arm_joint3 err=0.0217 dist=2.426 maxdist=2.426
+    POSE hold=4.0 worst=right_arm_joint2 err=0.0598 dist=0.498 maxdist=1.507
+    POSE hold=4.0 worst=right_arm_joint1 err=0.0619 dist=1.887 maxdist=2.699
+    POSE hold=4.0 worst=right_arm_joint1 err=0.0573 dist=3.093 maxdist=3.093
+[3] 右臂随机姿态 20 组：有接触 0 组；数值有限 True；末 0.5 s 最大 |关节速度| 1.500 rad/s
+    臂关节最大跟踪误差：无接触的姿态 1.4503 rad，有接触的姿态 nan rad
+== hold probe 8.0 s（自碰撞关）
+    POSE hold=8.0 worst=right_arm_joint1 err=0.0496 dist=0.603 maxdist=2.775
+    POSE hold=8.0 worst=right_arm_joint2 err=0.0336 dist=0.853 maxdist=3.567
+    POSE hold=8.0 worst=right_arm_joint3 err=0.0222 dist=2.317 maxdist=5.756
+    POSE hold=8.0 worst=right_arm_joint2 err=0.0307 dist=2.043 maxdist=4.597
+    POSE hold=8.0 worst=right_arm_joint1 err=0.0448 dist=0.884 maxdist=2.779
+    POSE hold=8.0 worst=right_arm_joint1 err=0.0440 dist=2.954 maxdist=5.217
+    POSE hold=8.0 worst=right_arm_joint1 err=0.0337 dist=1.626 maxdist=2.546
+    POSE hold=8.0 worst=right_arm_joint1 err=0.0373 dist=0.362 maxdist=1.318
+    POSE hold=8.0 worst=right_arm_joint2 err=0.0486 dist=2.119 maxdist=2.686
+    POSE hold=8.0 worst=right_arm_joint1 err=0.0582 dist=2.036 maxdist=2.036
+    POSE hold=8.0 worst=right_arm_joint2 err=0.0677 dist=0.828 maxdist=3.201
+    POSE hold=8.0 worst=right_arm_joint1 err=0.0656 dist=1.285 maxdist=2.913
+    POSE hold=8.0 worst=right_arm_joint1 err=0.0282 dist=0.036 maxdist=2.461
+    POSE hold=8.0 worst=right_arm_joint3 err=1.4491 dist=2.455 maxdist=3.988
+    POSE hold=8.0 worst=right_arm_joint1 err=0.0636 dist=1.978 maxdist=2.727
+    POSE hold=8.0 worst=right_arm_joint4 err=0.0195 dist=1.811 maxdist=3.787
+    POSE hold=8.0 worst=right_arm_joint3 err=0.0217 dist=2.426 maxdist=2.426
+    POSE hold=8.0 worst=right_arm_joint2 err=0.0598 dist=0.498 maxdist=1.507
+    POSE hold=8.0 worst=right_arm_joint1 err=0.0619 dist=1.887 maxdist=2.699
+    POSE hold=8.0 worst=right_arm_joint1 err=0.0573 dist=3.093 maxdist=3.093
+[3] 右臂随机姿态 20 组：有接触 0 组；数值有限 True；末 0.5 s 最大 |关节速度| 0.494 rad/s
+    臂关节最大跟踪误差：无接触的姿态 1.4491 rad，有接触的姿态 nan rad
