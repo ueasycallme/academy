@@ -37,6 +37,16 @@ python examples/isaaclab-2.3/2.4-physics-schema/list_physics_schemas.py galbot_u
 
 应得到：刚体 78，关节 77，Articulation 根 1 个（`/galbot_one_golf/base_link`），`PhysxMimicJointAPI` 10 个。27 个关节有非零驱动增益，40 个被动滚子增益为 0。
 
+## 仿真检查
+
+上面的统计只看 USD。转完后还要放进仿真保持几秒，确认没有 NaN，可以用主线项目的 `hold_pose.py`（`examples/isaaclab-2.3/6-galbot-project/scripts/`，需先按项目 README 安装 `galbot_academy`，在项目根目录运行）：
+
+```bash
+python scripts/hold_pose.py --headless --usd <本仓库>/galbot_usd/galbot.usd --z 0.05
+```
+
+本示例是浮动基座（`fix_base=False`），本站实测 z=0 与 z=0.05 都没有 NaN，放在 z=0 时被地面顶高约 4.5 cm。由于本示例的驱动增益是演示值、mimic 约束未调硬，关节偏离与 mimic 跟随误差都很大（约 0.9 rad），属预期（见页面坑四与 6.1.2）。**如果改成固定根（`fix_base=True`），务必离地放置**：根固定、轮子嵌在地面里时会出现 NaN（页面坑九）。
+
 ## 资源与耗时
 
 本站实测（2026-09-30，RTX 5070，headless）约 5–6 秒，返回码 0；输出经管道时 "Generated USD file" 行完整。

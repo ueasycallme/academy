@@ -38,13 +38,21 @@ STIFFNESS = {".*": 400.0, "leg_joint[1-3]": 4000.0, ".*_gripper_joint": 100.0}
 DAMPING = {".*": 40.0, "leg_joint[1-3]": 400.0, ".*_gripper_joint": 10.0}
 
 
+# 轮式 URDF 的 40 个全向轮被动滚子：零刚度 + 小阻尼，让滚子自由转动、只带一点阻尼（经验性选择）。
+# 注意：这不是 NaN 的修复。固定根放在 z=0 且有地面时轮子压进地面，才是轮式版出现 NaN 的原因（D-026，见 6.1.2）；
+# 那种情况下结果随阻尼取值时好时坏、并不单调，不能靠调阻尼解决。
+PASSIVE_ROLLER = "wheel_.*_passive_.*"
+PASSIVE_DAMPING = 0.1
+
+
 def make_cfg() -> UrdfConverterCfg:
     out_dir = generated_asset_dir() / f"galbot_{args.variant}"
     # 字典里的每个正则键都必须匹配到至少一个关节，否则转换器抛 ValueError（而进程返回码仍为 0）。
-    # 固定底座版 URDF 没有被动滚子，所以只在轮式版里加这一项；被动滚子不加驱动。
-    target_type = {".*": "position"}
+    # 固定底座版 URDF 没有被动滚子，所以只在轮式版里加滚子的键；它们放在最后，覆盖前面的通配值。
+    stiffness, damping = dict(STIFFNESS), dict(DAMPING)
     if args.variant == "wheeled":
-        target_type["wheel_.*_passive_.*"] = "none"
+        stiffness[PASSIVE_ROLLER] = 0.0
+        damping[PASSIVE_ROLLER] = PASSIVE_DAMPING
     return UrdfConverterCfg(
         asset_path=str(galbot_description_dir() / "urdf" / URDF_FILES[args.variant]),
         usd_dir=str(out_dir),
@@ -58,8 +66,8 @@ def make_cfg() -> UrdfConverterCfg:
         self_collision=False,  # 先关闭，需要时在 ArticulationCfg 里再开
         joint_drive=UrdfConverterCfg.JointDriveCfg(
             drive_type="force",
-            target_type=target_type,  # mimic 跟随关节由 mimic 约束带动，转换器不会给它们加驱动
-            gains=UrdfConverterCfg.JointDriveCfg.PDGainsCfg(stiffness=STIFFNESS, damping=DAMPING),
+            target_type="position",  # mimic 跟随关节由 mimic 约束带动，转换器不会给它们加驱动
+            gains=UrdfConverterCfg.JointDriveCfg.PDGainsCfg(stiffness=stiffness, damping=damping),
         ),
     )
 
@@ -87,11 +95,25 @@ def stiffen_mimic_joints(usd_path: str) -> int:
     return count
 
 
+def filter_self_collision_pairs(usd_path: str) -> int:
+    """把 6.1.4 的自碰撞过滤对写入入口 USD 的根层；返回写入的对数。自碰撞本身仍关闭，由 ArticulationCfg 决定开不开。"""
+    from pxr import Usd
+
+    from galbot_academy.assets.physics import add_filtered_pairs
+
+    stage = Usd.Stage.Open(usd_path)
+    count = add_filtered_pairs(stage, stage.GetDefaultPrim().GetPath().pathString)
+    stage.GetRootLayer().Save()
+    return count
+
+
 def main() -> None:
     converter = UrdfConverter(make_cfg())
     count = stiffen_mimic_joints(converter.usd_path)
+    pairs = filter_self_collision_pairs(converter.usd_path)  # 6.1.4 加入
     print(f"Generated USD file: {converter.usd_path}")
     print(f"mimic 关节 {count} 个：naturalFrequency = {MIMIC_NATURAL_FREQUENCY}，dampingRatio = {MIMIC_DAMPING_RATIO}")
+    print(f"自碰撞过滤对 {pairs} 对")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,23 @@
+# 校验方复跑 T-6.1.2c（clean14，RTX 5070，2026-10-08；用项目自带 hold_pose.py）
+conv_wheeled rc=0 t=7s mem=368MiB | 
+w_z0_1 rc=0 t=17s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 nan rad（leg_joint1），根高度变化 +0.0000 m，数值有限 False right_gripper_joint 目标 0.8 → 实际 +nan，mimic 最大跟随误差 nan rad 
+w_z05_1 rc=0 t=18s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 0.0355 rad（right_arm_joint2），根高度变化 +0.0000 m，数值有限 True right_gripper_joint 目标 0.8 → 实际 +0.8018，mimic 最大跟随误差 0.0038 rad 
+w_noground_1 rc=0 t=16s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 0.0355 rad（right_arm_joint2），根高度变化 +0.0000 m，数值有限 True right_gripper_joint 目标 0.8 → 实际 +0.8018，mimic 最大跟随误差 0.0038 rad 
+w_z0_2 rc=0 t=17s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 nan rad（leg_joint1），根高度变化 +0.0000 m，数值有限 False right_gripper_joint 目标 0.8 → 实际 +nan，mimic 最大跟随误差 nan rad 
+w_z05_2 rc=0 t=18s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 0.0355 rad（right_arm_joint2），根高度变化 +0.0000 m，数值有限 True right_gripper_joint 目标 0.8 → 实际 +0.8018，mimic 最大跟随误差 0.0038 rad 
+w_noground_2 rc=0 t=16s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 0.0355 rad（right_arm_joint2），根高度变化 +0.0000 m，数值有限 True right_gripper_joint 目标 0.8 → 实际 +0.8018，mimic 最大跟随误差 0.0038 rad 
+w_z0_3 rc=0 t=17s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 nan rad（leg_joint1），根高度变化 +0.0000 m，数值有限 False right_gripper_joint 目标 0.8 → 实际 +nan，mimic 最大跟随误差 nan rad 
+w_z05_3 rc=0 t=18s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 0.0355 rad（right_arm_joint2），根高度变化 +0.0000 m，数值有限 True right_gripper_joint 目标 0.8 → 实际 +0.8018，mimic 最大跟随误差 0.0038 rad 
+w_noground_3 rc=0 t=16s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 0.0355 rad（right_arm_joint2），根高度变化 +0.0000 m，数值有限 True right_gripper_joint 目标 0.8 → 实际 +0.8018，mimic 最大跟随误差 0.0038 rad 
+fb_z0 rc=0 t=14s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 0.0355 rad（right_arm_joint2），根高度变化 +0.0000 m，数值有限 True right_gripper_joint 目标 0.8 → 实际 +0.8018，mimic 最大跟随误差 0.0038 rad 
+conv35 rc=0 t=7s mem=368MiB | 
+f35_z0_1 rc=0 t=25s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 0.9374 rad（leg_joint1），根高度变化 +0.0449 m，数值有限 True right_gripper_joint 目标 0.8 → 实际 +0.8002，mimic 最大跟随误差 0.8894 rad 
+f35_z05_1 rc=0 t=18s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 0.9374 rad（leg_joint1），根高度变化 +0.0362 m，数值有限 True right_gripper_joint 目标 0.8 → 实际 +0.8002，mimic 最大跟随误差 0.8537 rad 
+f35_z0_2 rc=0 t=29s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 0.9374 rad（leg_joint1），根高度变化 +0.0449 m，数值有限 True right_gripper_joint 目标 0.8 → 实际 +0.8002，mimic 最大跟随误差 0.8894 rad 
+f35_z05_2 rc=0 t=27s mem=2315MiB | 保持零位 5 s：驱动关节最大偏离 0.9374 rad（leg_joint1），根高度变化 +0.0362 m，数值有限 True right_gripper_joint 目标 0.8 → 实际 +0.8002，mimic 最大跟随误差 0.8537 rad 
+DONE
+
+# 几何（usd-core，T-6.1.2c-geom.py）
+galbot_wheeled spheres 40 min z -0.0319 r 0.0800 below0 24
+  roller joints 40 damping set {0.001745329238474369} stiffness set {0.0}
+galbot_fixed_base spheres 40 min z -0.0319 r 0.0800 below0 24

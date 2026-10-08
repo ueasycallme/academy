@@ -12,6 +12,10 @@
 
     python scripts/hold_pose.py --headless --usd generated/galbot_fixed_base/galbot.usd
     python scripts/hold_pose.py --headless --usd third_party/galbot_one_golf_description/usd/galbot_one_golf.usda --fix_root
+    python scripts/hold_pose.py --headless --usd generated/galbot_wheeled/galbot.usd --z 0.05   # 轮式版：固定根要离地（6.1.2）
+
+轮式版的根是固定的，放在 z=0 且有地面时，轮子一开始就压进地面，仿真会发散出 NaN（D-026）。
+所以固定根的轮式版要用 --z 抬离地面，或用 --no_ground 不放地面。
 """
 
 import argparse
@@ -23,6 +27,8 @@ parser = argparse.ArgumentParser(description="载入 USD 并保持零位")
 parser.add_argument("--usd", required=True, help="机器人 USD")
 parser.add_argument("--fix_root", action="store_true", help="用 fix_root_link 把根连杆固定到世界")
 parser.add_argument("--seconds", type=float, default=5.0, help="保持零位的时长")
+parser.add_argument("--z", type=float, default=0.0, help="根的初始高度（m）；固定根的轮式版要离地，如 0.05")
+parser.add_argument("--no_ground", action="store_true", help="不放地面")
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 simulation_app = AppLauncher(args).app
@@ -49,7 +55,8 @@ FOLLOWERS = set(MIMIC) | {n.replace("right_", "left_", 1) for n in MIMIC}
 def main() -> None:
     dt = 1 / 120
     sim = sim_utils.SimulationContext(sim_utils.SimulationCfg(dt=dt, device=args.device))
-    sim_utils.GroundPlaneCfg().func("/World/ground", sim_utils.GroundPlaneCfg())
+    if not args.no_ground:
+        sim_utils.GroundPlaneCfg().func("/World/ground", sim_utils.GroundPlaneCfg())
     spawn = sim_utils.UsdFileCfg(
         usd_path=os.path.abspath(args.usd),
         articulation_props=sim_utils.ArticulationRootPropertiesCfg(fix_root_link=True) if args.fix_root else None,
@@ -58,14 +65,15 @@ def main() -> None:
         ArticulationCfg(
             prim_path="/World/Galbot",
             spawn=spawn,
-            init_state=ArticulationCfg.InitialStateCfg(pos=(0.0, 0.0, 0.0)),
+            init_state=ArticulationCfg.InitialStateCfg(pos=(0.0, 0.0, args.z)),
             actuators={"all": ImplicitActuatorCfg(joint_names_expr=[".*"], stiffness=None, damping=None)},
         )
     )
     sim.reset()
     names = robot.joint_names
     driven = [i for i, n in enumerate(names) if n not in FOLLOWERS and "_passive_" not in n and not n.startswith("wheel")]
-    print(f"{os.path.basename(args.usd)}：关节 {robot.num_joints}，刚体 {robot.num_bodies}，根固定 {robot.is_fixed_base}")
+    print(f"{os.path.basename(args.usd)}：关节 {robot.num_joints}，刚体 {robot.num_bodies}，根固定 {robot.is_fixed_base}，"
+          f"根高度 {args.z} m，地面 {not args.no_ground}")
     j = names.index("left_arm_joint1")
     print(f"left_arm_joint1 生效的 stiffness {robot.data.joint_stiffness[0, j].item():.1f} N·m/rad，"
           f"damping {robot.data.joint_damping[0, j].item():.1f}，力矩上限 {robot.data.joint_effort_limits[0, j].item():.1f} N·m")
