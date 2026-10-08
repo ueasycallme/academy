@@ -1,0 +1,161 @@
+# 校验方复跑 T-6.1.5 / 6.1.5b（clean14，RTX 5070，2026-10-08）
+conv rc=0 t=6s mem=368MiB
+step_implicit rc=0 t=12s mem=2315MiB
+step_ideal rc=0 t=12s mem=2315MiB
+step_eff1000 rc=0 t=12s mem=2315MiB
+step_vel100 rc=0 t=12s mem=2315MiB
+gravity rc=0 t=11s mem=2317MiB
+jv_galbot_1 rc=0 t=17s mem=2381MiB
+jv_franka_1 rc=0 t=8s mem=2315MiB
+jv_galbot_2 rc=0 t=17s mem=2315MiB
+jv_franka_2 rc=0 t=9s mem=2381MiB
+jv_galbot_3 rc=0 t=16s mem=2381MiB
+jv_franka_3 rc=0 t=9s mem=2381MiB
+jv_galbot_nograv rc=0 t=12s mem=2315MiB
+jv_galbot_cpu rc=0 t=6s mem=253MiB
+jv_galbot_dt60 rc=0 t=15s mem=2315MiB
+jv_galbot_dt240 rc=0 t=27s mem=2315MiB
+jv_franka_nograv rc=0 t=9s mem=2315MiB
+jv_franka_cpu rc=0 t=7s mem=253MiB
+jv_franka_dt60 rc=0 t=9s mem=2381MiB
+jv_franka_dt240 rc=0 t=9s mem=2315MiB
+DONE
+== step_implicit
+right_arm_joint2：implicit，阶跃 0.5 rad，dt 0.0083 s，力矩上限 60 N·m，速度上限 1.5 rad/s，数值有限 True
+stiffness  damping    上升 s    超调 %    调节 s     稳态误差 rad     末段波动 rad     最大力矩
+      100       10   0.333    13.2   1.333      +0.1137       0.0012     50.6
+      400       10   0.283     9.7   0.583      +0.0315       0.0000     60.0
+      400       40   0.300     2.0   0.417      +0.0317       0.0000     60.0
+      400      120   0.617     0.0   1.133      +0.0321       0.0000     60.0
+     1600       80   0.267     0.8   0.367      +0.0082       0.0000     60.0
+     4000      200   0.267     0.1   0.383      +0.0034       0.0000     60.0
+== step_ideal
+right_arm_joint2：ideal，阶跃 0.5 rad，dt 0.0083 s，力矩上限 1e+09 N·m，速度上限 1.5 rad/s，数值有限 True
+stiffness  damping    上升 s    超调 %    调节 s     稳态误差 rad     末段波动 rad     最大力矩
+      100       10   0.333    11.7   1.292      +0.1046       0.0010     49.0
+      400       10   0.275     8.9   0.567      +0.0288       0.0000     60.0
+      400       40   0.300     0.5   0.442      +0.0211       0.0000     60.0
+      400      120   0.658     0.0   1.183      +0.0005       0.0000     60.0
+     1600       80   0.267     0.0   0.392      +0.0028       0.0000     60.0
+     4000      200   0.275     0.5   0.450      +0.0044       0.0043     60.0
+    20000      200   0.267     0.9   0.342      +0.0015       0.0091     60.0
+    20000     2000   0.358     0.8   0.692      +0.0183       0.0085     60.0
+== step_eff1000
+right_arm_joint2：implicit，阶跃 0.5 rad，dt 0.0083 s，力矩上限 1000 N·m，速度上限 1.5 rad/s，数值有限 True
+stiffness  damping    上升 s    超调 %    调节 s     稳态误差 rad     末段波动 rad     最大力矩
+      100       10   0.333    13.2   1.333      +0.1137       0.0012     50.6
+      400       10   0.283     9.7   0.575      +0.0315       0.0000    200.6
+      400       40   0.300     2.0   0.408      +0.0317       0.0000    202.2
+      400      120   0.617     0.0   1.133      +0.0321       0.0000    204.4
+     1600       80   0.267     0.8   0.358      +0.0082       0.0000    803.5
+     4000      200   0.267     0.1   0.375      +0.0034       0.0000   1000.0
+== step_vel100
+right_arm_joint2：implicit，阶跃 0.5 rad，dt 0.0083 s，力矩上限 60 N·m，速度上限 100 rad/s，数值有限 True
+stiffness  damping    上升 s    超调 %    调节 s     稳态误差 rad     末段波动 rad     最大力矩
+      100       10   0.200    18.7   1.608      +0.1132       0.0014     50.6
+      400       10   0.092    26.0   0.500      +0.0315       0.0001     60.0
+      400       40   0.192     2.4   0.550      +0.0317       0.0000     60.0
+      400      120   0.617     0.0   1.133      +0.0321       0.0000     60.0
+     1600       80   0.117     1.5   0.192      +0.0082       0.0000     60.0
+     4000      200   0.125     0.2   0.217      +0.0034       0.0000     60.0
+== gravity
+关节                         力矩上限   零位 |τg|   最大 |τg|    |τg|>上限 的姿态
+leg_joint1                169.0     61.14    457.99             20
+leg_joint2                169.0    162.93    295.92             40
+leg_joint3                 84.0      1.69    135.63             36
+leg_joint4                 30.0      0.00     31.29              1
+leg_joint5                 30.0      0.44     63.44             21
+head_joint1                 4.0      0.00      0.37              0
+right_arm_joint1           60.0      0.11     25.43              0
+head_joint2                 4.0      0.28      0.42              0
+right_arm_joint2           60.0     13.73     22.34              0
+right_arm_joint3           30.0      0.21      8.49              0
+right_arm_joint4           30.0      4.56      8.94              0
+right_arm_joint5           10.0      0.09      0.75              0
+right_arm_joint6           10.0      0.37      0.62              0
+right_arm_joint7           10.0      0.64      0.74              0
+right_gripper_joint        50.0      0.00      0.00              0
+
+保持 4 s 后的稳态误差（rad），数值有限 True：
+组              零位最大      中位数    95% 分位       最大  最大误差的关节 / 该姿态下 |τg| 与上限
+legs         0.0012   0.0301    1.4173   2.0303  leg_joint3（第 57 台）：77.7 / 84.0 N·m
+head         0.0007   0.0005    0.0013   0.0019  head_joint2（第 38 台）：0.2 / 4.0 N·m
+arms         0.0355   0.0043    0.0413   0.0807  right_arm_joint1（第 24 台）：4.7 / 60.0 N·m
+grippers     0.0032   0.0003    0.0017   0.0032  right_gripper_joint（第 26 台）：0.0 / 50.0 N·m
+== jv_franka_1
+franka，implicit，dt 0.00833，cuda:0，重力 -9.81，关节 9
+t= 6.0 s  max|v| 0.0667  max|raw| 0.0667  max|fd| 0.0000  v 最大的关节：panda_joint4 0.0667，panda_joint2 0.0173，panda_joint6 0.0158
+1 s 之后到 6 s 的位置漂移：最大 0.00898 rad（panda_joint4）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：panda_joint4 0.0667 / 0.1574，panda_joint2 0.0173 / 0.0403，panda_joint6 0.0158 / 0.0618，panda_joint1 0.0099 / 0.0225，panda_joint3 0.0072 / 0.0192
+== jv_franka_2
+franka，implicit，dt 0.00833，cuda:0，重力 -9.81，关节 9
+t= 6.0 s  max|v| 0.0667  max|raw| 0.0667  max|fd| 0.0000  v 最大的关节：panda_joint4 0.0667，panda_joint2 0.0173，panda_joint6 0.0158
+1 s 之后到 6 s 的位置漂移：最大 0.00898 rad（panda_joint4）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：panda_joint4 0.0667 / 0.1574，panda_joint2 0.0173 / 0.0403，panda_joint6 0.0158 / 0.0618，panda_joint1 0.0099 / 0.0225，panda_joint3 0.0072 / 0.0192
+== jv_franka_3
+franka，implicit，dt 0.00833，cuda:0，重力 -9.81，关节 9
+t= 6.0 s  max|v| 0.0667  max|raw| 0.0667  max|fd| 0.0000  v 最大的关节：panda_joint4 0.0667，panda_joint2 0.0173，panda_joint6 0.0158
+1 s 之后到 6 s 的位置漂移：最大 0.00898 rad（panda_joint4）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：panda_joint4 0.0667 / 0.1574，panda_joint2 0.0173 / 0.0403，panda_joint6 0.0158 / 0.0618，panda_joint1 0.0099 / 0.0225，panda_joint3 0.0072 / 0.0192
+== jv_franka_cpu
+franka，implicit，dt 0.00833，cpu，重力 -9.81，关节 9
+t= 6.0 s  max|v| 0.0667  max|raw| 0.0667  max|fd| 0.0000  v 最大的关节：panda_joint4 0.0667，panda_joint2 0.0173，panda_joint6 0.0158
+1 s 之后到 6 s 的位置漂移：最大 0.00898 rad（panda_joint4）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：panda_joint4 0.0667 / 0.1574，panda_joint2 0.0173 / 0.0403，panda_joint6 0.0158 / 0.0618，panda_joint1 0.0099 / 0.0225，panda_joint3 0.0072 / 0.0192
+== jv_franka_dt240
+franka，implicit，dt 0.00417，cuda:0，重力 -9.81，关节 9
+t= 6.0 s  max|v| 0.0340  max|raw| 0.0340  max|fd| 0.0000  v 最大的关节：panda_joint4 0.0340，panda_joint6 0.0103，panda_joint2 0.0087
+1 s 之后到 6 s 的位置漂移：最大 0.00889 rad（panda_joint4）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：panda_joint4 0.0340 / 0.0788，panda_joint6 0.0103 / 0.0309，panda_joint2 0.0087 / 0.0201，panda_joint7 0.0054 / 0.0437，panda_joint1 0.0051 / 0.0113
+== jv_franka_dt60
+franka，implicit，dt 0.01667，cuda:0，重力 -9.81，关节 9
+t= 6.0 s  max|v| 0.1328  max|raw| 0.1328  max|fd| 0.0000  v 最大的关节：panda_joint4 0.1328，panda_joint2 0.0348，panda_joint1 0.0188
+1 s 之后到 6 s 的位置漂移：最大 0.00993 rad（panda_joint4）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：panda_joint4 0.1328 / 0.3144，panda_joint2 0.0348 / 0.0811，panda_joint1 0.0188 / 0.0450，panda_joint6 0.0176 / 0.1232，panda_joint3 0.0129 / 0.0385
+== jv_franka_nograv
+franka，implicit，dt 0.00833，cuda:0，重力 0.0，关节 9
+t= 6.0 s  max|v| 0.0000  max|raw| 0.0000  max|fd| 0.0000  v 最大的关节：panda_joint3 0.0000，panda_joint2 0.0000，panda_joint1 0.0000
+1 s 之后到 6 s 的位置漂移：最大 0.00000 rad（panda_joint1）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：panda_joint2 0.0000 / 0.0000，panda_joint1 0.0000 / 0.0000，panda_joint3 0.0000 / 0.0000，panda_joint5 0.0000 / 0.0000，panda_joint4 0.0000 / 0.0000
+== jv_galbot_1
+galbot，implicit，dt 0.00833，cuda:0，重力 -9.81，关节 33
+t= 6.0 s  max|v| 0.1961  max|raw| 0.1961  max|fd| 0.0000  v 最大的关节：right_gripper_r_inner_knuckle_joint 0.1961，left_gripper_r_inner_knuckle_joint 0.1312，right_gripper_joint 0.1220
+1 s 之后到 6 s 的位置漂移：最大 0.00039 rad（leg_joint5）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：right_gripper_r_inner_knuckle_joint 0.1961 / 0.0358，left_gripper_r_inner_knuckle_joint 0.1312 / 0.0088，right_gripper_r_finger_joint 0.1220 / 0.0286，right_gripper_joint 0.1220 / 0.0462，left_gripper_l_inner_knuckle_joint 0.0
+末时刻 right_arm 各关节 |v|：joint1 0.0529，joint2 0.0088，joint3 0.0348，joint4 0.0230，joint5 0.0016，joint6 0.0020，joint7 0.0038
+== jv_galbot_2
+galbot，implicit，dt 0.00833，cuda:0，重力 -9.81，关节 33
+t= 6.0 s  max|v| 0.1961  max|raw| 0.1961  max|fd| 0.0000  v 最大的关节：right_gripper_r_inner_knuckle_joint 0.1961，left_gripper_r_inner_knuckle_joint 0.1312，right_gripper_joint 0.1220
+1 s 之后到 6 s 的位置漂移：最大 0.00039 rad（leg_joint5）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：right_gripper_r_inner_knuckle_joint 0.1961 / 0.0358，left_gripper_r_inner_knuckle_joint 0.1312 / 0.0088，right_gripper_r_finger_joint 0.1220 / 0.0286，right_gripper_joint 0.1220 / 0.0462，left_gripper_l_inner_knuckle_joint 0.0
+末时刻 right_arm 各关节 |v|：joint1 0.0529，joint2 0.0088，joint3 0.0348，joint4 0.0230，joint5 0.0016，joint6 0.0020，joint7 0.0038
+== jv_galbot_3
+galbot，implicit，dt 0.00833，cuda:0，重力 -9.81，关节 33
+t= 6.0 s  max|v| 0.1961  max|raw| 0.1961  max|fd| 0.0000  v 最大的关节：right_gripper_r_inner_knuckle_joint 0.1961，left_gripper_r_inner_knuckle_joint 0.1312，right_gripper_joint 0.1220
+1 s 之后到 6 s 的位置漂移：最大 0.00039 rad（leg_joint5）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：right_gripper_r_inner_knuckle_joint 0.1961 / 0.0358，left_gripper_r_inner_knuckle_joint 0.1312 / 0.0088，right_gripper_r_finger_joint 0.1220 / 0.0286，right_gripper_joint 0.1220 / 0.0462，left_gripper_l_inner_knuckle_joint 0.0
+末时刻 right_arm 各关节 |v|：joint1 0.0529，joint2 0.0088，joint3 0.0348，joint4 0.0230，joint5 0.0016，joint6 0.0020，joint7 0.0038
+== jv_galbot_cpu
+galbot，implicit，dt 0.00833，cpu，重力 -9.81，关节 33
+t= 6.0 s  max|v| 0.2025  max|raw| 0.2025  max|fd| 0.0000  v 最大的关节：right_gripper_r_inner_knuckle_joint 0.2025，left_gripper_r_inner_knuckle_joint 0.1302，right_gripper_r_finger_joint 0.1253
+1 s 之后到 6 s 的位置漂移：最大 0.00039 rad（leg_joint5）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：right_gripper_r_inner_knuckle_joint 0.2025 / 0.0358，left_gripper_r_inner_knuckle_joint 0.1302 / 0.0088，right_gripper_r_finger_joint 0.1253 / 0.0286，right_gripper_joint 0.1253 / 0.0462，left_gripper_l_inner_knuckle_joint 0.0
+末时刻 right_arm 各关节 |v|：joint1 0.0510，joint2 0.0094，joint3 0.0322，joint4 0.0218，joint5 0.0013，joint6 0.0015，joint7 0.0036
+== jv_galbot_dt240
+galbot，implicit，dt 0.00417，cuda:0，重力 -9.81，关节 33
+t= 6.0 s  max|v| 0.0471  max|raw| 0.0471  max|fd| 0.0000  v 最大的关节：right_gripper_r_inner_knuckle_joint 0.0471，leg_joint2 0.0413，right_gripper_l_finger_joint 0.0389
+1 s 之后到 6 s 的位置漂移：最大 0.00037 rad（leg_joint5）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：right_gripper_r_inner_knuckle_joint 0.0471 / 0.0179，leg_joint2 0.0413 / 0.1469，right_gripper_l_finger_joint 0.0389 / 0.0168，left_gripper_l_finger_joint 0.0338 / 0.0058，left_arm_joint1 0.0324 / 0.1126
+末时刻 right_arm 各关节 |v|：joint1 0.0287，joint2 0.0040，joint3 0.0233，joint4 0.0169，joint5 0.0002，joint6 0.0010，joint7 0.0024
+== jv_galbot_dt60
+galbot，implicit，dt 0.01667，cuda:0，重力 -9.81，关节 33
+t= 6.0 s  max|v| 0.5768  max|raw| 0.5768  max|fd| 0.0000  v 最大的关节：right_gripper_r_inner_knuckle_joint 0.5768，left_gripper_r_inner_knuckle_joint 0.3590，right_gripper_joint 0.3116
+1 s 之后到 6 s 的位置漂移：最大 0.00033 rad（leg_joint5）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：right_gripper_r_inner_knuckle_joint 0.5768 / 0.0713，left_gripper_r_inner_knuckle_joint 0.3590 / 0.0176，right_gripper_joint 0.3116 / 0.0921，right_gripper_r_finger_joint 0.3116 / 0.0573，left_gripper_l_inner_knuckle_joint 0.2
+末时刻 right_arm 各关节 |v|：joint1 0.1087，joint2 0.0152，joint3 0.0360，joint4 0.0177，joint5 0.0033，joint6 0.0024，joint7 0.0057
+== jv_galbot_nograv
+galbot，implicit，dt 0.00833，cuda:0，重力 0.0，关节 33
+t= 6.0 s  max|v| 0.0000  max|raw| 0.0000  max|fd| 0.0000  v 最大的关节：leg_joint3 0.0000，leg_joint2 0.0000，leg_joint1 0.0000
+1 s 之后到 6 s 的位置漂移：最大 0.00000 rad（leg_joint1）
+读数 v 与预测 |M⁻¹τg|·dt（读数最大的 5 个关节）：leg_joint2 0.0000 / 0.0000，leg_joint1 0.0000 / 0.0000，leg_joint3 0.0000 / 0.0000，leg_joint5 0.0000 / 0.0000，leg_joint4 0.0000 / 0.0000
+末时刻 right_arm 各关节 |v|：joint1 0.0000，joint2 0.0000，joint3 0.0000，joint4 0.0000，joint5 0.0000，joint6 0.0000，joint7 0.0000
