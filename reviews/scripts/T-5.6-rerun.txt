@@ -1,0 +1,15 @@
+# 校验方复跑 T-5.6（clean14 IsaacLab v2.3.2，RTX 5070，2026-10-08，独占 GPU）
+base rc=0 t=31s mem=2905MiB
+novel rc=0 t=27s mem=2903MiB
+novel_h3 rc=0 t=29s mem=2905MiB
+base_h3 rc=0 t=28s mem=2907MiB
+group_h3 rc=1 t=6s mem=239MiB
+plot rc=0
+DONE
+基线：位置 + 速度             | mean_reward: 第 50 次 4.9，第 100 次 4.9，最后 10 次平均 4.9 | mean_episode_length: 第 50 次 300.0，第 100 次 300.0，最后 10 次平均 299.4
+去掉速度                   | mean_reward: 第 50 次 3.3，第 100 次 3.9，最后 10 次平均 3.6 | mean_episode_length: 第 50 次 209.6，第 100 次 256.8，最后 10 次平均 261.3
+去掉速度 + 3 帧历史           | mean_reward: 第 50 次 3.1，第 100 次 4.3，最后 10 次平均 4.8 | mean_episode_length: 第 50 次 242.6，第 100 次 288.7，最后 10 次平均 298.1
+基线 + 3 帧历史             | mean_reward: 第 50 次 4.9，第 100 次 4.9，最后 10 次平均 4.9 | mean_episode_length: 第 50 次 300.0，第 100 次 300.0，最后 10 次平均 300.0
+已保存 /tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/t56/obs_ablation.png
+ValueError: [Config]: Incorrect type under namespace: /observations/policy/history_length. Expected: <class 'NoneType'>, Received: <class 'int'>.
+重画的图与 docs/_static/img/5.6-obs-ablation.png 逐像素相同（ImageChops.difference 的 bbox 为 None）
