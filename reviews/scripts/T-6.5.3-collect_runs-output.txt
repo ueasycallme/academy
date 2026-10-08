@@ -1,0 +1,13 @@
+| 运行 | 种子 | 迭代 | 检查点数 | 相对基线的改动 | 末段位置误差 |
+|---|---|---|---|---|---|
+| 2026-10-08_17-14-42_hp_base | 42 | 500 | 11 | 无 | 3.62 cm |
+| 2026-10-08_17-28-19_hp_env256 | 42 | 500 | 11 | scene.num_envs=256 | 7.64 cm |
+| 2026-10-08_17-38-57_hp_env4096 | 42 | 500 | 11 | scene.num_envs=4096 | 6.16 cm |
+| 2026-10-08_18-01-58_hp_scale025 | 42 | 500 | 11 | actions.arm_action.scale=0.25 | 14.90 cm |
+| 2026-10-08_18-15-22_hp_scale100 | 42 | 500 | 11 | actions.arm_action.scale=1.0 | 2.65 cm |
+| 2026-10-08_18-28-34_hp_std005 | 42 | 500 | 11 | rewards.end_effector_position_tracking_fine_grained.params.std=0.05 | 4.81 cm |
+| 2026-10-08_18-42-03_hp_std020 | 42 | 500 | 11 | rewards.end_effector_position_tracking_fine_grained.params.std=0.2 | 5.42 cm |
+| 2026-10-08_18-55-30_hp_ent001 | 42 | 500 | 11 | algorithm.entropy_coef=0.01 | 1.86 cm |
+| 2026-10-08_19-09-03_hp_dr | 42 | 500 | 11 | +events.arm_armature；+events.arm_gains；+events.arm_mass；events.reset_robot_joints.params.velocity_range=(-0.1, 0.1)；observations.policy.enable_corruption=True；+observations.policy | 3.44 cm |
+| 2026-10-08_19-22-39_hp_base_s43 | 43 | 500 | 11 | seed=43 | 4.17 cm |
+| 2026-10-08_19-36-07_hp_ent001_s43 | 43 | 500 | 11 | algorithm.entropy_coef=0.01；seed=43 | 2.11 cm |
