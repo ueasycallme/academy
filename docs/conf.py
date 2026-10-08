@@ -37,6 +37,10 @@ mermaid_dark_theme = "dark"
 # -- HTML ---------------------------------------------------------------------
 html_theme = "pydata_sphinx_theme"
 html_title = "Isaac Academy"
+# 站点图标（T-SITE-11）：SVG 作主图标；PNG 16/32 与 apple-touch-icon 由 _templates/layout.html 加进 <head>
+# （pydata-sphinx-theme 0.16 的 theme.conf 不再声明 favicons 选项，写进 html_theme_options 会报 unsupported theme option）。
+# 图形由 _static/img/academy-logo.svg 简化而来，PNG 由 docs/_tools/make_favicons.py 生成。
+html_favicon = "_static/img/favicon/favicon.svg"
 html_static_path = ["_static"]
 # 原样复制到产物根目录：CNAME（自定义域名）与 .nojekyll（让 GitHub Pages 不经 Jekyll 处理 _static 等下划线目录）
 html_extra_path = ["_extra"]

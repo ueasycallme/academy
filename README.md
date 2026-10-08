@@ -25,6 +25,7 @@ tools/check_head_build.sh --worktree   # 检查当前工作区
 |---|---|
 | `docs/` | Sphinx 站点源：`conf.py`、`index.md`（含各部分 toctree）、各部分目录、`_static/`、`_templates/` |
 | `docs/_static/` | 样式 `css/academy.css`、自托管的 Mermaid 与脚本、站点标识 |
+| `docs/_static/img/favicon/` | 站点图标：`favicon.svg`（由 `img/academy-logo.svg` 简化：铺满正方形、台阶加粗）与 `favicon-16.png`、`favicon-32.png`、`apple-touch-icon.png`。PNG 由 `python docs/_tools/make_favicons.py`（需 Pillow）按 SVG 的同一组矩形绘制、8 倍超采样后缩小得到；改了 SVG 坐标要同步改脚本。SVG 由 `conf.py` 的 `html_favicon` 引用，PNG 由 `docs/_templates/layout.html` 加进 `<head>` |
 | `docs/MIGRATION-NOTES.md` | Material for MkDocs → MyST 的语法对照（迁移时的记录，不参与构建） |
 | `examples/` | 示例代码，按 Isaac Lab 版本分目录，每个示例带 README |
 | `tools/` | 构建检查与预览脚本 |

@@ -1,0 +1,8 @@
+{# 站点图标的 PNG 版本（T-SITE-11）：SVG 主图标由 conf.py 的 html_favicon 生成，这里补旧浏览器与 iOS 书签用的 PNG。 #}
+{% extends "!layout.html" %}
+{% block extrahead %}
+  {{ super() }}
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ pathto('_static/img/favicon/favicon-32.png', 1) }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ pathto('_static/img/favicon/favicon-16.png', 1) }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ pathto('_static/img/favicon/apple-touch-icon.png', 1) }}">
+{% endblock %}
