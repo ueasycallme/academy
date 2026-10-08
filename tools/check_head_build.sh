@@ -24,3 +24,24 @@ rc=$?
 set -e
 grep -vE "^Building prefix dict|^Loading model|^Prefix dict has been built|^Dumping model" "$TMP/build.log" || true
 if [ $rc -eq 0 ]; then echo "构建通过"; else echo "构建失败（sphinx-build 返回 $rc）"; exit 1; fi
+
+# 主线项目：HEAD 导出里包内的相对导入必须都能解析（防止只提交了依赖方、漏了被依赖的模块）
+PROJ="$TMP/examples/isaaclab-2.3/6-galbot-project/source"
+if [ -d "$PROJ" ]; then
+  echo "== 项目相对导入检查 (HEAD)"
+  (cd "$PROJ" && python3 - <<'PY'
+import ast, pathlib, sys
+bad = []
+for f in pathlib.Path('.').rglob('*.py'):
+    for node in ast.walk(ast.parse(f.read_text())):
+        if isinstance(node, ast.ImportFrom) and node.level and node.module:
+            base = f.parents[node.level-1]
+            rel = node.module.replace('.', '/')
+            if not (base/(rel+'.py')).exists() and not (base/rel).is_dir():
+                bad.append(f"{f} -> {node.module}")
+if bad:
+    print("缺少被导入的模块："); print("\n".join(bad)); sys.exit(1)
+print("相对导入全部可解析")
+PY
+  ) || { echo "项目导入检查失败：提交不完整"; exit 1; }
+fi
