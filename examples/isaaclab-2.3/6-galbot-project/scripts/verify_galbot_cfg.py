@@ -17,6 +17,7 @@
     python scripts/verify_galbot_cfg.py --headless --demo bad_default      # 默认关节位置越限
     python scripts/verify_galbot_cfg.py --headless --demo missing_usd      # USD 路径不存在
     python scripts/verify_galbot_cfg.py --headless --demo unfix_root       # 用 fix_root_link=False 关掉固定根版的根关节
+    python scripts/verify_galbot_cfg.py --headless --demo legs_low         # 腿只抬离限位一点（0.1 / 0.2 / 0.1），看能否撑住
 """
 
 import argparse
@@ -28,7 +29,7 @@ parser = argparse.ArgumentParser(description="验证 Galbot 的 ArticulationCfg"
 parser.add_argument("--num", type=int, default=4, help="机器人台数")
 parser.add_argument("--variant", choices=["fixed", "wheeled"], default="fixed")
 parser.add_argument("--seconds", type=float, default=3.0, help="每段保持时长")
-parser.add_argument("--demo", choices=["overlap_across", "overlap_within", "bad_default", "missing_usd", "unfix_root"], default=None)
+parser.add_argument("--demo", choices=["overlap_across", "overlap_within", "bad_default", "missing_usd", "unfix_root", "legs_low"], default=None)
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 simulation_app = AppLauncher(args).app
@@ -54,6 +55,9 @@ def make_cfg():
             joint_names_expr=["(left|right)_arm_joint[1-7]", "right_arm_joint1"], stiffness=400.0, damping=40.0)}
     elif args.demo == "bad_default":
         cfg.init_state = cfg.init_state.replace(joint_pos={**cfg.init_state.joint_pos, "leg_joint1": 1.2})  # 上限 0.937
+    elif args.demo == "legs_low":  # 与正常模式走同一流程，只换默认腿姿
+        cfg.init_state = cfg.init_state.replace(
+            joint_pos={**cfg.init_state.joint_pos, "leg_joint1": 0.1, "leg_joint2": 0.2, "leg_joint3": 0.1})
     elif args.demo == "unfix_root":
         from galbot_academy.assets.paths import generated_asset_dir
 
@@ -77,7 +81,7 @@ def main() -> None:
     except Exception as e:  # 演示模式下把报错打印出来
         print(f"异常 {type(e).__name__}: {str(e)[:300]}")
         return
-    if args.demo:
+    if args.demo and args.demo != "legs_low":
         a = robot.actuators.get("extra") or robot.actuators["arms"]
         j = robot.joint_names.index("right_arm_joint1")
         print(f"没有报错。right_arm_joint1 在 PhysX 中的 stiffness = {robot.root_physx_view.get_dof_stiffnesses()[0, j].item():.1f}"

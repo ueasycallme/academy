@@ -1,0 +1,92 @@
+# 校验方复跑 T-6.2.1（clean14，RTX 5070，2026-10-08，独占 GPU，求解器 32/1）
+workspace rc=0 t=11s mem=2785MiB
+bench_16_1 rc=0 t=31s mem=2315MiB
+bench_256_1 rc=0 t=35s mem=2455MiB
+bench_1024_1 rc=0 t=42s mem=2987MiB
+bench_16_2 rc=0 t=30s mem=2315MiB
+bench_256_2 rc=0 t=35s mem=2455MiB
+bench_1024_2 rc=0 t=42s mem=2987MiB
+bench_16_3 rc=0 t=30s mem=2315MiB
+bench_256_3 rc=0 t=35s mem=2455MiB
+bench_1024_3 rc=0 t=43s mem=2987MiB
+bench_16_table rc=0 t=30s mem=2299MiB
+bench_1024_s80 rc=0 t=23s mem=2987MiB
+DONE
+== workspace
+2026-10-08T02:14:36Z [341ms] [Warning] [carb] Acquiring non optional plugin interface which is not listed as dependency: [omni::physx::IPhysxBenchmarks v1.0] (plugin: <default plugin>), by client: omni.physics.physx.plugin. Add it to CARB_PLUGIN_IMPL_DEPS() macro of a client.
+| Total Memory (MB): 15821 | Free Memory: 10394
+默认姿态下 TCP 相对根：[0.668, -0.085, 1.463] m
+样本 65536 个（right 臂 7 个关节在限位内均匀采样，种子 0）。TCP 相对根（m）：
+  x: 最小 -0.947  5% -0.635  中位 +0.011  95% +0.657  最大 +0.970
+  y: 最小 -1.173  5% -1.035  中位 -0.565  95% +0.084  最大 +0.409
+  z: 最小 +0.385  5% +0.680  中位 +1.338  95% +1.990  最大 +2.290
+  TCP 离根的水平距离：最大 1.174 m
+所有刚体离根的最大水平距离：1.138 m（定 env_spacing 用）
+10 cm 体素：被占据 3533 个，样本数中位数 15
+建议的目标采样范围（每个 10 cm 体素至少 10 个样本）：x [0.25, 0.85]，y [-0.65, -0.15]，z [1.10, 1.50] m（相对根）
+== bench_1024_1
+GalbotReachSceneCfg：1024 个环境，env_spacing 2.5 m，求解器迭代 沿用资产，构建 + reset 5.8 s
+  /World/envs 下的 Prim 数：1024；scene 中的实体：['terrain', 'robot', 'ground', 'light']
+  保持默认姿态 2 s：最大关节误差 0.0509 rad，数值有限 True
+  env_0 的 TCP（世界系）[39.432, -38.82, 1.411]；标记 Prim 在 /Visuals 下，共 2048 个实例
+  计时 1000 个物理步：22.67 s，每秒物理步 44，每秒环境步 45178
+== bench_1024_2
+GalbotReachSceneCfg：1024 个环境，env_spacing 2.5 m，求解器迭代 沿用资产，构建 + reset 5.8 s
+  /World/envs 下的 Prim 数：1024；scene 中的实体：['terrain', 'robot', 'ground', 'light']
+  保持默认姿态 2 s：最大关节误差 0.0509 rad，数值有限 True
+  env_0 的 TCP（世界系）[39.432, -38.82, 1.411]；标记 Prim 在 /Visuals 下，共 2048 个实例
+  计时 1000 个物理步：22.59 s，每秒物理步 44，每秒环境步 45329
+== bench_1024_3
+GalbotReachSceneCfg：1024 个环境，env_spacing 2.5 m，求解器迭代 沿用资产，构建 + reset 6.5 s
+  /World/envs 下的 Prim 数：1024；scene 中的实体：['terrain', 'robot', 'ground', 'light']
+  保持默认姿态 2 s：最大关节误差 0.0509 rad，数值有限 True
+  env_0 的 TCP（世界系）[39.432, -38.82, 1.411]；标记 Prim 在 /Visuals 下，共 2048 个实例
+  计时 1000 个物理步：22.70 s，每秒物理步 44，每秒环境步 45118
+== bench_1024_s80
+GalbotReachSceneCfg：1024 个环境，env_spacing 2.5 m，求解器迭代 8 / 0，构建 + reset 5.8 s
+  /World/envs 下的 Prim 数：1024；scene 中的实体：['terrain', 'robot', 'ground', 'light']
+  保持默认姿态 2 s：最大关节误差 0.0563 rad，数值有限 True
+  env_0 的 TCP（世界系）[39.44, -38.822, 1.403]；标记 Prim 在 /Visuals 下，共 2048 个实例
+  计时 1000 个物理步：8.36 s，每秒物理步 120，每秒环境步 122558
+== bench_16_1
+GalbotReachSceneCfg：16 个环境，env_spacing 2.5 m，求解器迭代 沿用资产，构建 + reset 2.4 s
+  /World/envs 下的 Prim 数：16；scene 中的实体：['terrain', 'robot', 'ground', 'light']
+  保持默认姿态 2 s：最大关节误差 0.0509 rad，数值有限 True
+  env_0 的 TCP（世界系）[4.432, -3.82, 1.411]；标记 Prim 在 /Visuals 下，共 32 个实例
+  计时 1000 个物理步：16.89 s，每秒物理步 59，每秒环境步 948
+== bench_16_2
+GalbotReachSceneCfg：16 个环境，env_spacing 2.5 m，求解器迭代 沿用资产，构建 + reset 1.7 s
+  /World/envs 下的 Prim 数：16；scene 中的实体：['terrain', 'robot', 'ground', 'light']
+  保持默认姿态 2 s：最大关节误差 0.0509 rad，数值有限 True
+  env_0 的 TCP（世界系）[4.432, -3.82, 1.411]；标记 Prim 在 /Visuals 下，共 32 个实例
+  计时 1000 个物理步：16.74 s，每秒物理步 60，每秒环境步 956
+== bench_16_3
+GalbotReachSceneCfg：16 个环境，env_spacing 2.5 m，求解器迭代 沿用资产，构建 + reset 2.1 s
+  /World/envs 下的 Prim 数：16；scene 中的实体：['terrain', 'robot', 'ground', 'light']
+  保持默认姿态 2 s：最大关节误差 0.0509 rad，数值有限 True
+  env_0 的 TCP（世界系）[4.432, -3.82, 1.411]；标记 Prim 在 /Visuals 下，共 32 个实例
+  计时 1000 个物理步：16.52 s，每秒物理步 61，每秒环境步 968
+== bench_16_table
+GalbotReachTableSceneCfg：16 个环境，env_spacing 2.5 m，求解器迭代 沿用资产，构建 + reset 1.8 s
+  /World/envs 下的 Prim 数：16；scene 中的实体：['terrain', 'robot', 'ground', 'light', 'table']
+  保持默认姿态 2 s：最大关节误差 0.0509 rad，数值有限 True
+  env_0 的 TCP（世界系）[4.432, -3.82, 1.411]；标记 Prim 在 /Visuals 下，共 32 个实例
+  计时 1000 个物理步：16.47 s，每秒物理步 61，每秒环境步 972
+== bench_256_1
+GalbotReachSceneCfg：256 个环境，env_spacing 2.5 m，求解器迭代 沿用资产，构建 + reset 2.8 s
+  /World/envs 下的 Prim 数：256；scene 中的实体：['terrain', 'robot', 'ground', 'light']
+  保持默认姿态 2 s：最大关节误差 0.0509 rad，数值有限 True
+  env_0 的 TCP（世界系）[19.432, -18.82, 1.411]；标记 Prim 在 /Visuals 下，共 512 个实例
+  计时 1000 个物理步：19.15 s，每秒物理步 52，每秒环境步 13366
+== bench_256_2
+GalbotReachSceneCfg：256 个环境，env_spacing 2.5 m，求解器迭代 沿用资产，构建 + reset 2.9 s
+  /World/envs 下的 Prim 数：256；scene 中的实体：['terrain', 'robot', 'ground', 'light']
+  保持默认姿态 2 s：最大关节误差 0.0509 rad，数值有限 True
+  env_0 的 TCP（世界系）[19.432, -18.82, 1.411]；标记 Prim 在 /Visuals 下，共 512 个实例
+  计时 1000 个物理步：19.09 s，每秒物理步 52，每秒环境步 13412
+== bench_256_3
+GalbotReachSceneCfg：256 个环境，env_spacing 2.5 m，求解器迭代 沿用资产，构建 + reset 2.9 s
+  /World/envs 下的 Prim 数：256；scene 中的实体：['terrain', 'robot', 'ground', 'light']
+  保持默认姿态 2 s：最大关节误差 0.0509 rad，数值有限 True
+  env_0 的 TCP（世界系）[19.432, -18.82, 1.411]；标记 Prim 在 /Visuals 下，共 512 个实例
+  计时 1000 个物理步：19.15 s，每秒物理步 52，每秒环境步 13370

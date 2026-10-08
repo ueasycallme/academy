@@ -30,7 +30,7 @@ parser.add_argument("--usd", default="generated/galbot_fixed_base/galbot.usd")
 parser.add_argument("--num", type=int, default=64, help="机器人台数 = 随机姿态数（第 0 台为零位）")
 parser.add_argument("--seed", type=int, default=0)
 parser.add_argument("--solver_iters", type=int, nargs=2, default=None, metavar=("POS", "VEL"),
-                    help="覆盖求解器的位置 / 速度迭代次数（6.1.6b）；默认沿用资产中的值")
+                    help="覆盖求解器的位置 / 速度迭代次数（6.1.6b）；默认沿用资产或配置中的值")
 parser.add_argument("--seconds", type=float, default=4.0, help="保持时长")
 parser.add_argument("--usd_gains", action="store_true", help="用 USD 里的增益（转换时的占位值），而不是参数表")
 parser.add_argument("--effort_scale", type=float, default=1.0, help="把力矩上限乘以这个倍数（对照实验）")

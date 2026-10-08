@@ -61,8 +61,10 @@ GALBOT_ONE_GOLF_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
         usd_path=str(generated_asset_dir() / "galbot_fixed_base" / "galbot.usd"),
         # 自碰撞打开：依赖 convert_galbot.py 写进资产的 7 对过滤对（6.1.4）。
-        # 求解器迭代次数不在此设置，沿用转换器写入的值（位置 32、速度 1）。
-        articulation_props=sim_utils.ArticulationRootPropertiesCfg(enabled_self_collisions=True),
+        # 求解器迭代次数：位置 16、速度 1（6.1.6b 对比 32/1、16/1、8/0 后选定；转换器写入的是 32/1）。
+        articulation_props=sim_utils.ArticulationRootPropertiesCfg(
+            enabled_self_collisions=True, solver_position_iteration_count=16, solver_velocity_iteration_count=1
+        ),
         # 不改刚体与碰撞属性：碰撞体在实例内部，spawn 阶段的 collision_props 改不到（6.1.4）。
         # 接触传感器到 6.2.2 才用，这里不开。
         activate_contact_sensors=False,
@@ -88,7 +90,7 @@ GALBOT_ONE_GOLF_WHEELED_CFG = GALBOT_ONE_GOLF_CFG.replace(
     init_state=GALBOT_ONE_GOLF_CFG.init_state.replace(pos=(0.0, 0.0, 0.04)),
     actuators={
         **make_actuators(),
-        # 主动轮：速度控制，stiffness 为 0，只用 damping 跟踪目标速度（Isaac Lab 的 Ridgeback 底盘同样如此）
+        # 主动轮：速度控制，stiffness 为 0，只用 damping 跟踪目标速度（Isaac Lab 的 Ridgeback 配置对底盘虚拟关节 dummy_base_* 同样如此）
         "wheels": ImplicitActuatorCfg(joint_names_expr=["wheel[1-4]_joint"], stiffness=0.0, damping=10.0),
         # 被动滚子：沿用 USD（刚度 0、小阻尼，6.1.2）
         "rollers": ImplicitActuatorCfg(joint_names_expr=["wheel_[1-4]_passive_.*"], stiffness=None, damping=None),

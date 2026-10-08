@@ -30,6 +30,8 @@ parser.add_argument("--no_sleep", action="store_true", help="sleep_threshold 与
 parser.add_argument("--kick", type=float, default=0.0, help="t=5 s 时给 joint3 加的速度（rad/s）")
 parser.add_argument("--vel_limit_at5", type=float, default=None, help="t=5 s 时把所有关节速度上限改为该值（rad/s）")
 parser.add_argument("--effort_scale_at5", type=float, default=None, help="t=5 s 时把力矩上限乘以该倍数")
+parser.add_argument("--solver_iters", type=int, nargs=2, default=None, metavar=("POS", "VEL"),
+                    help="覆盖求解器的位置 / 速度迭代次数（6.1.6b）；默认沿用资产或配置中的值")
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 simulation_app = AppLauncher(args).app
@@ -49,6 +51,8 @@ def main() -> None:
     dt = 1 / 120
     sim = sim_utils.SimulationContext(sim_utils.SimulationCfg(dt=dt, device=args.device))
     no_sleep = {"sleep_threshold": 0.0, "stabilization_threshold": 0.0} if args.no_sleep else {}
+    if args.solver_iters is not None:
+        no_sleep.update(solver_position_iteration_count=args.solver_iters[0], solver_velocity_iteration_count=args.solver_iters[1])
     robot = Articulation(
         ArticulationCfg(
             prim_path="/World/Galbot",

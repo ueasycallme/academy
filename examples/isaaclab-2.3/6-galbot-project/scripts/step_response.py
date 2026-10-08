@@ -37,7 +37,7 @@ parser.add_argument("--effort", type=float, default=None, help="被测关节的�
 parser.add_argument("--vel_limit", type=float, default=None, help="被测关节的速度上限（rad/s）；默认沿用 USD（= URDF velocity）")
 parser.add_argument("--dt", type=float, default=1 / 120)
 parser.add_argument("--solver_iters", type=int, nargs=2, default=None, metavar=("POS", "VEL"),
-                    help="覆盖求解器的位置 / 速度迭代次数（6.1.6b）；默认沿用资产中的值")
+                    help="覆盖求解器的位置 / 速度迭代次数（6.1.6b）；默认沿用资产或配置中的值")
 parser.add_argument("--seconds", type=float, default=2.0)
 parser.add_argument("--csv", default=None, help="保存曲线：每行 t, 各组位置")
 AppLauncher.add_app_launcher_args(parser)
