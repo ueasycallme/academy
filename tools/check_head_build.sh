@@ -25,6 +25,12 @@ set -e
 grep -vE "^Building prefix dict|^Loading model|^Prefix dict has been built|^Dumping model" "$TMP/build.log" || true
 if [ $rc -eq 0 ]; then echo "构建通过"; else echo "构建失败（sphinx-build 返回 $rc）"; exit 1; fi
 
+# 占位页：HEAD 导出里的占位页必须与生成器一致（T-SITE-12）
+if [ -f "$TMP/tools/gen_placeholders.py" ]; then
+  echo "== 占位页一致性检查 (HEAD)"
+  (cd "$TMP" && python3 tools/gen_placeholders.py --check | tail -1) || { echo "占位页检查失败"; exit 1; }
+fi
+
 # 主线项目：HEAD 导出里包内的相对导入必须都能解析（防止只提交了依赖方、漏了被依赖的模块）
 PROJ="$TMP/examples/isaaclab-2.3/6-galbot-project/source"
 if [ -d "$PROJ" ]; then
