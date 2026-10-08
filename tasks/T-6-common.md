@@ -20,7 +20,7 @@
 
 1. URDF 转换器里与 mimic 关节相关的开关语义相反：默认值下会丢掉 mimic 关系（reviews/T-3.5.md）。
 2. URDF 转换器按正则写的驱动增益字典：按顺序应用，后键覆盖前键。
-3. `ArticulationCfg.actuators` 的正则重叠分两种（T-6.1.6 实测更正，待 reviews/T-6.1.6.md 复核）：**同一执行器组的 `joint_names_expr` 内**（或同一字段的字典里）两个键匹配到同一关节，抛 `ValueError: Multiple matches`（4.7 讲的是这种，4.7 正确）；**不同执行器组**匹配到同一关节**不报错**，后面的组静默覆盖前面的（源码逐组调用 `find_joints`，组间不查重；实测 right_arm_joint1 的 stiffness 被后组改为 1.0）。本项目用 `check_actuator_groups.py` 兜底检查组间互斥。与第 2 条（URDF 转换器字典后键覆盖前键）仍是两套规则。
+3. `ArticulationCfg.actuators` 的正则重叠分两种（T-6.1.6 实测，已由 reviews/T-6.1.6.md 按源码 _process_actuators_cfg 复核）：**同一执行器组的 `joint_names_expr` 内**（或同一字段的字典里）两个键匹配到同一关节，抛 `ValueError: Multiple matches`（4.7 讲的是这种，4.7 正确）；**不同执行器组**匹配到同一关节**不报错**，后面的组静默覆盖前面的（源码逐组调用 `find_joints`，组间不查重；实测 right_arm_joint1 的 stiffness 被后组改为 1.0）。本项目用 `check_actuator_groups.py` 兜底检查组间互斥。与第 2 条（URDF 转换器字典后键覆盖前键）仍是两套规则。
 4. 同一关节在 URDF 里 effort 为 60，厂商 USD 里 maxForce 为 1000（reviews/T-2.4.md）。
 5. 只设 `effort_limit_sim` 时，显式执行器模型内部按 USD 值截断（reviews/T-4.7.md）。
 6. Galbot 的 MJCF 在 5.1 上需手动启用导入扩展，转出两个 Articulation 根，且失败时返回码仍为 0（reviews/T-3.5.md）。
@@ -29,8 +29,8 @@
 9. 轮式自导入版在仿真里出现 NaN 的根因：**固定根放在 z=0 且有地面时，轮子被压进地面**，接触冲量作用在很轻的滚子上导致发散。滚子阻尼不是原因（扫描结果不单调，只在临界区决定运气）。对策：固定根的轮式版离地放置（如抬高 5 cm）或不放地面。主线固定底座版不受影响（D-026，reviews/P-003.md）。
 10. spawn 阶段的 `collision_props` 对**实例内**的碰撞体不生效，只打印一条 WARNING（T-6.1.4，已由 reviews/T-6.1.4.md 复核）。要改实例内碰撞体的属性，得在转换阶段或直接写进资产。
 11. 本项目的 reach 任务**开启自碰撞并带过滤对**：头与躯干在零位即相互穿透，小臂 link5–link7 与夹爪指节的凸包也会重叠；转换后由 `assets/physics.py` 把 7 对自碰撞过滤对写进资产（T-6.1.4，已由 reviews/T-6.1.4.md 复核）。
-12. 移动底盘变体不能用 `fix_root_link=False` 关掉固定根（抛 `RuntimeError`）；`convert_galbot.py` 为此新增 `--floating_base`（T-6.1.6，待复核）。
-13. 轮式版静置时被动滚子会空转到 200–320 rad/s（T-6.1.6 实测，待复核）；登记给 6.4.5（底盘导航，P3）。
+12. 移动底盘变体不能用 `fix_root_link=False` 关掉固定根（抛 `RuntimeError`）；`convert_galbot.py` 为此新增 `--floating_base`（T-6.1.6，已由 reviews/T-6.1.6.md 复核）。
+13. 轮式版静置时被动滚子会空转到 200–320 rad/s（T-6.1.6 实测，已由 reviews/T-6.1.6.md 复核）；登记给 6.4.5（底盘导航，P3）。
 
 ## 范围与取舍
 

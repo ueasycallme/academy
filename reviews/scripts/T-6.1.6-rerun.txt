@@ -1,0 +1,36 @@
+# 校验方复跑 T-6.1.6（2026-10-08）
+conv_fixed rc=0 t=7s mem=368MiB
+conv_wheeled rc=0 t=7s mem=368MiB
+conv_wfloat rc=0 t=7s mem=368MiB
+verify_fixed rc=0 t=17s mem=2315MiB
+verify_wheeled rc=0 t=33s mem=2379MiB
+demo_overlap_across rc=0 t=7s mem=2315MiB
+demo_overlap_within rc=0 t=7s mem=1291MiB
+demo_bad_default rc=0 t=7s mem=1057MiB
+demo_missing_usd rc=0 t=7s mem=209MiB
+demo_unfix_root rc=0 t=7s mem=1633MiB
+DONE
+== verify_fixed
+保持默认姿态 3 s：数值有限 True，根高度变化 0.0000 m
+  误差最大的 5 个关节：right_arm_joint1 0.0509，leg_joint5 0.0341，left_arm_joint1 0.0278，leg_joint2 0.0144，right_arm_joint3 0.0136
+  末 0.5 s |关节速度| 最大的 3 个：right_gripper_r_inner_knuckle_joint 0.196，left_gripper_r_inner_knuckle_joint 0.131，right_gripper_joint 0.122
+  重力力矩 / 力矩上限 最大的 3 个：leg_joint3 0.49，leg_joint5 0.45，right_arm_joint1 0.33
+  right_arm_link7 相对根的位置 [0.505, -0.251, 1.449] m
+right 臂关节目标（默认 ± 0.3 rad）3 s 后：最大误差 0.0504 rad，平均 0.0114 rad，数值有限 True
+== verify_wheeled
+保持默认姿态 3 s：数值有限 True，根高度变化 0.0058 m
+  误差最大的 5 个关节：wheel_2_passive_9_joint 6.2783，wheel_3_passive_4_joint 5.3780，wheel_1_passive_2_joint 5.1195，wheel_1_passive_8_joint 5.0792，wheel_2_passive_2_joint 5.0015
+  末 0.5 s |关节速度| 最大的 3 个：wheel_3_passive_7_joint 321.848，wheel_2_passive_2_joint 223.839，wheel_1_passive_2_joint 205.315
+  right_arm_link7 相对根的位置 [0.527, -0.201, 1.449] m
+right 臂关节目标（默认 ± 0.3 rad）3 s 后：最大误差 0.0506 rad，平均 0.0113 rad，数值有限 True
+== demo overlap_across
+没有报错。right_arm_joint1 在 PhysX 中的 stiffness = 1.0（ImplicitActuator 组 ['legs', 'head', 'arms', 'grippers', 'mimic', 'extra']）
+== demo overlap_within
+异常 ValueError: Multiple matches for 'right_arm_joint1': '(left|right)_arm_joint[1-7]' and 'right_arm_joint1'!
+== demo bad_default
+异常 ValueError: The following joints have default positions out of the limits: 
+	- 'leg_joint1': 1.200 not in [0.000, 0.937]
+== demo missing_usd
+异常 FileNotFoundError: USD file not found at path at: '/nonexistent/galbot.usd'.
+== demo unfix_root
+异常 RuntimeError: Failed to create articulation at: /World/envs/env_.*/Robot/root_joint. Please check PhysX logs.

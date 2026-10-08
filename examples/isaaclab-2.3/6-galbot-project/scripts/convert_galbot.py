@@ -12,6 +12,7 @@
 
     python scripts/convert_galbot.py --headless
     python scripts/convert_galbot.py --headless --variant wheeled     # 对照：轮式 URDF + fix_base
+    python scripts/convert_galbot.py --headless --variant wheeled --floating_base   # 移动底盘用：根不固定（6.1.6）
 """
 
 import argparse
@@ -21,6 +22,7 @@ from isaaclab.app import AppLauncher
 
 parser = argparse.ArgumentParser(description="把 Galbot One Golf 的 URDF 转成 USD")
 parser.add_argument("--variant", choices=["fixed_base", "wheeled"], default="fixed_base", help="用哪个预置 URDF")
+parser.add_argument("--floating_base", action="store_true", help="根不固定到世界，输出到 galbot_<variant>_floating（6.1.6）")
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 simulation_app = AppLauncher(args).app
@@ -46,7 +48,7 @@ PASSIVE_DAMPING = 0.1
 
 
 def make_cfg() -> UrdfConverterCfg:
-    out_dir = generated_asset_dir() / f"galbot_{args.variant}"
+    out_dir = generated_asset_dir() / (f"galbot_{args.variant}" + ("_floating" if args.floating_base else ""))
     # 字典里的每个正则键都必须匹配到至少一个关节，否则转换器抛 ValueError（而进程返回码仍为 0）。
     # 固定底座版 URDF 没有被动滚子，所以只在轮式版里加滚子的键；它们放在最后，覆盖前面的通配值。
     stiffness, damping = dict(STIFFNESS), dict(DAMPING)
@@ -58,7 +60,7 @@ def make_cfg() -> UrdfConverterCfg:
         usd_dir=str(out_dir),
         usd_file_name="galbot.usd",
         force_usd_conversion=True,
-        fix_base=True,  # reach 任务用固定底座：把根连杆 base_link 固定到世界
+        fix_base=not args.floating_base,  # reach 任务用固定底座：把根连杆 base_link 固定到世界
         merge_fixed_joints=True,  # 合并固定关节两侧的连杆（会有 26–30 条弃用警告，属预期）
         # 字段名与效果相反：v2.3.2 中为 True 时才保留 URDF 的 mimic 关系（6.1.2"常见坑"）
         convert_mimic_joints_to_normal_joints=True,
