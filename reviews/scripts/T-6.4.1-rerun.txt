@@ -1,0 +1,126 @@
+# 校验方复跑 T-6.4.1（2026-10-08）
+list rc=0 t=5s mem=194MiB
+targets rc=0 t=12s mem=2945MiB
+targets_r2 rc=0 t=12s mem=2947MiB
+targets_box rc=0 t=11s mem=2945MiB
+targets_box_r4 rc=0 t=13s mem=2947MiB
+targets_box_pos rc=0 t=11s mem=2945MiB
+smoke rc=0 t=28s mem=2317MiB
+check_env rc=0 t=26s mem=2315MiB
+probe rc=0 t=33s mem=2315MiB
+probe_nodef rc=0 t=28s mem=2315MiB
+zero rc=137 t=61s mem=2315MiB
+random rc=137 t=61s mem=2315MiB
+DONE
+== targets
+1024 个目标（种子 0），位置 + 固定姿态，IK 300 次迭代：
+  收敛（位置 < 0.01 m，姿态 < 0.05 rad）：98.1%
+  位置误差中位数 0.0000 m，95% 分位 0.0001 m；姿态误差中位数 0.0000 rad，95% 分位 0.0014 rad
+  未收敛比例按 x 分段：[0.30,0.39] 4%，[0.39,0.49] 1%，[0.49,0.60] 1%
+  未收敛比例按 y 分段：[-0.40,-0.31] 4%，[-0.31,-0.23] 1%，[-0.23,-0.15] 1%
+  未收敛比例按 z 分段：[1.15,1.27] 5%，[1.27,1.39] 0%，[1.39,1.50] 0%
+  未收敛的目标（相对根）：x 均值 0.40，y 均值 -0.34，z 均值 1.18（全部目标均值 0.44 / -0.27 / 1.33）
+== targets_r2
+1024 个目标（种子 0），位置 + 固定姿态，IK 300 次迭代：
+  收敛（位置 < 0.01 m，姿态 < 0.05 rad）：99.0%
+  位置误差中位数 0.0000 m，95% 分位 0.0000 m；姿态误差中位数 0.0000 rad，95% 分位 0.0000 rad
+  其中从默认姿态出发即收敛 98.1%，再随机重启 2 次后共 99.0%
+  未收敛比例按 x 分段：[0.30,0.39] 1%，[0.39,0.49] 0%，[0.49,0.60] 1%
+  未收敛比例按 y 分段：[-0.40,-0.31] 2%，[-0.31,-0.23] 0%，[-0.23,-0.15] 1%
+  未收敛比例按 z 分段：[1.15,1.27] 3%，[1.27,1.39] 0%，[1.39,1.50] 0%
+  未收敛的目标（相对根）：x 均值 0.44，y 均值 -0.32，z 均值 1.19（全部目标均值 0.44 / -0.27 / 1.33）
+== targets_box
+1024 个目标（种子 0），位置 + 固定姿态，IK 300 次迭代：
+  收敛（位置 < 0.01 m，姿态 < 0.05 rad）：58.9%
+  位置误差中位数 0.0000 m，95% 分位 0.1833 m；姿态误差中位数 0.0000 rad，95% 分位 0.7792 rad
+  未收敛比例按 x 分段：[0.25,0.43] 37%，[0.43,0.63] 30%，[0.63,0.85] 57%
+  未收敛比例按 y 分段：[-0.65,-0.48] 84%，[-0.48,-0.31] 34%，[-0.31,-0.15] 6%
+  未收敛比例按 z 分段：[1.10,1.24] 60%，[1.24,1.37] 41%，[1.37,1.50] 22%
+  未收敛的目标（相对根）：x 均值 0.57，y 均值 -0.52，z 均值 1.26（全部目标均值 0.54 / -0.40 / 1.30）
+== targets_box_r4
+1024 个目标（种子 0），位置 + 固定姿态，IK 300 次迭代：
+  收敛（位置 < 0.01 m，姿态 < 0.05 rad）：63.6%
+  位置误差中位数 0.0000 m，95% 分位 0.1833 m；姿态误差中位数 0.0000 rad，95% 分位 0.7792 rad
+  其中从默认姿态出发即收敛 58.9%，再随机重启 4 次后共 63.6%
+  未收敛比例按 x 分段：[0.25,0.43] 25%，[0.43,0.63] 27%，[0.63,0.85] 57%
+  未收敛比例按 y 分段：[-0.65,-0.48] 82%，[-0.48,-0.31] 24%，[-0.31,-0.15] 3%
+  未收敛比例按 z 分段：[1.10,1.24] 46%，[1.24,1.37] 41%，[1.37,1.50] 22%
+  未收敛的目标（相对根）：x 均值 0.60，y 均值 -0.54，z 均值 1.27（全部目标均值 0.54 / -0.40 / 1.30）
+== targets_box_pos
+1024 个目标（种子 0），只要求位置，IK 300 次迭代：
+  收敛（位置 < 0.01 m）：100.0%
+  位置误差中位数 0.0000 m，95% 分位 0.0000 m；姿态误差中位数 0.8991 rad，95% 分位 1.8997 rad
+  未收敛比例按 x 分段：[0.25,0.43] 0%，[0.43,0.63] 0%，[0.63,0.85] 0%
+  未收敛比例按 y 分段：[-0.65,-0.48] 0%，[-0.48,-0.31] 0%，[-0.31,-0.15] 0%
+  未收敛比例按 z 分段：[1.10,1.24] 0%，[1.24,1.37] 0%，[1.37,1.50] 0%
+== smoke
+	Source prim name      : /World/envs/env_0
+	Global prim paths     : []
+	Replicate physics     : True
+Galbot-Reach-v0：64 个环境，控制周期 0.0333 s，回合 360 步（12 s）
+  第 360 步共有 64 个环境超时重置（应为全部 64 个）
+  第二个回合开头，右臂关节相对默认值：最小 -0.200，最大 +0.200 rad（reset 事件为 ±0.2）
+  非任务关节（不含夹爪）在回合后半段离默认值最远 0.0348 rad
+  目标位置（根坐标系）：x [0.300, 0.598]，y [-0.400, -0.151]，z [1.155, 1.500]；配置范围 x (0.3, 0.6)，y (-0.4, -0.15)，z (1.15, 1.5)
+  第 1 步 TCP 离目标：中位数 0.361 m，最大 0.530 m
+  数值有限：True
+== check_env
+	Environment spacing   : 2.5
+	Source prim name      : /World/envs/env_0
+	Global prim paths     : []
+	Replicate physics     : True
+Galbot-Reach-v0：400 步随机动作，未出现 NaN/Inf
+  观测组 policy 形状 (16, 28)
+    各维最小值 [-0.41, -0.3, -0.41, -0.33, -0.37, -0.37, -0.35, -1.53, -1.51, -1.5, -1.51, -1.53, -1.51, -1.51, 0.31, -0.39, 1.15, 0.71, -0.6, -0.22, 0.31, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0]
+    各维最大值 [0.22, 0.33, 0.29, 0.32, 0.29, 0.34, 0.3, 1.5, 1.5, 1.5, 1.5, 1.53, 1.5, 1.51, 0.59, -0.15, 1.49, 0.71, -0.6, -0.22, 0.31, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  每步奖励范围 [-0.0067, -0.0008]（已乘 step_dt = 0.0333）
+  各终止项触发次数（所有环境合计）：{'time_out': 16}
+== probe
+	Environment spacing   : 2.5
+	Source prim name      : /World/envs/env_0
+	Global prim paths     : []
+	Replicate physics     : True
+step 5: metric pos 0.3791 | tcp reward fn 0.3791 | link7-origin dist 0.2082 | metric rot 0.0856 vs fn 0.0856 | max|diff| pos 0.00e+00 rot 1.49e-07
+   non-arm max dev from default 0.0347 rad (leg_joint5); episode_length_buf[0]=6
+step 200: metric pos 0.3508 | tcp reward fn 0.3508 | link7-origin dist 0.1929 | metric rot 0.0950 vs fn 0.0950 | max|diff| pos 0.00e+00 rot 5.96e-08
+   non-arm max dev from default 0.0344 rad (leg_joint5); episode_length_buf[0]=201
+step 365: metric pos 0.3490 | tcp reward fn 0.3490 | link7-origin dist 0.1833 | metric rot 0.0785 vs fn 0.0785 | max|diff| pos 0.00e+00 rot 1.42e-07
+   non-arm max dev from default 0.0377 rad (leg_joint5); episode_length_buf[0]=6
+== probe_nodef
+	Environment spacing   : 2.5
+	Source prim name      : /World/envs/env_0
+	Global prim paths     : []
+	Replicate physics     : True
+step 5: metric pos 0.6217 | tcp reward fn 0.6217 | link7-origin dist 0.4957 | metric rot 0.0682 vs fn 0.0682 | max|diff| pos 0.00e+00 rot 1.15e-07
+   non-arm max dev from default 2.4093 rad (left_arm_joint3); episode_length_buf[0]=6
+step 200: metric pos 0.6484 | tcp reward fn 0.6484 | link7-origin dist 0.5087 | metric rot 0.0718 vs fn 0.0718 | max|diff| pos 0.00e+00 rot 5.22e-08
+   non-arm max dev from default 2.4105 rad (left_arm_joint3); episode_length_buf[0]=201
+step 365: metric pos 0.6456 | tcp reward fn 0.6456 | link7-origin dist 0.4948 | metric rot 0.0768 vs fn 0.0768 | max|diff| pos 0.00e+00 rot 1.19e-07
+   non-arm max dev from default 2.4109 rad (left_arm_joint3); episode_length_buf[0]=6
+== random agent term tables
+|       Active Command Terms       |
+|   0   | ee_pose | TcpPoseCommand |
+| Active Event Terms in Mode: 'reset' |
+|    0    | reset_to_default          |
+|    1    | reset_robot_joints        |
+| Active Recorder Terms |
+|   Active Action Terms (shape: 7)  |
+|   0    | arm_action  |          7 |
+| Active Observation Terms in Group: 'policy' (shape: (28,)) |
+|      0      | joint_pos                 |     (7,)    |
+|      1      | joint_vel                 |     (7,)    |
+|      2      | pose_command              |     (7,)    |
+|      3      | actions                   |     (7,)    |
+|   Active Termination Terms  |
+|   0   | time_out |   True   |
+|                      Active Reward Terms                      |
+|   0   | end_effector_position_tracking              |    -0.2 |
+|   1   | end_effector_position_tracking_fine_grained |     0.1 |
+|   2   | end_effector_orientation_tracking           |    -0.1 |
+|   3   | action_rate                                 | -0.0001 |
+|   4   | joint_vel                                   | -0.0001 |
+| Active Curriculum Terms  |
+|    0    | action_rate    |
+|    1    | joint_vel      |
+[INFO]: Gym observation space: Dict('policy': Box(-inf, inf, (16, 28), float32))
+[INFO]: Gym action space: Box(-inf, inf, (16, 7), float32)

@@ -31,7 +31,7 @@
 11. 本项目的 reach 任务**开启自碰撞并带过滤对**：头与躯干在零位即相互穿透，小臂 link5–link7 与夹爪指节的凸包也会重叠；转换后由 `assets/physics.py` 把 7 对自碰撞过滤对写进资产（T-6.1.4，已由 reviews/T-6.1.4.md 复核）。
 12. 移动底盘变体不能用 `fix_root_link=False` 关掉固定根（抛 `RuntimeError`）；`convert_galbot.py` 为此新增 `--floating_base`（T-6.1.6，已由 reviews/T-6.1.6.md 复核）。
 13. 轮式版静置时被动滚子会空转到 200–320 rad/s（T-6.1.6 实测，已由 reviews/T-6.1.6.md 复核）；登记给 6.4.5（底盘导航，P3）。
-14. reset 事件只把它写到的关节恢复到默认姿态，其余关节停在 USD 零位（Galbot 腿偏离 2.3 rad）；官方 Franka 用 `reset_joints_by_scale` 覆盖全部关节所以没遇到。本项目加 `reset_scene_to_default(reset_joint_targets=True)` 后非任务关节偏离 ≤ 0.035（T-6.4.1 实测，待 reviews/T-6.4.1.md 复核）。
+14. reset 事件只把它写到的关节恢复到默认姿态，其余关节停在 USD 零位（Galbot 腿偏离 2.3 rad）；官方 Franka 用 `reset_joints_by_scale` 覆盖全部关节所以没遇到。本项目加 `reset_scene_to_default(reset_joint_targets=True)` 后非任务关节偏离 ≤ 0.035（T-6.4.1，已由 reviews/T-6.4.1.md 用排除对照复核：去掉后非任务关节偏离 2.41 rad，加上后 ≤ 0.038）。
 
 ## 范围与取舍
 

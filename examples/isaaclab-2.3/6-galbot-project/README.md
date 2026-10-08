@@ -270,6 +270,49 @@ python scripts/probe_stuck_joint.py --headless --solver_iters 32 1              
 
 1024 环境的每秒物理步：32 / 1 为 44，16 / 1 为 74–75，8 / 0 为 118–120。其余指标见 6.1.6 表 2。项目配置采用 16 / 1。
 
+## 6.4.1：单臂 reach
+
+任务包在 `source/galbot_academy/galbot_academy/tasks/manager_based/reach/`，注册 `Galbot-Reach-v0` 与 `Galbot-Reach-Play-v0`（训练用的 agent 配置在 6.5.1 加入）。
+
+```bash
+python scripts/list_envs.py                                                  # 列出两个任务
+python scripts/check_reach_targets.py --headless                             # 目标可达性（IK）
+python scripts/reach_smoke.py --headless                                     # 零动作冒烟检查
+python scripts/check_env.py --headless --task Galbot-Reach-v0 --steps 400    # 随机动作自检
+python scripts/random_agent.py --task Galbot-Reach-v0 --num_envs 16 --headless   # 无限循环，看到 Term 表后手动结束
+```
+
+预期输出关键行（本站实测）：
+
+```text
+收敛（位置 < 0.01 m，姿态 < 0.05 rad）：98.1%                                  # check_reach_targets，约 11 s，2945 MiB
+第 360 步共有 64 个环境超时重置（应为全部 64 个）                               # reach_smoke，约 24 s，2317 MiB
+第二个回合开头，右臂关节相对默认值：最小 -0.200，最大 +0.200 rad（reset 事件为 ±0.2）
+非任务关节（不含夹爪）在回合后半段离默认值最远 0.0348 rad
+Galbot-Reach-v0：400 步随机动作，未出现 NaN/Inf                                 # check_env，约 25 s，2315 MiB
+  每步奖励范围 [-0.0067, -0.0008]（已乘 step_dt = 0.0333）
+```
+
+## 6.4.2：域随机化
+
+`Galbot-Reach-DR-v0`（以及 `-Play-v0`）在 `Galbot-Reach-v0` 上加了 startup 的质量、增益、armature 随机化，初始速度和观测噪声，配置在 `tasks/manager_based/reach/reach_dr_env_cfg.py`。
+
+```bash
+python scripts/check_dr.py --headless                                       # 读回随机化后的参数
+python scripts/check_env.py --headless --task Galbot-Reach-DR-v0 --steps 400
+```
+
+`check_dr.py` 的预期输出关键行（种子 0，约 10 秒，按进程显存 2315 MiB）：
+
+```text
+  右臂连杆质量 / 标称：0.9045 … 1.0994（设定 ×[0.9, 1.1]）
+  右臂刚度 / 400：0.8041 … 1.1971；阻尼 / 40：0.8026 … 1.1889（设定 ×[0.8, 1.2]）
+  右臂 armature：0.0001 … 0.0049 kg·m²（设定 +[0, 0.005]）
+  第二次 reset 后右臂：位置偏移 -0.1938 … 0.1875 rad（设定 ±0.2），速度 -0.0992 … 0.0983 rad/s（设定 ±0.1）
+  观测 joint_pos 项的噪声：-0.0092 … 0.0097（设定 ±0.01），enable_corruption = True
+  -Play 配置：enable_corruption = False；arm_mass = None，arm_gains = None，arm_armature = None；reset_robot_joints 保留 = True
+```
+
 ## 目录
 
 ```text
@@ -292,6 +335,9 @@ python scripts/probe_stuck_joint.py --headless --solver_iters 32 1              
 │   ├── verify_galbot_cfg.py     # 验证机器人配置（6.1.6）
 │   ├── workspace.py             # 手臂可达范围（6.2.1）
 │   ├── scene_bench.py           # reach 场景与吞吐（6.2.1）
+│   ├── check_reach_targets.py   # reach 目标的可达性（6.4.1）
+│   ├── reach_smoke.py  check_env.py   # reach 冒烟检查与环境自检（6.4.1）
+│   ├── check_dr.py              # 域随机化读回检查（6.4.2）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 └── source/galbot_academy/
@@ -300,5 +346,5 @@ python scripts/probe_stuck_joint.py --headless --solver_iters 32 1              
         ├── __init__.py
         ├── assets/              # 资产路径（6.1.1）、自碰撞过滤对 physics.py（6.1.4）、驱动参数表 drives.py（6.1.5）、机器人配置 galbot.py（6.1.6）
         ├── scenes/              # 场景配置（6.2.1 起）
-        └── tasks/               # 任务（6.4.1 起）
+        └── tasks/               # 任务（6.4.1 起）：manager_based/reach/
 ```
