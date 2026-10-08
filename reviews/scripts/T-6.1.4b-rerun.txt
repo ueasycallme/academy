@@ -1,0 +1,111 @@
+# 校验方复跑 T-6.1.4b（clean14，RTX 5070，2026-10-08；实现方 probe_stuck_joint.py，另加空写对照与扫描）
+base_1 rc=0 t=67s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+nosleep_1 rc=0 t=66s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+kick_1 rc=0 t=67s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+vel100_1 rc=0 t=76s mem=2315MiB | 8 s 后右臂最大误差 0.0817 rad（right_arm_joint1）；joint3 需要的重力补偿力矩 -8.24 N·m，力矩上限 30.0 N·m
+eff10_1 rc=0 t=66s mem=2315MiB | 8 s 后右臂最大误差 0.0817 rad（right_arm_joint1）；joint3 需要的重力补偿力矩 -8.24 N·m，力矩上限 300.0 N·m
+vel_null_1 rc=0 t=66s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+eff_null_1 rc=0 t=78s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+base_2 rc=0 t=84s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+nosleep_2 rc=0 t=66s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+kick_2 rc=0 t=66s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+vel100_2 rc=0 t=66s mem=2315MiB | 8 s 后右臂最大误差 0.0817 rad（right_arm_joint1）；joint3 需要的重力补偿力矩 -8.24 N·m，力矩上限 30.0 N·m
+eff10_2 rc=0 t=93s mem=2315MiB | 8 s 后右臂最大误差 0.0817 rad（right_arm_joint1）；joint3 需要的重力补偿力矩 -8.24 N·m，力矩上限 300.0 N·m
+vel_null_2 rc=0 t=112s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+eff_null_2 rc=0 t=106s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+base_3 rc=0 t=116s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+nosleep_3 rc=0 t=70s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+kick_3 rc=0 t=71s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+vel100_3 rc=0 t=70s mem=2315MiB | 8 s 后右臂最大误差 0.0817 rad（right_arm_joint1）；joint3 需要的重力补偿力矩 -8.24 N·m，力矩上限 30.0 N·m
+eff10_3 rc=0 t=103s mem=2315MiB | 8 s 后右臂最大误差 0.0817 rad（right_arm_joint1）；joint3 需要的重力补偿力矩 -8.24 N·m，力矩上限 300.0 N·m
+vel_null_3 rc=0 t=78s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+eff_null_3 rc=0 t=65s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+vel_1.6 rc=0 t=66s mem=2315MiB | 8 s 后右臂最大误差 1.2820 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -5.41 N·m，力矩上限 30.0 N·m
+vel_2 rc=0 t=65s mem=2315MiB | 8 s 后右臂最大误差 0.0815 rad（right_arm_joint1）；joint3 需要的重力补偿力矩 -8.24 N·m，力矩上限 30.0 N·m
+vel_3 rc=0 t=66s mem=2315MiB | 8 s 后右臂最大误差 0.0817 rad（right_arm_joint1）；joint3 需要的重力补偿力矩 -8.24 N·m，力矩上限 30.0 N·m
+vel_10 rc=0 t=66s mem=2315MiB | 8 s 后右臂最大误差 0.0817 rad（right_arm_joint1）；joint3 需要的重力补偿力矩 -8.24 N·m，力矩上限 30.0 N·m
+eff_1.2 rc=0 t=67s mem=2315MiB | 8 s 后右臂最大误差 0.0812 rad（right_arm_joint1）；joint3 需要的重力补偿力矩 -8.24 N·m，力矩上限 36.0 N·m
+eff_2 rc=0 t=77s mem=2315MiB | 8 s 后右臂最大误差 0.0817 rad（right_arm_joint1）；joint3 需要的重力补偿力矩 -8.24 N·m，力矩上限 60.0 N·m
+eff_5 rc=0 t=65s mem=2315MiB | 8 s 后右臂最大误差 0.0817 rad（right_arm_joint1）；joint3 需要的重力补偿力矩 -8.24 N·m，力矩上限 150.0 N·m
+readback rc=0 t=66s mem=2315MiB | 8 s 后右臂最大误差 1.4491 rad（right_arm_joint3）；joint3 需要的重力补偿力矩 -4.28 N·m，力矩上限 30.0 N·m
+DONE
+
+## 休眠阈值读回（_probe_readback.py --no_sleep）
+READBACK /World/Galbot/root_joint physxArticulation:sleepThreshold 0.0
+READBACK /World/Galbot/root_joint physxArticulation:stabilizationThreshold 0.0
+
+## 时间序列 base_1
+第 13 组：joint3 目标 +0.0052，joint1 目标 -0.8714
+t= 0.0 s  joint1 v=+0.045 fd=+0.057  joint3 q=+2.4530 v=-0.861 fd=-0.840 力矩=-30.0
+t= 0.5 s  joint1 v=-1.075 fd=-0.712  joint3 q=+2.7482 v=+1.500 fd=+1.126 力矩=-30.0
+t= 1.0 s  joint1 v=-0.806 fd=-0.826  joint3 q=+2.9170 v=-0.002 fd=-0.000 力矩=-30.0
+t= 1.5 s  joint1 v=-1.500 fd=-1.417  joint3 q=+2.8846 v=-0.060 fd=-0.529 力矩=-30.0
+t= 2.0 s  joint1 v=-0.012 fd=-0.034  joint3 q=+2.1993 v=-1.485 fd=-1.499 力矩=-30.0
+t= 2.5 s  joint1 v=-0.173 fd=+0.050  joint3 q=+1.6625 v=-0.355 fd=-0.658 力矩=-30.0
+t= 3.0 s  joint1 v=-0.349 fd=+0.023  joint3 q=+1.4837 v=+0.315 fd=-0.137 力矩=-30.0
+t= 3.5 s  joint1 v=-0.404 fd=+0.003  joint3 q=+1.4594 v=+0.479 fd=-0.012 力矩=-30.0
+t= 4.0 s  joint1 v=-0.408 fd=+0.000  joint3 q=+1.4555 v=+0.488 fd=-0.005 力矩=-30.0
+t= 4.5 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4545 v=+0.493 fd=-0.000 力矩=-30.0
+t= 5.0 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4543 v=+0.494 fd=-0.000 力矩=-30.0
+t= 5.5 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4543 v=+0.494 fd=-0.000 力矩=-30.0
+t= 6.0 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4543 v=+0.494 fd=+0.000 力矩=-30.0
+t= 6.5 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4543 v=+0.494 fd=+0.000 力矩=-30.0
+t= 7.0 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4543 v=+0.494 fd=+0.000 力矩=-30.0
+t= 7.5 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4543 v=+0.494 fd=+0.000 力矩=-30.0
+
+## 时间序列 vel_1.6
+第 13 组：joint3 目标 +0.0052，joint1 目标 -0.8714
+t= 0.0 s  joint1 v=+0.045 fd=+0.057  joint3 q=+2.4530 v=-0.861 fd=-0.840 力矩=-30.0
+t= 0.5 s  joint1 v=-1.075 fd=-0.712  joint3 q=+2.7482 v=+1.500 fd=+1.126 力矩=-30.0
+t= 1.0 s  joint1 v=-0.806 fd=-0.826  joint3 q=+2.9170 v=-0.002 fd=-0.000 力矩=-30.0
+t= 1.5 s  joint1 v=-1.500 fd=-1.417  joint3 q=+2.8846 v=-0.060 fd=-0.529 力矩=-30.0
+t= 2.0 s  joint1 v=-0.012 fd=-0.034  joint3 q=+2.1993 v=-1.485 fd=-1.499 力矩=-30.0
+t= 2.5 s  joint1 v=-0.173 fd=+0.050  joint3 q=+1.6625 v=-0.355 fd=-0.658 力矩=-30.0
+t= 3.0 s  joint1 v=-0.349 fd=+0.023  joint3 q=+1.4837 v=+0.315 fd=-0.137 力矩=-30.0
+t= 3.5 s  joint1 v=-0.404 fd=+0.003  joint3 q=+1.4594 v=+0.479 fd=-0.012 力矩=-30.0
+t= 4.0 s  joint1 v=-0.408 fd=+0.000  joint3 q=+1.4555 v=+0.488 fd=-0.005 力矩=-30.0
+t= 4.5 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4545 v=+0.493 fd=-0.000 力矩=-30.0
+t= 5.0 s  joint1 v=-0.412 fd=+0.020  joint3 q=+1.4541 v=+0.488 fd=-0.028 力矩=-30.0
+t= 5.5 s  joint1 v=-0.436 fd=+0.015  joint3 q=+1.4197 v=+0.414 fd=-0.123 力矩=-30.0
+t= 6.0 s  joint1 v=-0.472 fd=+0.009  joint3 q=+1.3361 v=+0.451 fd=-0.121 力矩=-30.0
+t= 6.5 s  joint1 v=-0.506 fd=+0.004  joint3 q=+1.3019 v=+0.570 fd=-0.034 力矩=-30.0
+t= 7.0 s  joint1 v=-0.516 fd=+0.001  joint3 q=+1.2918 v=+0.601 fd=-0.012 力矩=-30.0
+t= 7.5 s  joint1 v=-0.519 fd=+0.000  joint3 q=+1.2883 v=+0.611 fd=-0.004 力矩=-30.0
+
+## 时间序列 eff_1.2
+第 13 组：joint3 目标 +0.0052，joint1 目标 -0.8714
+t= 0.0 s  joint1 v=+0.045 fd=+0.057  joint3 q=+2.4530 v=-0.861 fd=-0.840 力矩=-30.0
+t= 0.5 s  joint1 v=-1.075 fd=-0.712  joint3 q=+2.7482 v=+1.500 fd=+1.126 力矩=-30.0
+t= 1.0 s  joint1 v=-0.806 fd=-0.826  joint3 q=+2.9170 v=-0.002 fd=-0.000 力矩=-30.0
+t= 1.5 s  joint1 v=-1.500 fd=-1.417  joint3 q=+2.8846 v=-0.060 fd=-0.529 力矩=-30.0
+t= 2.0 s  joint1 v=-0.012 fd=-0.034  joint3 q=+2.1993 v=-1.485 fd=-1.499 力矩=-30.0
+t= 2.5 s  joint1 v=-0.173 fd=+0.050  joint3 q=+1.6625 v=-0.355 fd=-0.658 力矩=-30.0
+t= 3.0 s  joint1 v=-0.349 fd=+0.023  joint3 q=+1.4837 v=+0.315 fd=-0.137 力矩=-30.0
+t= 3.5 s  joint1 v=-0.404 fd=+0.003  joint3 q=+1.4594 v=+0.479 fd=-0.012 力矩=-30.0
+t= 4.0 s  joint1 v=-0.408 fd=+0.000  joint3 q=+1.4555 v=+0.488 fd=-0.005 力矩=-30.0
+t= 4.5 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4545 v=+0.493 fd=-0.000 力矩=-30.0
+t= 5.0 s  joint1 v=-0.419 fd=+0.107  joint3 q=+1.4531 v=+0.462 fd=-0.141 力矩=-30.0
+t= 5.5 s  joint1 v=-0.495 fd=+0.019  joint3 q=+1.3086 v=+0.265 fd=-0.337 力矩=-30.0
+t= 6.0 s  joint1 v=-0.589 fd=+0.015  joint3 q=+1.1629 v=+0.385 fd=-0.314 力矩=-30.0
+t= 6.5 s  joint1 v=-0.666 fd=+0.025  joint3 q=+0.9996 v=+0.416 fd=-0.371 力矩=-30.0
+t= 7.0 s  joint1 v=-0.801 fd=+0.031  joint3 q=+0.7243 v=+0.117 fd=-0.789 力矩=-30.0
+t= 7.5 s  joint1 v=-0.236 fd=-0.214  joint3 q=+0.0996 v=-0.824 fd=-0.844 力矩=-4.9
+
+## 时间序列 kick_1
+第 13 组：joint3 目标 +0.0052，joint1 目标 -0.8714
+t= 0.0 s  joint1 v=+0.045 fd=+0.057  joint3 q=+2.4530 v=-0.861 fd=-0.840 力矩=-30.0
+t= 0.5 s  joint1 v=-1.075 fd=-0.712  joint3 q=+2.7482 v=+1.500 fd=+1.126 力矩=-30.0
+t= 1.0 s  joint1 v=-0.806 fd=-0.826  joint3 q=+2.9170 v=-0.002 fd=-0.000 力矩=-30.0
+t= 1.5 s  joint1 v=-1.500 fd=-1.417  joint3 q=+2.8846 v=-0.060 fd=-0.529 力矩=-30.0
+t= 2.0 s  joint1 v=-0.012 fd=-0.034  joint3 q=+2.1993 v=-1.485 fd=-1.499 力矩=-30.0
+t= 2.5 s  joint1 v=-0.173 fd=+0.050  joint3 q=+1.6625 v=-0.355 fd=-0.658 力矩=-30.0
+t= 3.0 s  joint1 v=-0.349 fd=+0.023  joint3 q=+1.4837 v=+0.315 fd=-0.137 力矩=-30.0
+t= 3.5 s  joint1 v=-0.404 fd=+0.003  joint3 q=+1.4594 v=+0.479 fd=-0.012 力矩=-30.0
+t= 4.0 s  joint1 v=-0.408 fd=+0.000  joint3 q=+1.4555 v=+0.488 fd=-0.005 力矩=-30.0
+t= 4.5 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4545 v=+0.493 fd=-0.000 力矩=-30.0
+t= 5.0 s  joint1 v=-0.411 fd=+0.010  joint3 q=+1.4546 v=+0.541 fd=+0.036 力矩=-30.0
+t= 5.5 s  joint1 v=-0.409 fd=-0.000  joint3 q=+1.4566 v=+0.484 fd=-0.007 力矩=-30.0
+t= 6.0 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4545 v=+0.493 fd=-0.001 力矩=-30.0
+t= 6.5 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4543 v=+0.494 fd=-0.000 力矩=-30.0
+t= 7.0 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4543 v=+0.494 fd=-0.000 力矩=-30.0
+t= 7.5 s  joint1 v=-0.410 fd=+0.000  joint3 q=+1.4543 v=+0.494 fd=-0.000 力矩=-30.0
