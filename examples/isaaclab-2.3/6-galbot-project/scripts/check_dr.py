@@ -32,7 +32,6 @@ import isaaclab_tasks  # noqa: F401
 from isaaclab_tasks.utils import parse_env_cfg
 
 import galbot_academy.tasks  # noqa: F401
-from galbot_academy.assets.drives import GROUPS
 from galbot_academy.tasks.manager_based.reach import mdp
 from galbot_academy.tasks.manager_based.reach.reach_dr_env_cfg import GalbotReachDREnvCfg_PLAY
 from galbot_academy.tasks.manager_based.reach.reach_env_cfg import ARM
@@ -62,7 +61,7 @@ def main() -> None:
     # 增益：写进 PhysX 的刚度、阻尼 / 参数表的标称值
     k = robot.root_physx_view.get_dof_stiffnesses()[:, arm].to(base.device)
     d = robot.root_physx_view.get_dof_dampings()[:, arm].to(base.device)
-    k0, d0 = GROUPS["arms"]["stiffness"], GROUPS["arms"]["damping"]
+    k0, d0 = cfg.scene.robot.actuators["arms"].stiffness, cfg.scene.robot.actuators["arms"].damping  # 任务里的标称值（6.5.1 起为 1600 / 80）
     print(f"  右臂刚度 / {k0:g}：{span(k / k0)}；阻尼 / {d0:g}：{span(d / d0)}（设定 ×[0.8, 1.2]）")
     print(f"    joint1 刚度各环境 {[round(x, 1) for x in k[:, 0].tolist()]}")
     arma = robot.root_physx_view.get_dof_armatures()[:, arm]

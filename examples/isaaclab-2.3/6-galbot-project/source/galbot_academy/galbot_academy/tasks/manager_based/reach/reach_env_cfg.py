@@ -113,8 +113,9 @@ class TerminationsCfg:
 
 @configclass
 class CurriculumCfg:
-    # 照搬 Franka：4500 个控制步后加大动作变化率与关节速度的惩罚
-    action_rate = CurrTerm(func=mdp.modify_reward_weight, params={"term_name": "action_rate", "weight": -0.005, "num_steps": 4500})
+    # 4500 个控制步后加大动作变化率与关节速度的惩罚。动作变化率只升到 -0.001（Franka 是 -0.005）：
+    # 6.5.1 的对照中，-0.005 时训练后段越来越多的回合"停在离目标几厘米处"，去掉又会让部分种子停不稳
+    action_rate = CurrTerm(func=mdp.modify_reward_weight, params={"term_name": "action_rate", "weight": -0.001, "num_steps": 4500})
     joint_vel = CurrTerm(func=mdp.modify_reward_weight, params={"term_name": "joint_vel", "weight": -0.001, "num_steps": 4500})
 
 
@@ -136,6 +137,10 @@ class GalbotReachEnvCfg(ManagerBasedRLEnvCfg):
         self.sim.render_interval = self.decimation
         self.episode_length_s = 12.0  # 360 个控制步，期间目标每 4 s 重采样一次
         self.viewer.eye = (3.5, 3.5, 3.5)
+        # 任务级的执行器覆盖（6.5.1）：右臂刚度 / 阻尼由资产参数表的 400 / 40 提到 1600 / 80，
+        # 重力下垂缩小到约 1/4（6.1.5 表 3），否则策略常停在离目标约 5 cm 处。资产参数表本身不改（drives.py）。
+        self.scene.robot.actuators["arms"].stiffness = 1600.0
+        self.scene.robot.actuators["arms"].damping = 80.0
 
 
 @configclass

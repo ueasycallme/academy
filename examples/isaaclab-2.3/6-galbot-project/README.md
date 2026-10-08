@@ -288,9 +288,9 @@ python scripts/random_agent.py --task Galbot-Reach-v0 --num_envs 16 --headless  
 收敛（位置 < 0.01 m，姿态 < 0.05 rad）：98.1%                                  # check_reach_targets，约 11 s，2945 MiB
 第 360 步共有 64 个环境超时重置（应为全部 64 个）                               # reach_smoke，约 24 s，2317 MiB
 第二个回合开头，右臂关节相对默认值：最小 -0.200，最大 +0.200 rad（reset 事件为 ±0.2）
-非任务关节（不含夹爪）在回合后半段离默认值最远 0.0348 rad
+非任务关节（不含夹爪）在回合后半段离默认值最远 0.0340 rad
 Galbot-Reach-v0：400 步随机动作，未出现 NaN/Inf                                 # check_env，约 25 s，2315 MiB
-  每步奖励范围 [-0.0067, -0.0008]（已乘 step_dt = 0.0333）
+  每步奖励范围 [-0.0071, -0.0007]（已乘 step_dt = 0.0333）
 ```
 
 ## 6.4.2：域随机化
@@ -306,12 +306,32 @@ python scripts/check_env.py --headless --task Galbot-Reach-DR-v0 --steps 400
 
 ```text
   右臂连杆质量 / 标称：0.9045 … 1.0994（设定 ×[0.9, 1.1]）
-  右臂刚度 / 400：0.8041 … 1.1971；阻尼 / 40：0.8026 … 1.1889（设定 ×[0.8, 1.2]）
+  右臂刚度 / 1600：0.8041 … 1.1971；阻尼 / 80：0.8026 … 1.1889（设定 ×[0.8, 1.2]）
   右臂 armature：0.0001 … 0.0049 kg·m²（设定 +[0, 0.005]）
   第二次 reset 后右臂：位置偏移 -0.1938 … 0.1875 rad（设定 ±0.2），速度 -0.0992 … 0.0983 rad/s（设定 ±0.1）
   观测 joint_pos 项的噪声：-0.0092 … 0.0097（设定 ±0.01），enable_corruption = True
   -Play 配置：enable_corruption = False；arm_mass = None，arm_gains = None，arm_armature = None；reset_robot_joints 保留 = True
 ```
+
+## 6.5.1：训练 reach
+
+PPO 配置在 `tasks/manager_based/reach/agents/rsl_rl_ppo_cfg.py`（照搬官方 Franka reach）。`Galbot-Reach-v0` 在任务里把右臂刚度、阻尼覆盖为 1600 / 80，课程学习的动作变化率惩罚终值为 -0.001（原因见 6.5.1）。
+
+```bash
+python scripts/rsl_rl/train.py --task Galbot-Reach-v0 --headless --seed 42          # 约 26 分钟，按进程显存 3041 MiB
+python scripts/eval_reach.py --headless --checkpoint logs/rsl_rl/galbot_reach/<运行>/model_999.pt
+python scripts/plot_training.py logs/rsl_rl/galbot_reach/<运行 1> <运行 2> --out generated/train/reach_curves.png
+tensorboard --logdir logs/rsl_rl/galbot_reach
+```
+
+预期（本站实测，RTX 5070，1024 个环境）：每次迭代约 1.52 s，1000 次迭代 1540–1548 s；同一种子两次训练逐位相同。`eval_reach.py` 对 model_999 的结果：
+
+```text
+seed 42：位置误差：中位数 2.73 cm，90% 分位 6.31 cm，< 2 cm 32.2%，< 5 cm 80.9%
+seed 43：位置误差：中位数 2.91 cm，90% 分位 5.80 cm，< 2 cm 25.5%，< 5 cm 83.7%
+```
+
+合格线：中位数 ≤ 3 cm 且 < 5 cm ≥ 80%。不要只用最后一个检查点，用 `eval_reach.py` 比较几个（6.5.1 表 4）。
 
 ## 目录
 
@@ -338,6 +358,7 @@ python scripts/check_env.py --headless --task Galbot-Reach-DR-v0 --steps 400
 │   ├── check_reach_targets.py   # reach 目标的可达性（6.4.1）
 │   ├── reach_smoke.py  check_env.py   # reach 冒烟检查与环境自检（6.4.1）
 │   ├── check_dr.py              # 域随机化读回检查（6.4.2）
+│   ├── eval_reach.py  plot_training.py   # 评估检查点、画训练曲线（6.5.1）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 └── source/galbot_academy/

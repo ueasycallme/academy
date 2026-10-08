@@ -62,7 +62,7 @@
 
 ## 提交
 
-设计 session 在任务"通过"后执行一次 `git commit`，提交信息 `T-<编号>: <页面标题>`。**只 `git add` 该任务的产出文件与对应任务卡、校验报告，禁止 `git add -A`**（工作树里常有其他任务的中间稿）。提交后必须运行 `tools/check_head_build.sh`（导出 HEAD 做 strict 构建），失败则立即补提交遗漏文件。检查通过后立即 `tools/push_main.sh`（D-023，自动推；它会核实已与 origin 同步，检查失败不得推送），推送触发 GitHub Actions 部署。其他 session 不执行 git 写操作。
+设计 session 在任务"通过"后执行一次 `git commit`，提交信息 `T-<编号>: <页面标题>`。**只 `git add` 该任务的产出文件与对应任务卡、校验报告，禁止 `git add -A`**（工作树里常有其他任务的中间稿）。提交后必须运行 `tools/check_head_build.sh`（导出 HEAD 做 strict 构建），失败则立即补提交遗漏文件。检查通过后立即 `tools/push_main.sh`。以上步骤已封装为 `tools/merge_task.sh '<提交信息>' <文件>...`（改任务卡状态、只 add 指定文件、按暂存树重生成占位页与首页、提交、检查、推送），合并一律用它（D-023，自动推；它会核实已与 origin 同步，检查失败不得推送），推送触发 GitHub Actions 部署。其他 session 不执行 git 写操作。
 
 ## 额度保护（D-024）
 

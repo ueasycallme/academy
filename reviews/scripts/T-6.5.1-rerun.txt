@@ -1,0 +1,66 @@
+# 校验方复跑 T-6.5.1（clean14，RTX 5070，2026-10-08）
+train_42 rc=0 t=1588s mem=3041MiB
+dir_42 logs/rsl_rl/galbot_reach/2026-10-08_16-10-44/
+eval_42_model_300 rc=0 t=30s mem=2473MiB
+eval_42_model_600 rc=0 t=29s mem=2473MiB
+eval_42_model_999 rc=0 t=27s mem=2473MiB
+train_43 rc=0 t=1589s mem=3041MiB
+dir_43 logs/rsl_rl/galbot_reach/2026-10-08_16-38-36/
+eval_43_model_300 rc=0 t=29s mem=2471MiB
+eval_43_model_600 rc=0 t=28s mem=2473MiB
+eval_43_model_999 rc=0 t=27s mem=2471MiB
+DONE
+
+## 与其他会话的重叠（GPU 上的短跑，均在容差内）
+T-2.5 overlap: 16:30:33-16:31:00 (27 s, 3 runs); +4 runs ~<60 s pending
+T-2.5 overlap: 16:32:14-16:32:29, 16:32:46-16:33:01 (4 runs, ~30 s)
+T-2.6 overlap: 16:37:31-16:37:48 (3 runs, 17 s; during seed-42 evals)
+T-2.7 overlap: 16:42:04-16:42:15, 16:42:32-16:42:42, 16:42:51-16:43:01 (3 runs ~31 s; during seed-43 training)
+T-4.13 overlap: 16:53:40-16:53:53, 16:54:17-16:54:30 (2 runs, 26 s; seed-43 training)
+T-4.13 overlap: 16:56:12-16:56:25 (13 s)
+== eval 42 model_300
+  位置误差：中位数 2.38 cm，90% 分位 4.51 cm，< 2 cm 37.0%，< 5 cm 94.8%
+  姿态误差：中位数 0.093 rad，90% 分位 0.180 rad
+  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：4 / 768
+== eval 42 model_600
+  位置误差：中位数 2.95 cm，90% 分位 7.02 cm，< 2 cm 27.3%，< 5 cm 76.0%
+  姿态误差：中位数 0.083 rad，90% 分位 0.137 rad
+  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：4 / 768
+== eval 42 model_999
+  位置误差：中位数 2.73 cm，90% 分位 6.31 cm，< 2 cm 32.2%，< 5 cm 80.9%
+  姿态误差：中位数 0.068 rad，90% 分位 0.116 rad
+  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：7 / 768
+== eval 43 model_300
+  位置误差：中位数 4.98 cm，90% 分位 11.37 cm，< 2 cm 9.6%，< 5 cm 50.3%
+  姿态误差：中位数 0.104 rad，90% 分位 0.187 rad
+  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：1 / 768
+== eval 43 model_600
+  位置误差：中位数 2.61 cm，90% 分位 5.51 cm，< 2 cm 32.7%，< 5 cm 87.1%
+  姿态误差：中位数 0.135 rad，90% 分位 0.221 rad
+  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：0 / 768
+== eval 43 model_999
+  位置误差：中位数 2.91 cm，90% 分位 5.80 cm，< 2 cm 25.5%，< 5 cm 83.7%
+  姿态误差：中位数 0.142 rad，90% 分位 0.242 rad
+  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：0 / 768
+== seed 42 日志摘录
+ Computation: 8353 steps/s (collection: 2.732s, learning 0.210s)
+ Mean action noise std: 1.00
+ Mean reward: -0.05
+ Mean episode length: 13.55
+ Curriculum/action_rate: -0.0001
+ Metrics/ee_pose/position_error: 0.3743
+ Episode_Termination/time_out: 0.0321
+ Computation: 15679 steps/s (collection: 1.513s, learning 0.055s)
+ Mean action noise std: 0.09
+ Mean reward: 0.36
+ Mean episode length: 360.00
+ Curriculum/action_rate: -0.0010
+ Metrics/ee_pose/position_error: 0.0368
+ Episode_Termination/time_out: 1.0000
+ Computation: 15883 steps/s (collection: 1.493s, learning 0.054s)
+ Mean action noise std: 0.06
+ Mean reward: 0.44
+ Mean episode length: 360.00
+ Curriculum/action_rate: -0.0010
+ Metrics/ee_pose/position_error: 0.0353
+ Episode_Termination/time_out: 1.0000
