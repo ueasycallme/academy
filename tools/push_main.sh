@@ -3,6 +3,10 @@
 set -uo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
+# 先跑 HEAD 构建检查，失败不推（D-023）
+if ! "$ROOT/tools/check_head_build.sh" >/tmp/check_head_build.log 2>&1; then
+  echo "HEAD 构建检查失败，不推送："; grep -vE "jieba|Prefix dict|Loading model|Building prefix" /tmp/check_head_build.log | tail -8; exit 1
+fi
 for attempt in 1 2; do
   if timeout 120 git push origin main >/tmp/push_main.log 2>&1; then break; fi
   echo "push 失败（第 $attempt 次）："; tail -5 /tmp/push_main.log
