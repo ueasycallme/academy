@@ -1,0 +1,11 @@
+# 最小扩展（2.7）：只有 [package]、[dependencies]、[[python.module]] 三节
+[package]
+version = "0.1.0"
+title = "Academy Hello"
+description = "启用时打印一行日志的最小扩展"
+
+[dependencies]
+"omni.usd" = {}
+
+[[python.module]]
+name = "academy.hello"

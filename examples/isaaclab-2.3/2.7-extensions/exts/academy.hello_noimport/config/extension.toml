@@ -1,0 +1,10 @@
+# 反例（2.7 常见坑）：与 academy.hello 相同，只是 __init__.py 没有导入扩展类
+[package]
+version = "0.1.0"
+title = "Academy Hello (no import)"
+
+[dependencies]
+"omni.usd" = {}
+
+[[python.module]]
+name = "academy.hello_noimport"

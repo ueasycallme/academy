@@ -1,0 +1,46 @@
+# 校验方复跑 T-2.7（Isaac Sim 5.1.0 pip，2026-10-08）
+enable_1 rc=0
+enable_2 rc=0
+probe_retry_1 rc=0
+probe_retry_2 rc=0
+probe_retry_3 rc=0
+probe_sleep_1 rc=0
+probe_sleep_2 rc=0
+probe_sleep_3 rc=0
+probe_update_1 rc=0
+probe_update_2 rc=0
+probe_update_3 rc=0
+DONE
+prefail_1 rc=0
+prefail_2 rc=0
+prefail_3 rc=0
+DONE
+probe_retry_1: try1 (no update): True try2 immediately (no update): True 
+probe_retry_2: try1 (no update): True try2 immediately (no update): True 
+probe_retry_3: try1 (no update): True try2 immediately (no update): True 
+probe_sleep_1: try1 (no update): True try2 after sleep 2 s (no update): True 
+probe_sleep_2: try1 (no update): True try2 after sleep 2 s (no update): True 
+probe_sleep_3: try1 (no update): True try2 after sleep 2 s (no update): True 
+probe_update_1: try1 (no update): True try2 after one update(): True 
+probe_update_2: try1 (no update): True try2 after one update(): True 
+probe_update_3: try1 (no update): True try2 after one update(): True 
+prefail_1: pre (before add_path): False try1 after add_path (no update): False try2 immediately (no update): False try3 after one update(): True 
+prefail_2: pre (before add_path): False try1 after add_path (no update): False try2 immediately (no update): False try3 after one update(): True 
+prefail_3: pre (before add_path): False try1 after add_path (no update): False try2 immediately (no update): False try3 after one update(): True 
+== enable_hello.py 第 1 次
+	 - kit/sdk             : found 712 packages 
+	 - kit/community       : found 648 packages 
+add_path 之后立即启用：False
+update() 一帧之后再启用：True
+启用后：is_extension_enabled = True，ext_id = academy.hello-0.1.0，目录 academy.hello
+调用扩展提供的函数：hello from academy.hello
+	Can't find extension with name: academy.helo
+ Available versions:
+	 (none found)
+ Synced registries:
+	 - kit/default         : found 2557 packages 
+	 - kit/sdk             : found 712 packages 
+	 - kit/community       : found 648 packages 
+启用拼错的名字 academy.helo：False
+academy.hello_noimport：is_extension_enabled = True
+停用后：is_extension_enabled = False
