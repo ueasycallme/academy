@@ -1,0 +1,21 @@
+#usda 1.0
+(
+    defaultPrim = "R"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+def Xform "R" (prepend apiSchemas = ["PhysicsArticulationRootAPI"])
+{
+    def Xform "a" (prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]) {
+        float physics:mass = 1
+    }
+    def Xform "b" (prepend apiSchemas = ["PhysicsRigidBodyAPI"])
+    {
+    }
+    def PhysicsRevoluteJoint "j" {
+        rel physics:body0 = </R/a>
+        rel physics:body1 = </R/missing>
+        float physics:lowerLimit = 30
+        float physics:upperLimit = -30
+    }
+}

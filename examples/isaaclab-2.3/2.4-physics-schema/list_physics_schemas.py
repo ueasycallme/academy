@@ -7,7 +7,7 @@
 
 最后做三项检查（对应 2.4 页"常见坑"）：Articulation 根是否恰好一个、是否有嵌套刚体、是否有被关闭的碰撞体。
 
-用法（两种环境都可以，见 2.2 页"两种查看方式"）::
+用法（usd-core 与 Isaac Sim 两种环境都可以，见 2.5 页"两种运行环境"）::
 
     python list_physics_schemas.py [path/to/robot.usda] [--prims 10]
 

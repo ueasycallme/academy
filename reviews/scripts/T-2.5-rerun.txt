@@ -1,0 +1,116 @@
+# 校验方复跑 T-2.5（2026-10-08）
+## usd-core 26.08
+打开用时 0.03 s；defaultPrim = /galbot_one_golf，upAxis = Z，metersPerUnit = 1.0
+按类型：转动关节 77 个，移动关节 0 个
+按名字 right_arm_joint\d：7 个
+  /galbot_one_golf/joints/right_arm_joint1  限位 [-172.1, 172.1]（度）  stiffness 1e+05  damping 1e+04
+  /galbot_one_golf/joints/right_arm_joint2  限位 [-92.1, 92.1]（度）  stiffness 1e+05  damping 1e+04
+  /galbot_one_golf/joints/right_arm_joint3  限位 [-167.1, 167.1]（度）  stiffness 1e+05  damping 1e+04
+mimic 跟随关节 left_gripper_l_inner_knuckle_joint 的 applied schemas：[]
+
+编辑目标（EditTarget）：scene.usda
+/World/Robot/joints/right_arm_joint1 stiffness：1e+05 → 2e+05
+/World/Box 的 applied schemas：['PhysicsRigidBodyAPI', 'PhysicsCollisionAPI', 'PhysicsMassAPI']
+scene.usda            0.8 KB  合成后 Prim 1512 个
+flattened.usda    20580.2 KB  合成后 Prim 1512 个
+
+scene.usda 的内容（相当于 usdcat）：
+(
+    defaultPrim = "World"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "World"
+{
+    def Xform "Robot" (
+        prepend references = @../claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/t23/repo/third_party/galbot_one_golf_description/usd/galbot_one_golf.usda@
+    )
+    {
+        over "joints"
+        {
+            over "right_arm_joint1"
+            {
+                float drive:angular:physics:stiffness = 200000
+            }
+        }
+    }
+
+    def Cube "Box" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsCollisionAPI", "PhysicsMassAPI"]
+    )
+    {
+        float physics:mass = 2
+        double size = 0.1
+        double3 xformOp:translate = (0.5, 0, 0.05)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+}
+
+厂商文件未被改动：True
+Warning: in _EnqueueDependency at line 145 of /opt/USD/pxr/usd/usdUtils/assetLocalization.cpp -- Failed to resolve reference @OmniPBR.mdl@ with computed asset path @OmniPBR.mdl@ found in layer @/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/t23/repo/third_party/galbot_one_golf_description/usd/payloads/materials.usda@.
+[通过] 依赖文件：找不到 0 个 []
+[注意] MDL 材质：['OmniPBR.mdl']：按 Kit 的 MDL 搜索路径解析，到 Isaac Sim 里确认
+[通过] 合成错误：0 个
+[通过] defaultPrim：/galbot_one_golf
+[通过] 单位与朝向：upAxis Z，metersPerUnit 1.0
+[通过] Articulation 根：1 个 ['/galbot_one_golf/base_link']
+[通过] 嵌套刚体：刚体 78 个，其中嵌套 0 个
+[通过] 关节连接：关节 77 个，指向不存在的 body 0 处 []
+[通过] 关节限位：下限大于上限 0 个 []
+[通过] 质量：未写质量的刚体 0 个 []
+[通过] 碰撞体：共 184 个，被关闭 0 个 []
+[注意] 关节驱动：非固定关节中没有 DriveAPI 的 50 个，按名字归类：{'wheel_#_passive_#_joint': 40, 'mimic 跟随': 10}
+
+共 12 项：失败 0，注意 2
+## Kit（Isaac Sim 5.1.0 pip）
+kit_check rc=0
+kit_check_bad rc=0
+kit_edit rc=0
+exc_1 rc=0
+close_1 rc=0
+exc_2 rc=0
+close_2 rc=0
+ctl_exit3 rc=3
+ctl_exc rc=1
+DONE
+== kit_check
+Starting kit application with the following args:  ['/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py', '/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/apps/isaacsim.exp.base.python.kit', '--/app/tokens/exe-path=/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/kit', '--/persistent/app/viewport/displayOptions=3094', '--/rtx/materialDb/syncLoads=True', '--/rtx/hydra/materialSyncLoads=True', '--/omni.kit.plugin/syncUsdLoads=True', '--/app/renderer/resolution/width=1280', '--/app/renderer/resolution/height=720', '--/app/window/width=1440', '--/app/window/height=900', '--/renderer/multiGpu/enabled=True', '--/app/fastShutdown=True', '--/app/installSignalHandlers=0', '--ext-folder', '/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/exts', '--ext-folder', '/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/apps', '--/physics/cudaDevice=0', '--/plugins/carb.tasking.plugin/threadCount=28', '--/plugins/omni.tbb.globalcontrol/maxThreadCount=28', '--portable', '--no-window', '--/app/window/hideUi=1']
+Passing the following args to the base kit application:  []
+Warp 1.8.2 initialized:
+   CUDA Toolkit 12.8, Driver 13.0
+   Devices:
+   Kernel cache:
+     /home/wuql/.cache/warp/1.8.2
+共 11 项：失败 0，注意 1
+（Isaac Sim 环境下进程退出码总是 0，请看上面的统计行）
+== kit_check_bad
+Starting kit application with the following args:  ['/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py', '/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/apps/isaacsim.exp.base.python.kit', '--/app/tokens/exe-path=/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/kit', '--/persistent/app/viewport/displayOptions=3094', '--/rtx/materialDb/syncLoads=True', '--/rtx/hydra/materialSyncLoads=True', '--/omni.kit.plugin/syncUsdLoads=True', '--/app/renderer/resolution/width=1280', '--/app/renderer/resolution/height=720', '--/app/window/width=1440', '--/app/window/height=900', '--/renderer/multiGpu/enabled=True', '--/app/fastShutdown=True', '--/app/installSignalHandlers=0', '--ext-folder', '/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/exts', '--ext-folder', '/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/apps', '--/physics/cudaDevice=0', '--/plugins/carb.tasking.plugin/threadCount=28', '--/plugins/omni.tbb.globalcontrol/maxThreadCount=28', '--portable', '--no-window', '--/app/window/hideUi=1']
+Passing the following args to the base kit application:  ['/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/t25/bad.usda']
+Warp 1.8.2 initialized:
+   CUDA Toolkit 12.8, Driver 13.0
+   Devices:
+   Kernel cache:
+     /home/wuql/.cache/warp/1.8.2
+共 11 项：失败 2，注意 2
+（Isaac Sim 环境下进程退出码总是 0，请看上面的统计行）
+== exc_1
+Starting kit application with the following args:  ['/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py', '/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/apps/isaacsim.exp.base.python.kit', '--/app/tokens/exe-path=/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/kit', '--/persistent/app/viewport/displayOptions=3094', '--/rtx/materialDb/syncLoads=True', '--/rtx/hydra/materialSyncLoads=True', '--/omni.kit.plugin/syncUsdLoads=True', '--/app/renderer/resolution/width=1280', '--/app/renderer/resolution/height=720', '--/app/window/width=1440', '--/app/window/height=900', '--/renderer/multiGpu/enabled=True', '--/app/fastShutdown=True', '--/app/installSignalHandlers=0', '--ext-folder', '/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/exts', '--ext-folder', '/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/apps', '--/physics/cudaDevice=0', '--/plugins/carb.tasking.plugin/threadCount=28', '--/plugins/omni.tbb.globalcontrol/maxThreadCount=28', '--portable', '--no-window', '--/app/window/hideUi=1']
+Passing the following args to the base kit application:  []
+Warp 1.8.2 initialized:
+   CUDA Toolkit 12.8, Driver 13.0
+   Devices:
+   Kernel cache:
+     /home/wuql/.cache/warp/1.8.2
+HAS_GetCompositionErrors False USD (0, 24, 5)
+== close_1
+Starting kit application with the following args:  ['/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py', '/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/apps/isaacsim.exp.base.python.kit', '--/app/tokens/exe-path=/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/kit', '--/persistent/app/viewport/displayOptions=3094', '--/rtx/materialDb/syncLoads=True', '--/rtx/hydra/materialSyncLoads=True', '--/omni.kit.plugin/syncUsdLoads=True', '--/app/renderer/resolution/width=1280', '--/app/renderer/resolution/height=720', '--/app/window/width=1440', '--/app/window/height=900', '--/renderer/multiGpu/enabled=True', '--/app/fastShutdown=True', '--/app/installSignalHandlers=0', '--ext-folder', '/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/exts', '--ext-folder', '/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/env_isaaclab/lib/python3.11/site-packages/isaacsim/apps', '--/physics/cudaDevice=0', '--/plugins/carb.tasking.plugin/threadCount=28', '--/plugins/omni.tbb.globalcontrol/maxThreadCount=28', '--portable', '--no-window', '--/app/window/hideUi=1']
+Passing the following args to the base kit application:  []
+Warp 1.8.2 initialized:
+   CUDA Toolkit 12.8, Driver 13.0
+   Devices:
+   Kernel cache:
+     /home/wuql/.cache/warp/1.8.2
+before close
+mimic 跟随关节 left_gripper_l_inner_knuckle_joint 的 applied schemas：['PhysxJointAPI', 'PhysxMimicJointAPI:rotZ', 'PhysicsJointStateAPI:angular', 'IsaacJointAPI']
+/World/Box 的 applied schemas：['PhysicsRigidBodyAPI', 'PhysicsCollisionAPI', 'PhysicsMassAPI']
