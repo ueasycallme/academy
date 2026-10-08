@@ -1,0 +1,56 @@
+# 校验方复跑 T-2.3（usd-core 26.08，干净仓库副本，2026-10-08）
+== livrps（两次逐字相同）
+合成结果：mass = 1.0（L 本地）
+删掉本地值 → mass = 2.0（I 继承）
+删掉 /_class 上的值 → mass = 3.0（V 变体）
+删掉变体里的值 → mass = 4.0（R 引用）
+删掉引用 → mass = 5.0（P 载荷）
+删掉载荷 → mass = 6.0（S 特化）
+== cache（两次逐字相同）
+第一次打开：mass = 1.0
+改文件后，第一个 Stage 还开着，重新打开：mass = 1.0
+对该 Layer 调用 Reload() 后：mass = 9.0
+再改成 5.0，并关掉所有 Stage 后重新打开：mass = 5.0
+== inspect（两次逐字相同）
+默认 Prim：/galbot_one_golf
+
+默认 Prim 上的合成弧（由强到弱）：
+  Root         → galbot_one_golf.usda
+  Variant      → galbot_one_golf.usda
+  Payload      → payloads/Physics/physx.usda
+  Variant      → galbot_one_golf.usda
+  Payload      → payloads/Sensor/none.usda
+  Variant      → galbot_one_golf.usda
+  Payload      → payloads/Robot/none.usda
+  Variant      → galbot_one_golf.usda
+  Payload      → payloads/ROS/none.usda
+  Reference    → payloads/base.usda
+
+变体集（当前选择 / 可选项）：
+  Physics  选 physx     可选 ['none', 'physics', 'physx']
+  Sensor   选 none      可选 ['none', 'sensors']
+  Robot    选 none      可选 ['none', 'robot']
+  ROS      选 none      可选 ['none', 'ros2']
+
+载荷：
+  全部加载（默认）：Prim 1517 个，刚体 78，关节 77，用到的 Layer 13 个
+  不加载载荷（LoadNone）：Prim 7 个，刚体 0，关节 0，用到的 Layer 8 个
+
+在 Session Layer 里把变体 Physics 切到 none：
+  Prim 1440 个，刚体 0，关节 0，用到的 Layer 12 个
+  根 Layer 里的选择仍是：physx；Session Layer 里是：none
+
+清空 Session Layer 后，用到的 Layer（Physics = physx）：
+  payloads/Physics/physics.usda
+  payloads/Physics/physx.usda
+  payloads/ROS/none.usda
+  payloads/Robot/none.usda
+  payloads/Sensor/none.usda
+  payloads/base.usda
+  payloads/geometries.usd
+  payloads/instances.usda
+  payloads/materials.usda
+  payloads/right_finger_collisions.usda
+  payloads/robot.usda
+  galbot_one_golf.usda
+== 运行前后 18 个 USD 文件 md5 相同
