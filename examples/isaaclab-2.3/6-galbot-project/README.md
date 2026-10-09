@@ -386,6 +386,16 @@ python scripts/check_export.py $CK     # 离线核对 exported/policy.pt 与 pol
 - 评估：除"位置误差：均值 3.29 cm，最大 11.29 cm"一行（6.6.1 新增）外，与 6.5.1 相同。
 - `check_export.py`：TorchScript 与检查点 actor 的输出最大差为 0；ONNX 结构检查通过，输入 `obs` [1, 28]，输出 `actions` [1, 7]。
 
+## 7.3：调试
+
+```bash
+python scripts/debug_step.py --headless                # 1 个环境、零动作 3 步，逐项打印观测、奖励、指令，检查 NaN
+python scripts/debug_step.py --headless --breakpoint   # 第 1 步后停进 pdb
+python scripts/debug_step.py --headless --debugpy      # 在 127.0.0.1:5678 等 VS Code attach（需 pip install debugpy）
+```
+
+预期（本站实测）：`环境数 1，step_dt 0.0333 s，动作维数 7`；第 1 步总奖励 −0.0030，等于各奖励项之和（−0.0897）× step_dt；`观测中有 NaN：{'policy': False}`。用时约 17 s，显存 2.3 GB，主机内存 3.4 GB。
+
 ## 目录
 
 ```text

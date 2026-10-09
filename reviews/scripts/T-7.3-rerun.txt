@@ -1,0 +1,40 @@
+# 校验方复跑 T-7.3（2026-10-09）
+== debug_step（第 1 次，两次输出逐行相同）
+    actions          tensor([0., 0., 0., 0., 0., 0., 0.], device='cuda:0')
+第 1 步：总奖励 -0.0030，terminated False，truncated False
+    奖励 end_effector_position_tracking               -0.05760
+    奖励 end_effector_position_tracking_fine_grained  +0.00063
+    奖励 end_effector_orientation_tracking            -0.03197
+    奖励 action_rate                                  -0.00000
+    奖励 joint_vel                                    -0.00074
+    指令 ee_pose（根坐标系）tensor([ 0.519, -0.318,  1.260,  0.706, -0.595, -0.221,  0.314], device='cuda:0')
+    观测中有 NaN：{'policy': False}
+  观测组 policy（28 维）
+    joint_pos        tensor([ 0.020, -0.155, -0.017, -0.145, -0.092, -0.004,  0.050], device='cuda:0')
+    joint_vel        tensor([-0.631,  1.426,  0.283,  1.277,  1.500,  0.083, -1.007], device='cuda:0')
+    pose_command     tensor([ 0.519, -0.318,  1.260,  0.706, -0.595, -0.221,  0.314], device='cuda:0')
+    actions          tensor([0., 0., 0., 0., 0., 0., 0.], device='cuda:0')
+第 2 步：总奖励 -0.0027，terminated False，truncated False
+    奖励 end_effector_position_tracking               -0.05763
+    奖励 end_effector_position_tracking_fine_grained  +0.00063
+    奖励 end_effector_orientation_tracking            -0.02197
+    奖励 action_rate                                  -0.00000
+    奖励 joint_vel                                    -0.00057
+    指令 ee_pose（根坐标系）tensor([ 0.519, -0.318,  1.260,  0.706, -0.595, -0.221,  0.314], device='cuda:0')
+    观测中有 NaN：{'policy': False}
+第 3 步：总奖励 -0.0024，terminated False，truncated False
+    奖励 end_effector_position_tracking               -0.06020
+    奖励 end_effector_position_tracking_fine_grained  +0.00048
+    奖励 end_effector_orientation_tracking            -0.01309
+    奖励 action_rate                                  -0.00000
+    奖励 joint_vel                                    -0.00033
+    指令 ee_pose（根坐标系）tensor([ 0.519, -0.318,  1.260,  0.706, -0.595, -0.221,  0.314], device='cuda:0')
+    观测中有 NaN：{'policy': False}
+== pdb（管道送入 p env.num_envs / p type(env).__name__ / p env.reward_buf / c）
+(Pdb) 1
+(Pdb) 'ManagerBasedRLEnv'
+(Pdb) tensor([-0.003], device='cuda:0')
+(Pdb) 第 2 步：总奖励 -0.0027，terminated False，truncated False
+== debugpy（独立目录安装 1.8.22，不改环境）+ 最小 DAP 客户端
+initialize True
+configurationDone True
