@@ -404,6 +404,22 @@ python scripts/plot_lift_groups.py logs/rsl_rl/galbot_lift/<运行 1> … --out 
 - 训练：2048 个环境时每次迭代约 3 s，按进程显存约 3.3 GB，主机内存约 7.1 GB。配置文件里的默认环境数是 1024（第 6 部分的默认上限），训练时用 `--num_envs 2048`。
 - 评估（当前配置，种子 42，model_1499）：`成功率 0.0%`。按 6.4.3 页的合格线（≥ 70%）未达标，页面"待续"一节列了后续候选。
 
+## 6.2.3：批量克隆与性能
+
+修改：`scripts/scene_bench.py`（新增克隆用时、首次 reset、一个物理步的"写入 / 步进 / 更新"拆分、分阶段 RSS、MemAvailable 最低值，以及单因素开关；6.2.1 的原有输出不变）。
+
+```bash
+python scripts/scene_bench.py --headless --num_envs 2048                        # 基线
+python scripts/scene_bench.py --headless --num_envs 2048 --no_self_collision    # 单因素：关自碰撞
+python scripts/scene_bench.py --headless --num_envs 2048 --no_filter            # 单因素：filter_collisions=False
+python scripts/scene_bench.py --headless --num_envs 2048 --no_replicate         # 单因素：replicate_physics=False
+python scripts/scene_bench.py --headless --num_envs 2048 --env_spacing 1.0
+python scripts/scene_bench.py --headless --num_envs 2048 --table
+python scripts/scene_bench.py --headless --num_envs 1024 --task_env --debug_vis off   # Galbot-Reach-v0 的 env.step 计时
+```
+
+预期（本站实测，RTX 5070、16 GB 主机内存，2026-10-09），2048 个环境：`建场景 7.x s（其中克隆 5.9 s），reset 3.2 s；每个物理步 19.0 ms（拆分：写入 0.7 / 步进 18.2 / 更新 0.1 ms）`；RSS 约 6.3 GiB，按进程显存 3717 MiB。4096 个环境的 RSS 约 10 GiB，在 16 GB 主机上擦边（页面表 5）；开跑前先看 `free -g`。
+
 ## 6.2.2：腕部相机与传感器
 
 新增：`scenes/sensors.py`（`make_sensor_scene_cfg()`：在 lift 场景上按开关加右腕相机、TCP→方块的 FrameTransformer、两个指尖的接触传感器）、`scripts/check_sensors.py`、`scripts/plot_wrist_camera.py`。不改训练配置。
@@ -452,7 +468,7 @@ python scripts/debug_step.py --headless --debugpy      # 在 127.0.0.1:5678 等 
 │   ├── check_actuator_groups.py # 执行器分组互斥检查（6.1.6）
 │   ├── verify_galbot_cfg.py     # 验证机器人配置（6.1.6）
 │   ├── workspace.py             # 手臂可达范围（6.2.1）
-│   ├── scene_bench.py           # reach 场景与吞吐（6.2.1）
+│   ├── scene_bench.py           # reach 场景与吞吐（6.2.1）、批量克隆与性能（6.2.3）
 │   ├── check_reach_targets.py   # reach 目标的可达性（6.4.1）
 │   ├── reach_smoke.py  check_env.py   # reach 冒烟检查与环境自检（6.4.1）
 │   ├── check_sensors.py  plot_wrist_camera.py   # 腕部相机、FrameTransformer、接触传感器的验证与代价，画图 1（6.2.2）
