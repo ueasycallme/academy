@@ -1,0 +1,9 @@
+[INFO][AppLauncher]: Loading experience file: /tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/b3b5c5a0-a008-4fc3-a226-529016dee73c/scratchpad/clean14/IsaacLab/apps/isaaclab.python.kit
+[Warning] [simulation_app.simulation_app] DISPLAY environment variable is not set, running in headless mode with --no-window flag. Set DISPLAY environment variable if you want to run in non-headless m
+2026-10-09T00:41:02Z [307ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-10-09T00:41:03Z [1,293ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-10-09T00:41:03Z [1,417ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-10-09T00:41:04Z [1,425ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-10-09T00:41:04Z [1,437ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-10-09T00:41:04Z [1,439ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-10-09T00:41:04Z [1,440ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
