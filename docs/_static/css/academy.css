@@ -206,13 +206,13 @@ nav.bd-links p.caption {             /* 章节分组名；实测官方站为 600
 .bd-article .admonition.lead-prereq > .admonition-title::before { display: none; }
 .bd-article .admonition.lead-goals p,
 .bd-article .admonition.lead-goals ul { margin-bottom: .2rem; }
-/* "前置知识"压成一行：标题与列表同行，列表项以顿号相连 */
-.bd-article .admonition.lead-prereq { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 .5rem; }
-.bd-article .admonition.lead-prereq > .admonition-title { margin: 0; }
+/* "前置知识"：标题在左，与第一项同行；多项时每项单独一行（T-SITE-13：不再用顿号相连） */
+.bd-article .admonition.lead-prereq { display: flex; flex-wrap: nowrap; align-items: baseline; gap: 0 .5rem; }
+.bd-article .admonition.lead-prereq > .admonition-title { margin: 0; flex: none; }
 .bd-article .admonition.lead-prereq > .admonition-title::after { content: "："; display: inline; position: static; background: none; width: auto; height: auto; }
-.bd-article .admonition.lead-prereq ul { display: inline; padding: 0; margin: 0; list-style: none; }
-.bd-article .admonition.lead-prereq li { display: inline; }
-.bd-article .admonition.lead-prereq li + li::before { content: "、"; }
+.bd-article .admonition.lead-prereq ul { display: block; flex: 1 1 0; min-width: 0; padding: 0; margin: 0; list-style: none; }
+.bd-article .admonition.lead-prereq li { display: block; margin: 0; }
+.bd-article .admonition.lead-prereq li > p { margin: 0; }
 
 /* ---- 5. Mermaid：白底细灰边圆角节点、正文字体、品牌绿强调；深浅色都跟随主题变量 ---- */
 .bd-content pre.mermaid svg { font-family: var(--pst-font-family-base) !important; }
