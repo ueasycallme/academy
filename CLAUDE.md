@@ -13,7 +13,7 @@ Isaac Sim / Isaac Lab 中文学习网站的内容仓库。定位是官方文档�
 
 | Session 名 | 角色 |
 |---|---|
-| `isaac-tutor-5d`（设计 session 的名字会变，以 ListAgents 为准；旧名 isaac-tutor-de、isaac-tutor-10） | 设计：大纲、规范、任务卡、裁断 |
+| `isaac-academy-master`（用户 2026-10-09 固定命名；若 ListAgents 显示不同以其为准。旧名 isaac-tutor-de、isaac-tutor-10、isaac-tutor-5d、isaac-tutor-df） | 设计：大纲、规范、任务卡、裁断 |
 | `isaac-academy-accomplish` | 实现：写 `docs/` 与 `examples/` |
 | `isaac-academy-examine` | 校验：写 `reviews/` |
 

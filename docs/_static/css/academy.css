@@ -279,24 +279,17 @@ nav.bd-links p.caption {             /* 章节分组名；实测官方站为 600
 }
 .academy-announcement-close:hover { color: var(--pst-color-text-base); }
 
-/* ---- 图文并排的引言块（T-6.1.1c）：文字在左，带细边框圆角的图在右；窄屏上下堆叠 ---- */
-.bd-article .robot-hero { display: flex; align-items: flex-start; gap: 1.5rem; margin: 1rem 0 1.5rem; }
-.bd-article .robot-hero-text { flex: 1 1 0; min-width: 0; }
-.bd-article .robot-hero-text > p:last-child { margin-bottom: 0; }
-.bd-article .robot-hero-figure { flex: 0 0 300px; }
-.bd-article .robot-hero img.robot-hero-img {
-  display: block; width: 100%; height: auto; margin: 0;
+/* ---- 图片卡片（T-6.1.1d）：{figure} 加 :class: figure-card，图居中、细边框圆角、随主题底色，说明居中小字 ---- */
+.bd-article figure.figure-card { margin: 1.25rem auto 1.5rem; }
+.bd-article figure.figure-card img {
+  max-width: 100%; height: auto;
   border: 1px solid var(--pst-color-border); border-radius: 6px; background: var(--pst-color-surface);
 }
 /* 主题在深色下给正文图片加白底与 .25rem 圆角（pydata-sphinx-theme 的 html[data-theme=dark] .bd-content img），这里改回主题变量；图片自带浅灰底，压暗一点 */
-html[data-theme="dark"] .bd-article .robot-hero img.robot-hero-img { background: var(--pst-color-surface); border-radius: 6px; filter: brightness(.85); }
-.bd-article .robot-hero-caption { margin-top: .4rem; font-size: .8rem; line-height: 1.45; color: var(--pst-color-text-muted); }
-.bd-article .robot-hero-caption p { margin: 0; }
-.bd-article .robot-hero-caption a.download::before { display: none; }  /* 去掉主题给下载链接加的图标，图说明控制在两行内 */
-@media (max-width: 767.98px) {
-  .bd-article .robot-hero { flex-direction: column; align-items: stretch; }
-  .bd-article .robot-hero-figure { flex: none; max-width: 300px; }
-}
+html[data-theme="dark"] .bd-article figure.figure-card img { background: var(--pst-color-surface); border-radius: 6px; filter: brightness(.85); }
+.bd-article figure.figure-card figcaption { text-align: center; margin-top: .4rem; font-size: .8rem; line-height: 1.45; color: var(--pst-color-text-muted); }
+.bd-article figure.figure-card figcaption p { margin: 0; text-align: center; }  /* 主题给 figcaption 内的 p 设了左对齐 */
+.bd-article figure.figure-card figcaption a.download::before { display: none; }  /* 去掉主题给下载链接加的图标 */
 
 /* ---- 图片点击放大（T-SITE-14，配合 js/lightbox.js） ---- */
 .bd-article img.academy-zoomable { cursor: zoom-in; }
