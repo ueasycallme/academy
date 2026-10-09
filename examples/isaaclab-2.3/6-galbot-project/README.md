@@ -404,6 +404,23 @@ python scripts/plot_lift_groups.py logs/rsl_rl/galbot_lift/<运行 1> … --out 
 - 训练：2048 个环境时每次迭代约 3 s，按进程显存约 3.3 GB，主机内存约 7.1 GB。配置文件里的默认环境数是 1024（第 6 部分的默认上限），训练时用 `--num_envs 2048`。
 - 评估（当前配置，种子 42，model_1499）：`成功率 0.0%`。按 6.4.3 页的合格线（≥ 70%）未达标，页面"待续"一节列了后续候选。
 
+## 6.2.2：腕部相机与传感器
+
+新增：`scenes/sensors.py`（`make_sensor_scene_cfg()`：在 lift 场景上按开关加右腕相机、TCP→方块的 FrameTransformer、两个指尖的接触传感器）、`scripts/check_sensors.py`、`scripts/plot_wrist_camera.py`。不改训练配置。
+
+```bash
+python scripts/check_sensors.py --headless --enable_cameras                       # 验证模式（4 个环境，约 25 s），图像存到 generated/sensors/
+python scripts/check_sensors.py --headless --bench none --num_envs 256            # 代价：无传感器
+python scripts/check_sensors.py --headless --bench frame --num_envs 256           # 代价：lift 自带的 ee_frame
+python scripts/check_sensors.py --headless --bench contact --num_envs 256         # 代价：两个指尖接触传感器
+python scripts/check_sensors.py --headless --enable_cameras --bench cam64 --num_envs 256   # 代价：64×64 TiledCamera（rgb + depth）
+python scripts/plot_wrist_camera.py --in_dir generated/sensors --out generated/sensors/wrist_camera.png   # 页面图 1
+```
+
+预期（本站实测，RTX 5070，2026-10-09）：
+- 验证模式：`相机位置 … 最大偏差（全部环境）0.000 mm`；`图中红色像素 … 重心 (u, v) = (74.7, 73.0)`，与上一行的投影 `(74.7, 73.7)` 相差不到 1 像素；`ee_frame：env_0 TCP 相对机器人根 [0.684, -0.071, 1.409] m`；接触力在"张开、钉住方块"阶段为 `0.00/0.00 N`，"松开方块、只靠夹持"阶段末约 `11.55/9.34 N`。按进程显存约 4.7 GB，主机内存约 6.6 GB。
+- 代价模式：见 6.2.2 页表 2。
+
 ## 7.3：调试
 
 ```bash
@@ -438,6 +455,7 @@ python scripts/debug_step.py --headless --debugpy      # 在 127.0.0.1:5678 等 
 │   ├── scene_bench.py           # reach 场景与吞吐（6.2.1）
 │   ├── check_reach_targets.py   # reach 目标的可达性（6.4.1）
 │   ├── reach_smoke.py  check_env.py   # reach 冒烟检查与环境自检（6.4.1）
+│   ├── check_sensors.py  plot_wrist_camera.py   # 腕部相机、FrameTransformer、接触传感器的验证与代价，画图 1（6.2.2）
 │   ├── check_dr.py              # 域随机化读回检查（6.4.2）
 │   ├── eval_reach.py  plot_training.py   # 评估检查点、画训练曲线（6.5.1）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
@@ -447,6 +465,6 @@ python scripts/debug_step.py --headless --debugpy      # 在 127.0.0.1:5678 等 
     └── galbot_academy/
         ├── __init__.py
         ├── assets/              # 资产路径（6.1.1）、自碰撞过滤对 physics.py（6.1.4）、驱动参数表 drives.py（6.1.5）、机器人配置 galbot.py（6.1.6）
-        ├── scenes/              # 场景配置（6.2.1 起）
+        ├── scenes/              # 场景配置：reach.py（6.2.1）、lift.py（6.4.3）、sensors.py（6.2.2）
         └── tasks/               # 任务（6.4.1 起）：manager_based/reach/
 ```
