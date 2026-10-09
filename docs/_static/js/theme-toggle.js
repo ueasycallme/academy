@@ -16,10 +16,20 @@
       /* 无痕模式等情况下 localStorage 不可用，只切换当前页面 */
     }
   };
+  // 以前存过 auto 的，立即按站点默认模式（浅色）改写，之后只在两态之间切换。放在顶层立即执行：主题脚本带 defer，
+  // 会在 DOMContentLoaded 之前调用 setTheme(data-mode)；先改好，它读到的就是 light，也不会挂上"跟随系统"的监听。
+  {
+    const root = document.documentElement;
+    let stored = null;
+    try {
+      stored = localStorage.getItem("mode");
+    } catch (e) {
+      /* 忽略 */
+    }
+    if (root.dataset.mode === "auto" || stored === "auto") apply(root.dataset.defaultMode === "dark" ? "dark" : "light");
+  }
   const setup = () => {
     const root = document.documentElement;
-    // 以前存过 auto 的，按站点默认模式（浅色）处理，之后只在两态之间切换
-    if (root.dataset.mode === "auto") apply(root.dataset.defaultMode === "dark" ? "dark" : "light");
     document.addEventListener(
       "click",
       (e) => {

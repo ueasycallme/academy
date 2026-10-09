@@ -35,3 +35,12 @@ pydata-sphinx-theme 0.16.1。从 `.venv` 中 `pydata-sphinx-theme.js.map` 的 so
 | 位置 | 问题 | 依据 | 建议 | 严重度 |
 |---|---|---|---|---|
 | `theme-toggle.js` 中 `setup()` 对 auto 的处理 | 存的是 auto 时，换成 light 的时机是在 DOMContentLoaded，这时主题已经执行过 `setTheme("auto")` | 主题源码：`setTheme` 在 mode 为 auto 时设置 `prefersDark.onchange = autoTheme`，`addModeListener` 由 defer 脚本先执行。推断有两个后果，都只发生在存过 auto 的读者的第一个页面上：① 系统为深色时，页面先按 head 内联脚本显示深色，再翻成浅色，可能闪一下；② 本页停留期间如果系统切换深浅色，`autoTheme` 仍会改写 `data-theme`，使它和 `data-mode = light` 不一致。两点都只是读源码得出的推断，headless 下无法切换系统配色，没有复现 | 把 auto → light 的转换移到脚本顶层立即执行（改写 `localStorage` 和 `dataset.mode`、`dataset.theme`）。本脚本先于 defer 的主题 JS 执行，这样主题的 `setTheme` 读到的就是 light，onchange 会被置空，也不会闪 | 建议 |
+
+## 第 2 轮：建议已采纳（复核）
+
+实现 session 把 auto → light 的转换移到了脚本顶层立即执行：`localStorage` 的 mode 或 `dataset.mode` 为 auto 时，立即 `apply(default)`。
+- **复核方法**：用新的 worktree 快照重新构建，在同样三种配置下重跑上表全部步骤，结果与第 1 轮逐行相同，页面错误和 console error 都是 0 条。
+- **建议的效果有直接证据**：主题的 `setTheme` 每次执行都会打印一条 `[PST]: Changed to <mode> mode …`。在"存的是 auto"那次加载中，这条记录是 `Changed to light mode using the light theme.`，也就是说主题收到的已经是 light，按源码 `prefersDark.onchange` 被置空，不会留下"跟随系统"的监听。全程没有出现 auto。
+- **仍未直接验证的一点**：系统深色下首屏会不会闪一下。原因与第 1 轮相同，headless 下看不到首帧。但转换已经提前到 defer 主题脚本之前，主题不会再按 auto 设置深色。
+
+结论不变：**通过**，建议已关闭。
