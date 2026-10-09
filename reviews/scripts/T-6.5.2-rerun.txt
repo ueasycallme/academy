@@ -1,0 +1,41 @@
+# 校验方复跑 T-6.5.2（clean14，RTX 5070，2026-10-08 / 09）
+## 第一批（20:02 起；20:16 因主机内存告急被停）
+ent001 rc=0 t=799s mem=3041MiB
+dir_ent001 logs/rsl_rl/galbot_reach/2026-10-08_20-02-58_ent001_s42
+eval_ent001 rc=0 t=27s mem=2471MiB
+## 第二批（00:30 起，用户放行；00:59 在 8192 启动时被停）
+base rc=0 t=794s gpu_peak=3041MiB host_rss_peak=844424MiB min_avail=6043MiB guard_killed=0
+dir_base logs/rsl_rl/galbot_reach/2026-10-09_00-30-46_base_s42
+eval_base rc=0 t=27s gpu_peak=2471MiB host_rss_peak=575037MiB min_avail=8326MiB guard_killed=0
+scale100 rc=0 t=772s gpu_peak=3105MiB host_rss_peak=845443MiB min_avail=6369MiB guard_killed=0
+dir_scale100 logs/rsl_rl/galbot_reach/2026-10-09_00-44-25_scale100_s42
+eval_scale100 rc=0 t=29s gpu_peak=2471MiB host_rss_peak=578887MiB min_avail=8283MiB guard_killed=0
+eval_hp_base_s43 rc=0 t=27s gpu_peak=2471MiB host_rss_peak=575162MiB min_avail=8353MiB guard_killed=0
+eval_hp_ent001_s43 rc=0 t=27s gpu_peak=2473MiB host_rss_peak=596579MiB min_avail=8228MiB guard_killed=0
+（host_rss_peak 一列为脚本 bug：pstree 把线程也算了一遍，数值无效；min_avail 有效）
+8192：场景创建 28.7 s，仿真启动阶段 MemAvailable 最低约 1577 MiB，未进入第 1 次迭代
+## 评估结果
+== eval_ent001
+  位置误差：中位数 1.38 cm，90% 分位 2.40 cm，< 2 cm 77.6%，< 5 cm 100.0%
+  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：0 / 768
+== eval_base
+  位置误差：中位数 2.87 cm，90% 分位 6.40 cm，< 2 cm 28.0%，< 5 cm 79.7%
+  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：4 / 768
+== eval_scale100
+  位置误差：中位数 2.39 cm，90% 分位 4.42 cm，< 2 cm 38.2%，< 5 cm 93.9%
+  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：2 / 768
+== eval_hp_base_s43
+  位置误差：中位数 3.30 cm，90% 分位 6.91 cm，< 2 cm 19.1%，< 5 cm 78.8%
+  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：0 / 768
+== eval_hp_ent001_s43
+  位置误差：中位数 1.65 cm，90% 分位 2.77 cm，< 2 cm 68.2%，< 5 cm 99.9%
+  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：0 / 768
+## 6.5.1b 检查点评估（01:1x，用户放行，前台串行）
+seed42 model_300 rc=0 avail=11176 |   位置误差：中位数 1.82 cm，90% 分位 3.04 cm，< 2 cm 59.0%，< 5 cm 99.9%
+seed42 model_600 rc=0 avail=11140 |   位置误差：中位数 1.58 cm，90% 分位 2.82 cm，< 2 cm 68.8%，< 5 cm 100.0%
+seed42 model_999 rc=0 avail=11153 |   位置误差：中位数 5.59 cm，90% 分位 12.10 cm，< 2 cm 15.5%，< 5 cm 45.2%
+seed43 model_300 rc=0 avail=11160 |   位置误差：中位数 1.89 cm，90% 分位 3.15 cm，< 2 cm 55.2%，< 5 cm 99.9%
+seed43 model_600 rc=0 avail=11174 |   位置误差：中位数 1.85 cm，90% 分位 3.37 cm，< 2 cm 56.0%，< 5 cm 99.2%
+seed43 model_999 rc=0 avail=11197 |   位置误差：中位数 6.45 cm，90% 分位 14.13 cm，< 2 cm 11.8%，< 5 cm 37.5%
+661 rc=0 |   位置误差：中位数 2.73 cm，90% 分位 6.31 cm，< 2 cm 32.2%，< 5 cm 80.9%   位置误差：均值 3.29 cm，最大 11.29 cm 
+DONE

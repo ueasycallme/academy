@@ -333,6 +333,59 @@ seed 43：位置误差：中位数 2.91 cm，90% 分位 5.80 cm，< 2 cm 25.5%�
 
 合格线：中位数 ≤ 3 cm 且 < 5 cm ≥ 80%。不要只用最后一个检查点，用 `eval_reach.py` 比较几个（6.5.1 表 4）。
 
+## 6.5.2：超参数对照
+
+本节新增：`Galbot-Reach-DR-v0` / `-DR-Play-v0` 的 rsl_rl 入口（`reach/__init__.py`）；`eval_reach.py` 的 `--action_scale`（评估改过动作尺度的策略时必须与训练一致）。
+
+每组用 Hydra 命令行只改一项，500 次迭代，评估 model_499：
+
+```bash
+T="scripts/rsl_rl/train.py --task Galbot-Reach-v0 --headless --seed 42 --max_iterations 500"
+python $T --run_name base_s42
+python $T --run_name env256_s42   --num_envs 256
+python $T --run_name env4096_s42  --num_envs 4096
+python $T --run_name scale025_s42 env.actions.arm_action.scale=0.25
+python $T --run_name scale100_s42 env.actions.arm_action.scale=1.0
+python $T --run_name std005_s42   env.rewards.end_effector_position_tracking_fine_grained.params.std=0.05
+python $T --run_name std020_s42   env.rewards.end_effector_position_tracking_fine_grained.params.std=0.2
+python $T --run_name ent001_s42   agent.algorithm.entropy_coef=0.01
+python scripts/rsl_rl/train.py --task Galbot-Reach-DR-v0 --headless --seed 42 --max_iterations 500 --run_name dr_s42
+
+python scripts/eval_reach.py --headless --checkpoint logs/rsl_rl/galbot_reach/<运行>/model_499.pt [--action_scale 0.25]
+python scripts/eval_reach.py --headless --task Galbot-Reach-DR-v0 --num_envs 256 --checkpoint ...   # 在带随机化的任务上评估
+```
+
+预期（本站实测，RTX 5070；中位数 / < 5 cm）：基线 2.87 cm / 79.7%（种子 43：3.30 / 78.8%）；env256 6.09 / 37.8%；env4096 5.09 / 49.2%；scale0.25 14.07 / 7.6%；scale1.0 2.39 / 93.9%；std0.05 3.86 / 69.5%；std0.2 4.36 / 56.9%；熵系数 0.01 1.38 / 100%（种子 43：1.65 / 99.9%）；域随机化 2.99 / 89.3%。每组约 13 分钟（env4096 约 23 分钟），显存约 3 GB（env4096 约 5 GB）。基线一组与 6.5.1 种子 42 的前 500 次迭代逐位相同。容量：8192 个环境显存约 7.6 GB 放得下，但在 16 GB 主机内存下启动阶段可能内存不足（见 6.5.2 表 6）；16384 个环境显存不足。
+
+熵系数 0.01 按主线预算训满 1000 次后，两个种子的 model_999 都不合格（5.59 cm / 45.2%、6.45 cm / 37.5%），主线保持 0.001，见 6.5.2"训练预算与消融结论"（D-028）。
+
+## 6.5.3：实验管理
+
+`scripts/collect_runs.py` 离线汇总多次训练（只需 PyYAML 与 tensorboard，不启动 Isaac Sim）：
+
+```bash
+python scripts/collect_runs.py logs/rsl_rl/galbot_reach --base <基线运行目录名> [--filter <目录名包含的字符串>]
+```
+
+输出 Markdown 表：运行、种子、迭代、检查点数、相对基线的配置改动（由 `params/agent.yaml`、`env.yaml` 逐项比较得出）、训练日志末 20 次的位置误差。对 6.5.2 那批运行的输出见页面。运行命名约定 `--run_name <改动>_s<种子>`，见 6.5.3 表 3。
+
+## 6.6.1：回放与录视频
+
+回放 6.5.1 种子 42 的检查点（务必写完整路径，否则会加载最新的运行，见 6.6.1 坑一）：
+
+```bash
+CK=logs/rsl_rl/galbot_reach/<6.5.1 种子 42 的运行>/model_999.pt
+python scripts/rsl_rl/play.py --task Galbot-Reach-Play-v0 --checkpoint $CK                                  # 带界面，关窗口退出
+python scripts/rsl_rl/play.py --task Galbot-Reach-Play-v0 --headless --video --video_length 360 --checkpoint $CK   # 录 12 s 视频后退出
+python scripts/eval_reach.py --headless --checkpoint $CK
+python scripts/check_export.py $CK     # 离线核对 exported/policy.pt 与 policy.onnx
+```
+
+预期（本站实测，RTX 5070）：
+- 视频：`<运行>/videos/play/rl-video-step-0.mp4`，359 帧，30 fps，1280×720，约 1.2 MB；用时 37 s，显存峰值 4.8 GB，主机内存峰值 8.4 GB。
+- 评估：除"位置误差：均值 3.29 cm，最大 11.29 cm"一行（6.6.1 新增）外，与 6.5.1 相同。
+- `check_export.py`：TorchScript 与检查点 actor 的输出最大差为 0；ONNX 结构检查通过，输入 `obs` [1, 28]，输出 `actions` [1, 7]。
+
 ## 目录
 
 ```text

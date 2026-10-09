@@ -22,17 +22,17 @@ gym.register(
     kwargs={"env_cfg_entry_point": f"{__name__}.reach_env_cfg:GalbotReachEnvCfg_PLAY", "rsl_rl_cfg_entry_point": _RSL_RL},
 )
 
-# 6.4.2：加域随机化
+# 6.4.2：加域随机化（rsl_rl 入口在 6.5.2 加入，用于有无域随机化的对照训练）
 gym.register(
     id="Galbot-Reach-DR-v0",
     entry_point="isaaclab.envs:ManagerBasedRLEnv",
     disable_env_checker=True,
-    kwargs={"env_cfg_entry_point": f"{__name__}.reach_dr_env_cfg:GalbotReachDREnvCfg"},
+    kwargs={"env_cfg_entry_point": f"{__name__}.reach_dr_env_cfg:GalbotReachDREnvCfg", "rsl_rl_cfg_entry_point": _RSL_RL},
 )
 
 gym.register(
     id="Galbot-Reach-DR-Play-v0",
     entry_point="isaaclab.envs:ManagerBasedRLEnv",
     disable_env_checker=True,
-    kwargs={"env_cfg_entry_point": f"{__name__}.reach_dr_env_cfg:GalbotReachDREnvCfg_PLAY"},
+    kwargs={"env_cfg_entry_point": f"{__name__}.reach_dr_env_cfg:GalbotReachDREnvCfg_PLAY", "rsl_rl_cfg_entry_point": _RSL_RL},
 )

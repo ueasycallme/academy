@@ -31,7 +31,7 @@ class GalbotReachPPORunnerCfg(RslRlOnPolicyRunnerCfg):
         value_loss_coef=1.0,
         use_clipped_value_loss=True,
         clip_param=0.2,
-        entropy_coef=0.001,
+        entropy_coef=0.001,  # 0.01 在 500 次迭代内更好、1000 次退化，见 6.5.2"训练预算与消融结论"（D-028）
         num_learning_epochs=8,
         num_mini_batches=4,
         learning_rate=1.0e-3,

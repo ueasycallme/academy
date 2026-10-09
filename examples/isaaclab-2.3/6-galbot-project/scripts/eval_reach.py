@@ -6,7 +6,7 @@
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """评估一个 reach 策略（6.5.1）：跑一个完整回合，在每段目标（4 s）的最后一步记录 TCP 误差。
 
-报告位置误差的中位数、90% 分位、小于 2 cm / 5 cm 的比例，姿态误差的中位数；
+报告位置误差的中位数、90% 分位、小于 2 cm / 5 cm 的比例、均值与最大值（6.6.1），姿态误差的中位数；
 并统计"停住但没到"的样本：误差大于 5 cm、而最后 0.5 s 内右臂几乎没动的（用位置变化判断，不用速度读数，见 6.1.5）。
 
     python scripts/eval_reach.py --headless --checkpoint logs/rsl_rl/galbot_reach/<运行>/model_999.pt
@@ -81,6 +81,7 @@ def main() -> None:
     print(f"{args.checkpoint}：{args.num_envs} 个环境 × {n // args.num_envs} 段目标 = {n} 个样本（每段末尾）")
     print(f"  位置误差：中位数 {pe.median().item() * 100:.2f} cm，90% 分位 {pe.quantile(0.9).item() * 100:.2f} cm，"
           f"< 2 cm {(pe < 0.02).float().mean().item() * 100:.1f}%，< 5 cm {(pe < 0.05).float().mean().item() * 100:.1f}%")
+    print(f"  位置误差：均值 {pe.mean().item() * 100:.2f} cm，最大 {pe.max().item() * 100:.2f} cm")  # 6.6.1 加
     print(f"  姿态误差：中位数 {re.median().item():.3f} rad，90% 分位 {re.quantile(0.9).item():.3f} rad")
     print(f"  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：{stuck} / {n}")
     env.close()
