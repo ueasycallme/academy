@@ -437,6 +437,21 @@ python scripts/plot_wrist_camera.py --in_dir generated/sensors --out generated/s
 - 验证模式：`相机位置 … 最大偏差（全部环境）0.000 mm`；`图中红色像素 … 重心 (u, v) = (74.7, 73.0)`，与上一行的投影 `(74.7, 73.7)` 相差不到 1 像素；`ee_frame：env_0 TCP 相对机器人根 [0.684, -0.071, 1.409] m`；接触力在"张开、钉住方块"阶段为 `0.00/0.00 N`，"松开方块、只靠夹持"阶段末约 `11.55/9.34 N`。按进程显存约 4.7 GB，主机内存约 6.6 GB。
 - 代价模式：见 6.2.2 页表 2。
 
+## 7.2：性能分析
+
+新增：`scripts/profile_env.py`（Galbot-Reach-v0 的 env.step 计时、物理所占时间、torch 显存统计与按进程显存的对照；`--cprofile` 在脚本内做 cProfile）、`scripts/summarize_trace.py`（汇总 Kit CPU profiler 写出的 Chrome trace，只用标准库）。
+
+```bash
+python scripts/profile_env.py --headless --num_envs 1024
+python scripts/profile_env.py --headless --num_envs 1024 --cprofile generated/profile/env_step.prof
+python scripts/rsl_rl/train.py --task Galbot-Reach-v0 --headless --max_iterations 10 --kit_args \
+  "--/app/profilerBackend=cpu --/app/profileFromStart=1 --/plugins/carb.profiler-cpu.plugin/saveProfile=1 --/plugins/carb.profiler-cpu.plugin/compressProfile=0 --/plugins/carb.profiler-cpu.plugin/filePath=/tmp/kit_trace.json"
+python scripts/summarize_trace.py /tmp/kit_trace.json --top 20
+py-spy record --idle -r 50 -o flame.svg -- python scripts/rsl_rl/train.py --task Galbot-Reach-v0 --headless --max_iterations 30
+```
+
+预期（本站实测，RTX 5070，2026-10-10）：`profile_env.py` 打印 `每个环境步 58.6 ms，其中物理（4 次 sim.step）52.4 ms`、`memory_allocated 9 MiB … nvidia-smi 按进程 2977 MiB`；`--cprofile` 的第一行是 `fetch_results`（约占 88%）；`summarize_trace.py` 中 `PhysX simulate` 平均约 13.7 ms。py-spy 需另装（本站 0.4.2）。
+
 ## 7.3：调试
 
 ```bash
@@ -471,6 +486,7 @@ python scripts/debug_step.py --headless --debugpy      # 在 127.0.0.1:5678 等 
 │   ├── scene_bench.py           # reach 场景与吞吐（6.2.1）、批量克隆与性能（6.2.3）
 │   ├── check_reach_targets.py   # reach 目标的可达性（6.4.1）
 │   ├── reach_smoke.py  check_env.py   # reach 冒烟检查与环境自检（6.4.1）
+│   ├── profile_env.py  summarize_trace.py   # 性能分析：env.step 计时与内存读数、汇总 Kit trace（7.2）
 │   ├── check_sensors.py  plot_wrist_camera.py   # 腕部相机、FrameTransformer、接触传感器的验证与代价，画图 1（6.2.2）
 │   ├── check_dr.py              # 域随机化读回检查（6.4.2）
 │   ├── eval_reach.py  plot_training.py   # 评估检查点、画训练曲线（6.5.1）
