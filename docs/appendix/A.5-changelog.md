@@ -27,10 +27,11 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-09 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 新增 | 3.0 版本追踪 | T-0.8j、T-8.6、T-8.6c、T-9.5 |
+| 2026-10-09 | [官方任务拆解：Franka lift](../9-source/9.5-franka-lift.md) | 新增 | 官方任务拆解：Franka lift（第 9 部分 P2 第一页） | T-9.5 |
 | 2026-10-09 | [安装 Isaac Sim 6.1 + Isaac Lab 3.0-EA](../1-env/1.5-install-61-30.md) | 新增 | 安装 Isaac Sim 6.1 + Isaac Lab 3.0-EA（第 1 部分 P2 | T-1.5、T-8.6c |
 | 2026-10-09 | [3.0 改了什么、为什么改](../8-frontier/8.1-what-changed.md) | 新增 | 3.0 改了什么、为什么改（第 8 部分 P1 第一页）；前置知识一项一个链接（12 页 13 处拆开） | T-8.1、T-8.6b、T-8.6c、T-SITE-13b |
 | 2026-10-09 | [2.3 → 3.0 迁移指南](../8-frontier/8.4-migration-23-30.md) | 新增 | 2.3 → 3.0 迁移指南（第 8 部分 P1） | T-8.4、T-8.6b、T-8.6c |
-| 2026-10-09 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 新增 | 3.0 版本追踪 | T-0.8j、T-8.6、T-8.6c |
 | 2026-10-09 | [认识 Galbot One Golf 描述仓库](../6-galbot/1-asset/6.1.1-galbot-repo.md) | 修订 | 第 6 部分展示 Galbot One Golf 图片；Galbot 图片改为图文并排卡片；Galbot 图片单独一行居中，说明居中 | T-6.1.1b、T-6.1.1c、T-6.1.1d、T-8.6b、T-SITE-14 |
 | 2026-10-09 | [① 资产](../6-galbot/1-asset/index.md) | 修订 | 第 6 部分展示 Galbot One Golf 图片；Galbot 图片改为图文并排卡片；Galbot 图片单独一行居中，说明居中 | T-6.1.1b、T-6.1.1c、T-6.1.1d、T-SITE-14 |
 | 2026-10-09 | [安装 Isaac Sim 5.1 + Isaac Lab 2.3.2（pip 方式）](../1-env/1.4-install-51-232.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开） | T-8.6b、T-SITE-13b |
