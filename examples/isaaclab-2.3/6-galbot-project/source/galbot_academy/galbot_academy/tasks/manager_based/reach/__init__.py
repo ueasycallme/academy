@@ -1,5 +1,9 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
+#
+# 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2（rsl_rl 3.1.2）
+# 验证日期：2026-10-08
+# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """Galbot 单臂 reach：Galbot-Reach-v0（6.4.1）与加域随机化的 Galbot-Reach-DR-v0（6.4.2）。rsl_rl 的配置入口在 6.5.1 加入。"""
 
 import gymnasium as gym

@@ -3,6 +3,7 @@
 #
 # 验证版本：usd-core 26.08；Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
 # 验证日期：2026-10-08
+# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04（Isaac Sim 方式运行时）
 """用 pxr 读、筛选、修改、保存 USD（2.5）。
 
 1. 打开 Galbot 厂商 USD，读元数据，按类型、按名字筛选关节，读关节限位与驱动参数；

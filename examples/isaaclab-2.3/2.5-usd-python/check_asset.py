@@ -3,6 +3,7 @@
 #
 # 验证版本：usd-core 26.08；Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
 # 验证日期：2026-10-08
+# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04（Isaac Sim 方式运行时）
 """机器人资产的静态检查清单（2.5）：在送进仿真之前，先用 pxr 查一遍常见问题。
 
 每项给出 通过 / 注意 / 失败；在 usd-core 环境下，有"失败"时退出码为 1，可以放进 CI（Isaac Sim 环境下退出码总是 0）。两种运行方式同 2.2 的 inspect_usd.py::

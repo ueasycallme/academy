@@ -3,6 +3,7 @@
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；另在 usd-core 26.8 上验证
 # 验证日期：2026-09-30
+# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04（Isaac Sim 方式运行时）
 """列出一个 USD 资产上贴了哪些物理 Schema，并统计刚体、关节、驱动、碰撞体，找出 Articulation 根。
 
 最后做三项检查（对应 2.4 页"常见坑"）：Articulation 根是否恰好一个、是否有嵌套刚体、是否有被关闭的碰撞体。

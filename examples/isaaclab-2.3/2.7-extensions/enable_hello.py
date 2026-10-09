@@ -3,6 +3,7 @@
 #
 # 验证版本：Isaac Sim 5.1.0（pip）
 # 验证日期：2026-10-08
+# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04（Isaac Sim 方式运行时）
 """在 Isaac Sim 里启用本目录的最小扩展（2.7），并演示三个常见坑。
 
     python enable_hello.py

@@ -27,21 +27,42 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-09 | [安装 Isaac Sim 6.1 + Isaac Lab 3.0-EA](../1-env/1.5-install-61-30.md) | 新增 | 安装 Isaac Sim 6.1 + Isaac Lab 3.0-EA（第 1 部分 P2；1.5 固定句与 6 个示例文件头注 | T-1.5、T-8.6c、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [USD 核心概念](../2-usd-kit/2.2-usd-concepts.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [Layer 与合成](../2-usd-kit/2.3-layers-composition.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [用 Python 操作 USD](../2-usd-kit/2.5-usd-python.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开）；术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-A.2、T-AUDIT-01a、T-AUDIT-01b、T-SITE-13b |
+| 2026-10-09 | [扩展机制与 Isaac Sim 扩展集](../2-usd-kit/2.7-extensions.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [SimulationApp 与 Python 启动方式](../3-isaacsim/3.2-simulation-app.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [PhysX 物理：刚体与碰撞](../3-isaacsim/3.3-rigid-collision.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [关节与 Articulation](../3-isaacsim/3.4-articulation.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [资产导入：URDF 与 MJCF Importer](../3-isaacsim/3.5-urdf-mjcf-import.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [Isaac Lab 解决什么问题](../4-isaaclab/4.1-why-isaac-lab.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [Observation / Action Manager](../4-isaaclab/4.10-observation-action.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [Reward / Termination / Curriculum Manager](../4-isaaclab/4.11-reward-termination-curriculum.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [Command Manager](../4-isaaclab/4.13-command-manager.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开）；术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b、T-SITE-13b |
+| 2026-10-09 | [InteractiveScene：场景作为配置](../4-isaaclab/4.5-interactive-scene.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [Assets：Articulation / RigidObject / DeformableObject](../4-isaaclab/4.6-assets.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [Actuator 模型](../4-isaaclab/4.7-actuators.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [用一个任务理解 MDP](../5-rl/5.1-mdp.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [策略、价值与训练在优化什么](../5-rl/5.2-policy-value.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [PPO 工作流程](../5-rl/5.3-ppo.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [为什么需要几千个并行环境](../5-rl/5.4-parallel-envs.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-6.5.1b、T-6.5.2、T-6.6.1、T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [奖励设计的直觉](../5-rl/5.5-reward-design.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [观测设计与对称性](../5-rl/5.6-observation-design.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开）；术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-A.2、T-AUDIT-01a、T-AUDIT-01b、T-SITE-13b |
+| 2026-10-09 | [模仿学习与 RL 的选择](../5-rl/5.7-il-vs-rl.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开）；术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b、T-SITE-13b |
+| 2026-10-09 | [认识 Galbot One Golf 描述仓库](../6-galbot/1-asset/6.1.1-galbot-repo.md) | 修订 | 第 6 部分展示 Galbot One Golf 图片；Galbot 图片改为图文并排卡片；Galbot 图片单独一行居中，说明居中；术语首次详细讲解页补英文对照（29 页） | T-6.1.1b、T-6.1.1c、T-6.1.1d、T-8.6b、T-AUDIT-01a、T-AUDIT-01b、T-SITE-14 |
+| 2026-10-09 | [从 URDF 导入 Isaac Sim](../6-galbot/1-asset/6.1.2-import-urdf.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [碰撞体、质量与惯量调校](../6-galbot/1-asset/6.1.4-collision-mass-inertia.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [关节驱动参数调校](../6-galbot/1-asset/6.1.5-joint-drive-tuning.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
+| 2026-10-09 | [3.0 改了什么、为什么改](../8-frontier/8.1-what-changed.md) | 新增 | 3.0 改了什么、为什么改（第 8 部分 P1 第一页）；前置知识一项一个链接（12 页 13 处拆开）；术语首次详细讲解页补英文对照（29 页） | T-8.1、T-8.6b、T-8.6c、T-AUDIT-01a、T-AUDIT-01b、T-SITE-13b |
 | 2026-10-09 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 新增 | 3.0 版本追踪 | T-0.8j、T-8.6、T-8.6c、T-9.5 |
 | 2026-10-09 | [官方任务拆解：Franka lift](../9-source/9.5-franka-lift.md) | 新增 | 官方任务拆解：Franka lift（第 9 部分 P2 第一页） | T-9.5 |
-| 2026-10-09 | [安装 Isaac Sim 6.1 + Isaac Lab 3.0-EA](../1-env/1.5-install-61-30.md) | 新增 | 安装 Isaac Sim 6.1 + Isaac Lab 3.0-EA（第 1 部分 P2 | T-1.5、T-8.6c |
-| 2026-10-09 | [3.0 改了什么、为什么改](../8-frontier/8.1-what-changed.md) | 新增 | 3.0 改了什么、为什么改（第 8 部分 P1 第一页）；前置知识一项一个链接（12 页 13 处拆开） | T-8.1、T-8.6b、T-8.6c、T-SITE-13b |
 | 2026-10-09 | [2.3 → 3.0 迁移指南](../8-frontier/8.4-migration-23-30.md) | 新增 | 2.3 → 3.0 迁移指南（第 8 部分 P1） | T-8.4、T-8.6b、T-8.6c |
-| 2026-10-09 | [认识 Galbot One Golf 描述仓库](../6-galbot/1-asset/6.1.1-galbot-repo.md) | 修订 | 第 6 部分展示 Galbot One Golf 图片；Galbot 图片改为图文并排卡片；Galbot 图片单独一行居中，说明居中 | T-6.1.1b、T-6.1.1c、T-6.1.1d、T-8.6b、T-SITE-14 |
 | 2026-10-09 | [① 资产](../6-galbot/1-asset/index.md) | 修订 | 第 6 部分展示 Galbot One Golf 图片；Galbot 图片改为图文并排卡片；Galbot 图片单独一行居中，说明居中 | T-6.1.1b、T-6.1.1c、T-6.1.1d、T-SITE-14 |
 | 2026-10-09 | [安装 Isaac Sim 5.1 + Isaac Lab 2.3.2（pip 方式）](../1-env/1.4-install-51-232.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开） | T-8.6b、T-SITE-13b |
-| 2026-10-09 | [用 Python 操作 USD](../2-usd-kit/2.5-usd-python.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开） | T-8.6b、T-A.2、T-SITE-13b |
 | 2026-10-09 | [Omniverse Kit 是什么](../2-usd-kit/2.6-what-is-kit.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开） | T-8.6b、T-SITE-13b |
-| 2026-10-09 | [Command Manager](../4-isaaclab/4.13-command-manager.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开） | T-8.6b、T-SITE-13b |
 | 2026-10-09 | [SimulationContext 与 SimulationCfg](../4-isaaclab/4.4-simulation-context.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开） | T-8.6b、T-SITE-13b |
 | 2026-10-09 | [Manager-based 环境：总览](../4-isaaclab/4.9-manager-based-env.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开） | T-8.6b、T-SITE-13b |
-| 2026-10-09 | [观测设计与对称性](../5-rl/5.6-observation-design.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开） | T-8.6b、T-A.2、T-SITE-13b |
-| 2026-10-09 | [模仿学习与 RL 的选择](../5-rl/5.7-il-vs-rl.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开） | T-8.6b、T-SITE-13b |
 | 2026-10-09 | [制作 Isaac Lab 的 ArticulationCfg](../6-galbot/1-asset/6.1.6-articulation-cfg.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开） | T-8.6b、T-SITE-13b |
 | 2026-10-09 | [headless 与远程运行](../7-infra/7.1-headless-remote.md) | 新增 | headless 与远程运行（第 7 部分 P1 完成）；前置知识一项一个链接（12 页 13 处拆开） | T-7.1、T-8.6b、T-SITE-13b |
 | 2026-10-09 | [调试技巧](../7-infra/7.3-debugging.md) | 新增 | 调试技巧（第 7 部分 P1 第一页）；前置知识一项一个链接（12 页 13 处拆开） | T-7.3、T-8.6b、T-SITE-13b |
@@ -62,19 +83,9 @@ sources_checked: 2026-10-09
 | 2026-10-09 | [二进制安装 vs pip 安装 vs 容器](../1-env/1.7-install-methods.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [安装排障手册](../1-env/1.9-install-troubleshooting.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [为什么是 USD](../2-usd-kit/2.1-why-usd.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [USD 核心概念](../2-usd-kit/2.2-usd-concepts.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [Layer 与合成](../2-usd-kit/2.3-layers-composition.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [Schema：USD 如何描述物理](../2-usd-kit/2.4-physics-schema.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [扩展机制与 Isaac Sim 扩展集](../2-usd-kit/2.7-extensions.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [仿真循环](../3-isaacsim/3.1-sim-loop.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [Isaac Sim 的 Python API 地图](../3-isaacsim/3.11-api-map.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [SimulationApp 与 Python 启动方式](../3-isaacsim/3.2-simulation-app.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [PhysX 物理：刚体与碰撞](../3-isaacsim/3.3-rigid-collision.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [关节与 Articulation](../3-isaacsim/3.4-articulation.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [资产导入：URDF 与 MJCF Importer](../3-isaacsim/3.5-urdf-mjcf-import.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [Isaac Lab 解决什么问题](../4-isaaclab/4.1-why-isaac-lab.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [Observation / Action Manager](../4-isaaclab/4.10-observation-action.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [Reward / Termination / Curriculum Manager](../4-isaaclab/4.11-reward-termination-curriculum.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [Event Manager 与域随机化](../4-isaaclab/4.12-event-randomization.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [Direct 环境](../4-isaaclab/4.14-direct-env.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [任务注册与 Gym 接口](../4-isaaclab/4.15-task-registration.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
@@ -82,19 +93,8 @@ sources_checked: 2026-10-09
 | 2026-10-09 | [扩展模板：在 Isaac Lab 之外组织你的项目](../4-isaaclab/4.18-extension-template.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [代码仓库地图](../4-isaaclab/4.2-repo-map.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [configclass：配置即代码](../4-isaaclab/4.3-configclass.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [InteractiveScene：场景作为配置](../4-isaaclab/4.5-interactive-scene.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [Assets：Articulation / RigidObject / DeformableObject](../4-isaaclab/4.6-assets.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [Actuator 模型](../4-isaaclab/4.7-actuators.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [用一个任务理解 MDP](../5-rl/5.1-mdp.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [策略、价值与训练在优化什么](../5-rl/5.2-policy-value.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [PPO 工作流程](../5-rl/5.3-ppo.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [为什么需要几千个并行环境](../5-rl/5.4-parallel-envs.md) | 修订 | 随《用 rsl_rl 训练 reach》修订 | T-6.5.1b、T-6.5.2、T-6.6.1、T-8.6b |
-| 2026-10-09 | [奖励设计的直觉](../5-rl/5.5-reward-design.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [训练不收敛怎么排查](../5-rl/5.8-training-debug.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [从 URDF 导入 Isaac Sim](../6-galbot/1-asset/6.1.2-import-urdf.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [对比厂商 USD 与自导入 USD](../6-galbot/1-asset/6.1.3-vendor-vs-imported-usd.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [碰撞体、质量与惯量调校](../6-galbot/1-asset/6.1.4-collision-mass-inertia.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [关节驱动参数调校](../6-galbot/1-asset/6.1.5-joint-drive-tuning.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [搭建工作台场景](../6-galbot/2-scene/6.2.1-workbench-scene.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [第一个任务：单臂 reach](../6-galbot/4-task/6.4.1-reach.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [域随机化](../6-galbot/4-task/6.4.2-domain-randomization.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |

@@ -3,6 +3,7 @@
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；另在 usd-core 26.8 上验证
 # 验证日期：2026-09-30
+# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04（Isaac Sim 方式运行时）
 """打开一个 USD 文件，打印它的元数据、Prim 树、类型统计，以及一个关节和一个网格的属性。
 
 两种运行方式::
