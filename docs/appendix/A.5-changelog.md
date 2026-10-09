@@ -21,6 +21,7 @@ title: 更新日志
 ## 现在可以读什么
 
 - [0.7 学习路线图](../0-map/0.7-learning-paths.md)：按目标挑选已完成的页面
+- [A.1 Isaac Lab 常用 API 速查表](A.1-api-cheatsheet.md)
 - [A.2 常见错误信息索引](A.2-error-index.md)
 - [A.3 官方资源导航（文档、论坛、GitHub、论文）](A.3-official-resources.md)
 
