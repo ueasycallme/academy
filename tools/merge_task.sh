@@ -28,6 +28,11 @@ for f in $(git ls-files docs); do
 done
 rm -rf "$tmp"
 
+# 更新日志：按当前 HEAD 的 git log 重生成 A.5 的表（本次提交本身不进表，--check 据此判断），然后一并暂存
+if [ -f tools/gen_changelog.py ] && git ls-files --error-unmatch docs/appendix/A.5-changelog.md >/dev/null 2>&1; then
+  python3 tools/gen_changelog.py >/dev/null && git add docs/appendix/A.5-changelog.md
+fi
+
 git commit -q -m "$msg
 
 Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"

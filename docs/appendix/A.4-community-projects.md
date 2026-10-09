@@ -24,6 +24,7 @@ title: 社区项目与论文代码索引（标注版本）
 - [A.1 Isaac Lab 常用 API 速查表](A.1-api-cheatsheet.md)
 - [A.2 常见错误信息索引](A.2-error-index.md)
 - [A.3 官方资源导航（文档、论坛、GitHub、论文）](A.3-official-resources.md)
+- [A.5 本站更新日志与版本对应](A.5-changelog.md)
 
 ## 进度
 

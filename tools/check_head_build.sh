@@ -31,6 +31,13 @@ if [ -f "$TMP/tools/gen_placeholders.py" ]; then
   (cd "$TMP" && python3 tools/gen_placeholders.py --check | tail -1) || { echo "占位页检查失败"; exit 1; }
 fi
 
+# 更新日志：HEAD 导出里的 A.5 必须与 git log 生成的结果一致（T-A.5）。
+# 脚本从 __file__ 推 ROOT，所以在导出目录里跑，并用 GIT_DIR 指向本仓库（导出目录即工作树）。
+if [ -f "$TMP/tools/gen_changelog.py" ]; then
+  echo "== 更新日志一致性检查 (HEAD)"
+  (cd "$TMP" && GIT_DIR="$ROOT/.git" python3 tools/gen_changelog.py --check) || { echo "更新日志检查失败：请运行 python3 tools/gen_changelog.py 并提交"; exit 1; }
+fi
+
 # 主线项目：HEAD 导出里包内的相对导入必须都能解析（防止只提交了依赖方、漏了被依赖的模块）
 PROJ="$TMP/examples/isaaclab-2.3/6-galbot-project/source"
 if [ -d "$PROJ" ]; then
