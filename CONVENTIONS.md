@@ -110,14 +110,14 @@ flowchart TB
 MyST 要点：
 - 提示框统一 `:::{admonition} 标题` + `:class: note|tip|warning|danger`，冒号围栏；内部要嵌套代码块或 tab-set 时，外层冒号多一个。
 - 术语表锚点：块级目标写 `(term-xxx)=` 单独一行放在块前；行内写 `[**术语**]{#term-xxx}`。
-- 占位页：frontmatter 加 `orphan: true` 且不进 toctree；进入 toctree 的页面不要写 `orphan`。
+- 占位页：由 `tools/gen_placeholders.py` 生成、进 toctree、标题带"（待写）"，不写 `orphan`（D-029；实现方替换占位页后重跑生成器）。
 - 脚注、GFM 表格原生支持；`## 标题` 自动生成锚点（`myst_heading_anchors = 3`）。
 
 ## 3. 写作规范
 
 - 简体中文。术语定义以 `0.8 术语表` 为准，中英使用规则（D-018）：
   - **保留英文不翻译**：USD 基本对象（Stage、Prim、Layer、Schema）；代码中的类名、配置项与参数（Articulation、configclass、Manager、Term、decimation、num_envs、dt、render_interval）；产品与项目名；业界通用且翻译后难检索的词（rollout、headless、sim2real、PPO）。大小写按术语表，如 Prim、Term 首字母大写。
-  - **用中文，首次出现附英文**：一般概念，全页第一次写成"中文（English）"，之后只用中文，如"刚体（rigid body）"、"执行器（actuator）"、"域随机化（domain randomization）"。
+  - **用中文，首次出现附英文**（执行范围见 D-029：只在术语表指向的"首次详细讲解页"强制）：一般概念，该页第一次写成"中文（English）"，之后只用中文，如"刚体（rigid body）"、"执行器（actuator）"、"域随机化（domain randomization）"。
   - **两种写法都允许**：适配层（wrapper）首次写对照形式，之后同页二选一保持一致。"扩展"可以单独使用，不强制附 extension。
   - 术语表未收录的词按上述规则判断；新增术语先补术语表再使用。
 - 先讲"是什么、为什么这样设计"，再讲"怎么用"。每一节开头一句话说明本节回答什么问题。
@@ -151,7 +151,7 @@ MyST 要点：
 
 - 示例代码放 `examples/isaaclab-2.3/<页面编号>-<slug>/`，页面里只嵌入关键片段，并注明完整文件路径。
 - 每个示例目录含 `README.md`：运行命令、预期输出、显存需求、运行时长。显存数字注明测量口径（按进程还是整卡峰值、`num_envs`、是否 headless），优先按进程测量，统一用 `reviews/scripts/gpu-mem-per-process.sh`（实现与校验两边同一脚本）。
-- 文件头注释标明：验证版本、验证日期、GPU 型号。未运行过的写 `# 未验证`。
+- 文件头注释标明：验证版本、验证日期、GPU 型号（GPU 可只写在示例目录 README，同一目录统一）。未运行过的写 `# 未验证`。豁免（D-029）：官方模板生成、头注为 Isaac Lab 版权行的文件；≤ 15 行的包声明 `__init__.py`；不依赖 Isaac / torch 的纯工具。
 - 用 Isaac Lab 2.3.2 的 API 命名（`isaaclab.*`、`isaacsim.*`），不用 `omni.isaac.*` 旧命名，除非是在讲迁移。
 - `num_envs` 默认值保守（≤ 1024），页面里说明如何调大。
 - 启动了 `SimulationApp` / `AppLauncher` 的脚本，退出前按顺序做三件事（均为本站实测，reviews/T-2.4.md、reviews/T-3.2.md）：
