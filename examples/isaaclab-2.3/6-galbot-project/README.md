@@ -386,6 +386,24 @@ python scripts/check_export.py $CK     # 离线核对 exported/policy.pt 与 pol
 - 评估：除"位置误差：均值 3.29 cm，最大 11.29 cm"一行（6.6.1 新增）外，与 6.5.1 相同。
 - `check_export.py`：TorchScript 与检查点 actor 的输出最大差为 0；ONNX 结构检查通过，输入 `obs` [1, 28]，输出 `actions` [1, 7]。
 
+## 6.4.3：lift（未达标，待续）
+
+新增：`scenes/lift.py`、`tasks/manager_based/lift/`（注册 `Galbot-Lift-v0`、`Galbot-Lift-Play-v0`）、`scripts/check_grasp.py`、`scripts/eval_lift.py`、`scripts/plot_lift_groups.py`。
+
+```bash
+python scripts/check_grasp.py --headless                    # 抓取物理检查（16 个环境，约 20 s）
+python scripts/check_grasp.py --headless --keep_open        # 对照：夹爪不闭合
+python scripts/check_grasp.py --headless --accel_sweep      # 等效加速度扫描
+python scripts/rsl_rl/train.py --task Galbot-Lift-v0 --headless --num_envs 2048 --seed 42   # 1500 次迭代，约 70 分钟
+python scripts/eval_lift.py --headless --checkpoint logs/rsl_rl/galbot_lift/<运行>/model_1499.pt
+python scripts/plot_lift_groups.py logs/rsl_rl/galbot_lift/<运行 1> … --out generated/train/lift_groups.png
+```
+
+预期（本站实测，RTX 5070，2026-10-09）：
+- `check_grasp.py`：`夹住（滑移 < 1 cm）16/16`、`从下令闭合到夹到方块 1.62 s`；`--keep_open` 为 `0/16`；`--accel_sweep` 四个方向都是 `在 32.0 m/s² 内都没有滑脱`。
+- 训练：2048 个环境时每次迭代约 3 s，按进程显存约 3.3 GB，主机内存约 7.1 GB。配置文件里的默认环境数是 1024（第 6 部分的默认上限），训练时用 `--num_envs 2048`。
+- 评估（当前配置，种子 42，model_1499）：`成功率 0.0%`。按 6.4.3 页的合格线（≥ 70%）未达标，页面"待续"一节列了后续候选。
+
 ## 7.3：调试
 
 ```bash

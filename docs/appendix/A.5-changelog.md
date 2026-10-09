@@ -27,9 +27,10 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
-| 2026-10-09 | [开发工具链](../1-env/1.8-dev-tools.md) | 新增 | 开发工具链 | T-1.8、T-4.8 |
-| 2026-10-09 | [Sensors 抽象](../4-isaaclab/4.8-sensors.md) | 新增 | Sensors 抽象（6.2.2 的前置） | T-1.8、T-4.8 |
-| 2026-10-09 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 新增 | 3.0 版本追踪 | T-0.8j、T-1.8、T-4.8、T-8.6、T-8.6c、T-9.5 |
+| 2026-10-09 | [开发工具链](../1-env/1.8-dev-tools.md) | 新增 | 开发工具链 | T-1.8、T-4.8、T-6.4.3 |
+| 2026-10-09 | [Sensors 抽象](../4-isaaclab/4.8-sensors.md) | 新增 | Sensors 抽象（6.2.2 的前置） | T-1.8、T-4.8、T-6.4.3 |
+| 2026-10-09 | [第二个任务：lift](../6-galbot/4-task/6.4.3-lift.md) | 新增 | 第二个任务：lift（未达标，待续） | T-6.4.3 |
+| 2026-10-09 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 新增 | 3.0 版本追踪 | T-0.8j、T-1.8、T-4.8、T-6.4.3、T-8.6、T-8.6c、T-9.5 |
 | 2026-10-09 | [安装 Isaac Sim 6.1 + Isaac Lab 3.0-EA](../1-env/1.5-install-61-30.md) | 新增 | 安装 Isaac Sim 6.1 + Isaac Lab 3.0-EA（第 1 部分 P2；1.5 固定句与 6 个示例文件头注 | T-1.5、T-8.6c、T-AUDIT-01a、T-AUDIT-01b |
 | 2026-10-09 | [USD 核心概念](../2-usd-kit/2.2-usd-concepts.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
 | 2026-10-09 | [Layer 与合成](../2-usd-kit/2.3-layers-composition.md) | 修订 | 术语首次详细讲解页补英文对照（29 页） | T-8.6b、T-AUDIT-01a、T-AUDIT-01b |
