@@ -21,7 +21,7 @@ title: 更新日志
 ## 现在可以读什么
 
 - [0.7 学习路线图](../0-map/0.7-learning-paths.md)：按目标挑选已完成的页面
-- 本部分暂时没有已完成的页面
+- [A.3 官方资源导航（文档、论坛、GitHub、论文）](A.3-official-resources.md)
 
 ## 进度
 
