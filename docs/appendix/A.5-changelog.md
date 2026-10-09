@@ -27,6 +27,8 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-09 | [认识 Galbot One Golf 描述仓库](../6-galbot/1-asset/6.1.1-galbot-repo.md) | 修订 | 第 6 部分展示 Galbot One Golf 图片；Galbot 图片改为图文并排卡片 | T-6.1.1b、T-6.1.1c、T-8.6b、T-SITE-14 |
+| 2026-10-09 | [① 资产](../6-galbot/1-asset/index.md) | 修订 | 第 6 部分展示 Galbot One Golf 图片；Galbot 图片改为图文并排卡片 | T-6.1.1b、T-6.1.1c、T-SITE-14 |
 | 2026-10-09 | [安装 Isaac Sim 5.1 + Isaac Lab 2.3.2（pip 方式）](../1-env/1.4-install-51-232.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开） | T-8.6b、T-SITE-13b |
 | 2026-10-09 | [用 Python 操作 USD](../2-usd-kit/2.5-usd-python.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开） | T-8.6b、T-A.2、T-SITE-13b |
 | 2026-10-09 | [Omniverse Kit 是什么](../2-usd-kit/2.6-what-is-kit.md) | 修订 | 前置知识一项一个链接（12 页 13 处拆开） | T-8.6b、T-SITE-13b |
@@ -39,8 +41,6 @@ sources_checked: 2026-10-09
 | 2026-10-09 | [headless 与远程运行](../7-infra/7.1-headless-remote.md) | 新增 | headless 与远程运行（第 7 部分 P1 完成）；前置知识一项一个链接（12 页 13 处拆开） | T-7.1、T-8.6b、T-SITE-13b |
 | 2026-10-09 | [调试技巧](../7-infra/7.3-debugging.md) | 新增 | 调试技巧（第 7 部分 P1 第一页）；前置知识一项一个链接（12 页 13 处拆开） | T-7.3、T-8.6b、T-SITE-13b |
 | 2026-10-09 | [3.0 改了什么、为什么改](../8-frontier/8.1-what-changed.md) | 新增 | 3.0 改了什么、为什么改（第 8 部分 P1 第一页）；前置知识一项一个链接（12 页 13 处拆开） | T-8.1、T-8.6b、T-SITE-13b |
-| 2026-10-09 | [认识 Galbot One Golf 描述仓库](../6-galbot/1-asset/6.1.1-galbot-repo.md) | 修订 | 第 6 部分展示 Galbot One Golf 图片 | T-6.1.1b、T-8.6b |
-| 2026-10-09 | [① 资产](../6-galbot/1-asset/index.md) | 修订 | 第 6 部分展示 Galbot One Golf 图片 | T-6.1.1b |
 | 2026-10-09 | [Isaac Lab 常用 API 速查表](../appendix/A.1-api-cheatsheet.md) | 新增 | Isaac Lab 常用 API 速查表（附录 P1） | T-A.1 |
 | 2026-10-09 | [常见错误信息索引](../appendix/A.2-error-index.md) | 新增 | 常见错误信息索引（附录 P1） | T-A.2 |
 | 2026-10-09 | [官方资源导航（文档、论坛、GitHub、论文）](../appendix/A.3-official-resources.md) | 新增 | 官方资源导航（附录 P1） | T-A.3 |

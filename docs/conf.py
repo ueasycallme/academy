@@ -51,7 +51,7 @@ html_css_files = [
     "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap",
     "css/academy.css",
 ]
-html_js_files = ["js/mermaid-size.js", "js/announcement-close.js", "js/cjk-search.js", "js/table-code-wbr.js"]
+html_js_files = ["js/mermaid-size.js", "js/announcement-close.js", "js/cjk-search.js", "js/table-code-wbr.js", "js/lightbox.js"]
 html_templates_path = ["_templates"]
 templates_path = ["_templates"]
 html_show_sourcelink = False
