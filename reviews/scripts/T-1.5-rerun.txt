@@ -1,0 +1,17 @@
+# T-1.5 route C rerun (isaac-academy-examine, 2026-10-09)
+## install (page commands, shared ~/.cache/uv, env on a different filesystem from the cache)
+warning: Failed to hardlink files; falling back to full copy. This may lead to degraded performance.
+         If the cache and target directories are on different filesystems, hardlinking may not be supported.
+warning: Failed to hardlink files; falling back to full copy. This may lead to degraded performance.
+         If the cache and target directories are on different filesystems, hardlinking may not be supported.
+install wall clock 0:45.34, exit 0, env 9.6G (du)
+## verify_install_30.py
+SUMMARY: 9/9 passed, 1 skipped
+## uv sync --dry-run --frozen in implementer's route-A repo (read-only; uv.lock md5 unchanged)
+Would uninstall 86 packages / - isaacsim==6.1.0.0
+## Cartpole newton_mjwarp 11:39:53-11:40:17
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:24.12
+Mean reward: 4.94
+Mean episode length: 300.00
+Training time: 11.94 s
+peak GPU MiB 360 peak RSS MiB 2642 min MemAvail MiB 7516
