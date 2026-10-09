@@ -15,8 +15,9 @@
   一段也没分到的页面写"随《主页面标题》修订"，首页写"首页进度表更新"。个别历史提交可在 OVERRIDES 里手工改写。
 - 任务编号放在最后一列。
 
-生成发生在提交之前，所以页面里的表不含"重新生成它的那次提交"。--check 据此判断：最新一次改动 docs 的提交
-如果同时改了 A.5，就和它之前的提交生成的结果比较；否则和全部提交比较。
+合并流程（tools/merge_task.sh）先提交、再重生成、再 amend 进同一提交，所以页面里的表总是包含 HEAD 自己；
+--check 直接与全部提交生成的结果比较（2026-10-09 设计 session 改，原先"提交前生成、检查时跳过最新提交"的做法
+在"本次提交没改 A.5"时必然失败）。
 """
 
 import re
@@ -202,10 +203,7 @@ def main() -> int:
         print(f"{PAGE} 中没有 {BEGIN} / {END} 标记", file=sys.stderr)
         return 1
     commits = docs_commits()
-    if "--check" in sys.argv:
-        # 页面是在提交前生成的：最新一次 docs 提交若同时改了 A.5，它自己不在表里
-        if commits and PAGE in commits[0]["files"] and BEGIN in (file_at(commits[0]["sha"], PAGE) or ""):
-            commits = commits[1:]
+    # 设计 session 的 merge_task.sh 在提交后重生成并 amend，所以页面里的表总是包含 HEAD 自己；--check 直接与全部提交比较
     expected = render(build_rows(commits))
     current = text[text.index(BEGIN): text.index(END) + len(END)]
     if "--check" in sys.argv:

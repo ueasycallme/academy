@@ -27,6 +27,8 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-09 | [认识 Galbot One Golf 描述仓库](../6-galbot/1-asset/6.1.1-galbot-repo.md) | 修订 | 第 6 部分展示 Galbot One Golf 图片 | T-6.1.1b、T-8.6b |
+| 2026-10-09 | [① 资产](../6-galbot/1-asset/index.md) | 修订 | 第 6 部分展示 Galbot One Golf 图片 | T-6.1.1b |
 | 2026-10-09 | [Isaac Lab 常用 API 速查表](../appendix/A.1-api-cheatsheet.md) | 新增 | Isaac Lab 常用 API 速查表（附录 P1） | T-A.1 |
 | 2026-10-09 | [用 Python 操作 USD](../2-usd-kit/2.5-usd-python.md) | 修订 | 随《常见错误信息索引》修订 | T-8.6b、T-A.2 |
 | 2026-10-09 | [观测设计与对称性](../5-rl/5.6-observation-design.md) | 修订 | 随《常见错误信息索引》修订 | T-8.6b、T-A.2 |
@@ -81,7 +83,6 @@ sources_checked: 2026-10-09
 | 2026-10-09 | [奖励设计的直觉](../5-rl/5.5-reward-design.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [模仿学习与 RL 的选择](../5-rl/5.7-il-vs-rl.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [训练不收敛怎么排查](../5-rl/5.8-training-debug.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
-| 2026-10-09 | [认识 Galbot One Golf 描述仓库](../6-galbot/1-asset/6.1.1-galbot-repo.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [从 URDF 导入 Isaac Sim](../6-galbot/1-asset/6.1.2-import-urdf.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [对比厂商 USD 与自导入 USD](../6-galbot/1-asset/6.1.3-vendor-vs-imported-usd.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
 | 2026-10-09 | [碰撞体、质量与惯量调校](../6-galbot/1-asset/6.1.4-collision-mass-inertia.md) | 版本核对 | 全站 68 页"版本说明"末尾回链 8.6 版本追踪 | T-8.6b |
