@@ -1,0 +1,26 @@
+// 1.8 开发工具链：主线项目的 VS Code 设置（pip 方式安装的 Isaac Sim 5.1.0 + 源码安装的 Isaac Lab 2.3.2）。
+// 验证日期 2026-10-09：用 pyright 1.1.414 CLI 按下面的 extraPaths 检查导入（Pylance 的引擎是 pyright，界面内未验证）。
+// 把 <ISAACLAB> 换成你的 Isaac Lab 检出目录，<VENV> 换成 1.4 建的环境目录。
+{
+    // 解释器：1.4 建的环境。也可以在状态栏里选，选过之后以状态栏为准
+    "python.defaultInterpreterPath": "<VENV>/bin/python",
+    "python.analysis.extraPaths": [
+        // Isaac Lab 各包：isaaclab.sh 用 setuptools 的 editable 安装，靠导入钩子找源码，Pylance / pyright 跟不过去，
+        // 不加这几行时 isaaclab.* 全部报"无法解析"（本站实测）
+        "<ISAACLAB>/source/isaaclab",
+        "<ISAACLAB>/source/isaaclab_tasks",
+        "<ISAACLAB>/source/isaaclab_rl",
+        "<ISAACLAB>/source/isaaclab_assets",
+        // 主线项目自己的包同理
+        "${workspaceFolder}/source/galbot_academy",
+        // Kit 的 Python 模块（omni.usd、pxr、carb）在 isaacsim 包内部，版本号随 Isaac Sim 变，按本机目录改：
+        "<VENV>/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311",
+        "<VENV>/lib/python3.11/site-packages/isaacsim/extscache/omni.usd.libs-1.0.1+69cbf6ad.lx64.r.cp311",
+        "<VENV>/lib/python3.11/site-packages/isaacsim/kit/kernel/py"
+        // isaacsim.core.* 等 Isaac Sim 扩展加了路径也解析不了：site-packages/isaacsim 是带 __init__.py 的普通包，
+        // 会遮住各扩展目录里同名的命名空间包（本站实测，见 1.8 坑二）
+    ],
+    // isaacsim 包有约 11 GB，别让 Pylance 去索引扩展缓存
+    "python.analysis.exclude": ["**/isaacsim/extscache/**", "**/logs/**", "**/outputs/**"],
+    "files.watcherExclude": {"**/logs/**": true, "**/outputs/**": true}
+}

@@ -1,0 +1,30 @@
+// 1.8 开发工具链：主线项目（examples/isaaclab-2.3/6-galbot-project）的调试配置。
+// 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2，debugpy 1.8.22；验证日期 2026-10-09。
+// 两项配置都用 debugpy 的 DAP 适配器按本文件字段实测过（launch 停在 _reset_idx、attach 连上 debug_step.py）；
+// 没有在 VS Code 界面里操作过（见 1.8 页"验证方式"）。
+// 用法：把 .vscode/ 复制到项目根目录；解释器在 VS Code 状态栏选 1.4 的环境（或改下面的 "python"）。
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // 直接启动：2 个环境、headless，跑零动作；断点打在 Isaac Lab 源码里时要 justMyCode: false
+            "name": "Galbot reach: zero agent (headless)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/zero_agent.py",
+            "args": ["--task", "Galbot-Reach-v0", "--num_envs", "2", "--headless"],
+            "cwd": "${workspaceFolder}",
+            "env": {"OMNI_KIT_ACCEPT_EULA": "YES"},
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            // attach：先在终端运行 python scripts/debug_step.py --headless --debugpy，它在 5678 端口等待（7.3）
+            "name": "Attach to debug_step.py (5678)",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {"host": "127.0.0.1", "port": 5678},
+            "justMyCode": false
+        }
+    ]
+}

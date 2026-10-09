@@ -94,7 +94,8 @@ def main():
     t86 = pages.get("docs/8-frontier/8.6-version-tracking.md", {}).get("text", "")
     sec = t86[t86.find("## 本站核对状态"):]
     rows = [r for r in sec.splitlines() if r.startswith("| ") and not r.startswith("| 页面") and not r.startswith("|---")]
-    rows = rows[: next((i for i, r in enumerate(rows) if "其余" in r), len(rows)) + 1]
+    # 表 2 到"其余 N 页"那一行为止（按第一格判断；别的行的日期格里也会出现"其余"二字）
+    rows = rows[: next((i for i, r in enumerate(rows) if r.strip("| ").startswith("其余")), len(rows)) + 1]
     by_num = {d["num"]: p for p, d in pages.items() if d["num"]}
     listed = set()
     rest_n = None
@@ -124,7 +125,9 @@ def main():
     rest = [p for p, d in pages.items() if d["ver"] is not None and d["num"] and d["num"] not in listed
             and d["num"] not in excluded and "8.6-version" not in p]
     not_unver = [p[5:] for p in rest if "未核对" not in pages[p]["ver"]]
-    if rest_n is not None and rest_n != len(rest):
+    if rest_n is None:
+        issues.append(("一般", "8-frontier/8.6", "表 2 里找不到“其余 N 页”一行，脚本没能核对", ""))
+    elif rest_n != len(rest):
         issues.append(("一般", "8-frontier/8.6", f"表 2“其余 {rest_n} 页”，实际 {len(rest)} 页", ""))
     for p in not_unver:
         issues.append(("一般", p, "归入 8.6 表 2“其余”行（未核对），但版本说明里没有“未核对”", ""))
