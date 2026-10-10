@@ -77,11 +77,13 @@ def split_frontmatter(text: str):
 def page_title(path: Path) -> str:
     text = path.read_text(encoding="utf-8")
     fm, body = split_frontmatter(text)
-    m = re.search(r"^title:\s*(.+)$", fm, re.M)
-    if m:
-        return m.group(1).strip().strip('"')
+    # 链接文字优先取正文 H1（可含反引号等行内标记，与页面标题一致）；
+    # frontmatter 的 title 只用于 HTML <title>，不带标记，仅作回退（D-029 后 2026-10-10 调整）。
     m = re.search(r"^# (.+)$", body, re.M)
-    return m.group(1).replace("（待写）", "").strip() if m else path.stem
+    if m:
+        return m.group(1).replace("（待写）", "").strip()
+    m = re.search(r"^title:\s*(.+)$", fm, re.M)
+    return m.group(1).strip().strip('"') if m else path.stem
 
 
 def rel(src: Path, dst: Path) -> str:
