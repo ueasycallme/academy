@@ -462,6 +462,40 @@ python scripts/debug_step.py --headless --debugpy      # 在 127.0.0.1:5678 等 
 
 预期（本站实测）：`环境数 1，step_dt 0.0333 s，动作维数 7`；第 1 步总奖励 −0.0030，等于各奖励项之和（−0.0897）× step_dt；`观测中有 NaN：{'policy': False}`。用时约 17 s，显存 2.3 GB，主机内存 3.4 GB。
 
+## 6.7.2：ROS 2 闭环
+
+新增：`ros2/reach_policy_node.py`（策略节点）、`scripts/run_ros2_sim.py`（仿真端）。两个进程用不同的 ROS 2 环境，**不要混用**：
+
+- 节点：Ubuntu 22.04 的系统 ROS 2 Humble（Python 3.10）。onnxruntime 装在一个继承系统包的 venv 里，numpy 固定在 1.x：pip 默认会装 numpy 2.x，并遮住系统的 numpy 1.21。Humble 的消息包是按 numpy 1.x 构建的，保险起见不用 2.x（未测 2.x 是否真的出错）。
+- 仿真端：Isaac Sim 自带的 Humble 库（3.10 表 1 的三个环境变量），**不要** source 系统 Humble。
+
+```bash
+# 一次性：节点用的 venv
+/usr/bin/python3 -m venv --system-site-packages ~/policy_venv
+~/policy_venv/bin/pip install onnxruntime==1.20.1 numpy==1.26.4
+
+RUN=logs/rsl_rl/galbot_reach/<6.5.1 种子 42 的运行>     # 先按 6.6.1 用 play.py 导出 exported/policy.onnx
+# 终端 A（节点）
+source /opt/ros/humble/setup.bash
+~/policy_venv/bin/python ros2/reach_policy_node.py --ros-args -p onnx:=$RUN/exported/policy.onnx
+# 终端 B（仿真端），60 s 内要有节点订阅，否则报错退出
+export ROS_DISTRO=humble RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<isaacsim 包目录>/exts/isaacsim.ros2.bridge/humble/lib
+python scripts/run_ros2_sim.py --headless --mode ros2 --episodes 64 --checkpoint $RUN/model_999.pt              # 加 --delay 1 / --delay 3 做延迟对照
+python scripts/run_ros2_sim.py --headless --mode inproc --episodes 64 --checkpoint $RUN/model_999.pt            # 进程内对照，不需要节点
+```
+
+预期（本站实测，RTX 5070，64 回合 = 192 个样本，种子 0，每次墙上 808–827 s）：
+
+| 方式 | 中位数 | < 5 cm | 往返延迟中位数；超时 |
+|---|---|---|---|
+| inproc | 3.27 cm | 80.7% | — |
+| ros2 | 3.34 cm | 79.2% | 0.48 ms；0 / 23040 |
+| ros2 --delay 1 | 4.39 cm | 60.4% | 0.48 ms；0 / 23040 |
+| ros2 --delay 3 | 7.57 cm | 19.3% | 0.48 ms；0 / 23040 |
+
+ros2 模式加了 `--checkpoint` 时，会多打印一行"外部节点动作与进程内 torch 策略的最大差：1.91e-06"，大于 10⁻⁵ 就说明接口有错（6.7.2 坑一）。仿真端进程显存 5058 MiB、主机内存 6.9 GB（inproc 为 2327 MiB、3.6 GB）。
+
 ## 目录
 
 ```text
@@ -490,8 +524,10 @@ python scripts/debug_step.py --headless --debugpy      # 在 127.0.0.1:5678 等 
 │   ├── check_sensors.py  plot_wrist_camera.py   # 腕部相机、FrameTransformer、接触传感器的验证与代价，画图 1（6.2.2）
 │   ├── check_dr.py              # 域随机化读回检查（6.4.2）
 │   ├── eval_reach.py  plot_training.py   # 评估检查点、画训练曲线（6.5.1）
+│   ├── run_ros2_sim.py          # ROS 2 闭环仿真端、进程内对照（6.7.2）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
+├── ros2/reach_policy_node.py    # 策略节点：系统 Humble + onnxruntime（6.7.2）
 └── source/galbot_academy/
     ├── setup.py  pyproject.toml  config/extension.toml
     └── galbot_academy/
