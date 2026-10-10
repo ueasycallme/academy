@@ -27,9 +27,11 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-10 | [多后端架构解读](../8-frontier/8.2-multi-backend.md) | 新增 | 多后端架构解读 | T-8.2、T-8.3 |
+| 2026-10-10 | [Newton 物理引擎](../8-frontier/8.3-newton.md) | 新增 | Newton 物理引擎（3.0 线三张交齐） | T-8.2、T-8.3 |
+| 2026-10-10 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《批量克隆与性能》修订 | T-6.2.3、T-7.2、T-8.2、T-8.3、T-8.4b、T-8.5、T-9.1 |
 | 2026-10-10 | [2.3 → 3.0 迁移指南](../8-frontier/8.4-migration-23-30.md) | 修订 | 迁移清单回填 7 条 | T-8.4b、T-8.5 |
 | 2026-10-10 | [在 3.0 上跑 Galbot reach](../8-frontier/8.5-galbot-reach-30.md) | 新增 | 在 3.0 上跑 Galbot reach（本站首个 3.0 实测项目页） | T-8.4b、T-8.5 |
-| 2026-10-10 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《批量克隆与性能》修订 | T-6.2.3、T-7.2、T-8.4b、T-8.5、T-9.1 |
 | 2026-10-10 | [性能分析](../7-infra/7.2-profiling.md) | 新增 | 性能分析 | T-7.2、T-9.1 |
 | 2026-10-10 | [ManagerBasedRLEnv.step() 逐行读](../9-source/9.1-rl-env-step.md) | 新增 | ManagerBasedRLEnv.step() 逐行读 | T-7.2、T-9.1 |
 | 2026-10-10 | [批量克隆与性能](../6-galbot/2-scene/6.2.3-cloning-performance.md) | 新增 | 批量克隆与性能（第 6 部分 P2） | T-6.2.3 |

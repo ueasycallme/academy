@@ -106,7 +106,10 @@ def main():
             name = f"_audit_fonts_{w}.html"
             open(os.path.join(root, name), "w", encoding="utf-8").write(
                 HARNESS.replace("__W__", str(w)).replace("__PAGES__", json.dumps(pp)))
+            # --password-store=basic：机器重启后 Chrome 的网络服务会经 D-Bus 等 GNOME Keyring，http(s) 请求全部挂住
+            # （file:// 不受影响）；用 basic 跳过 Keyring（2026-10-10）
             r = subprocess.run(["google-chrome", "--headless=new", "--disable-gpu", "--no-first-run",
+                                "--password-store=basic",
                                 f"--window-size={w + 40},1100", "--virtual-time-budget=600000",
                                 "--dump-dom", f"http://127.0.0.1:{port}/{name}"],
                                capture_output=True, text=True, timeout=900)
