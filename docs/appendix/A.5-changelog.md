@@ -27,18 +27,21 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-11 | [术语表（中英对照）](../0-map/0.8-glossary.md) | 修订 | 术语表补第二批 22 条；术语表补第三批 20 条 | T-0.8l、T-0.8m、T-6.4.7、T-A.4 |
+| 2026-10-11 | [Actuator 模型](../4-isaaclab/4.7-actuators.md) | 修订 | 随《术语表（中英对照）》修订 | T-0.8m、T-A.4 |
+| 2026-10-11 | [Sensors 抽象](../4-isaaclab/4.8-sensors.md) | 修订 | 随《术语表（中英对照）》修订 | T-0.8m、T-A.4 |
+| 2026-10-11 | [定量评估与失败案例分析](../6-galbot/6-eval/6.6.2-evaluation.md) | 新增 | 定量评估与失败案例分析（主线项目）：Wilson 区间、按条件切片、失败归类、评估分布对照、阈值敏感性 | T-0.8m、T-6.6.2、T-A.4 |
+| 2026-10-11 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《Isaac Lab Mimic 与模仿学习》修订 | T-0.8l、T-0.8m、T-1.6、T-3.6、T-4.19、T-6.1.7、T-6.3.1、T-6.4.4、T-6.4.6、T-6.4.7、T-6.6.2、T-6.7.1、T-6.7.3、T-9.4、T-A.4 |
+| 2026-10-11 | [训练脚本 train.py 做了什么](../9-source/9.4-train-script.md) | 新增 | 训练脚本 train.py 做了什么（源码导读） | T-0.8m、T-9.4、T-A.4 |
+| 2026-10-11 | [社区项目与论文代码索引（标注版本）](../appendix/A.4-community-projects.md) | 新增 | 社区项目与论文代码索引（标注版本） | T-0.8m、T-A.4 |
 | 2026-10-11 | [容器化环境](../1-env/1.6-container.md) | 新增 | 容器方式运行 Isaac Sim / Isaac Lab：NGC 镜像、NVIDIA Container Toolkit、缓存卷、headless 与 GUI 部署（本机无 Docker，未验证） | T-1.6 |
-| 2026-10-11 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《Isaac Lab Mimic 与模仿学习》修订 | T-0.8l、T-0.8m、T-1.6、T-3.6、T-4.19、T-6.1.7、T-6.3.1、T-6.4.4、T-6.4.6、T-6.4.7、T-6.6.2、T-6.7.1、T-6.7.3、T-9.4 |
 | 2026-10-11 | [从 URDF 导入 Isaac Sim](../6-galbot/1-asset/6.1.2-import-urdf.md) | 修订 | 随《资产版本管理》修订 | T-6.1.7 |
 | 2026-10-11 | [资产版本管理](../6-galbot/1-asset/6.1.7-asset-versioning.md) | 新增 | 资产版本管理：LFS / DVC / 来源+脚本三种做法、资产清单 asset_manifest.py、手工修改分层、变更记录 | T-6.1.7 |
 | 2026-10-11 | [传感器](../3-isaacsim/3.6-sensors.md) | 新增 | 传感器：相机 / 接触 / Imu / 射线四类的读法、更新时机与代价 | T-3.6 |
 | 2026-10-11 | [用 Direct 方式重写 reach](../6-galbot/4-task/6.4.4-reach-direct.md) | 新增 | 用 Direct 方式重写 reach：管理器对照表、逐位等价验证、同种子训练与速度对照 | T-6.4.4 |
 | 2026-10-11 | [物理参数调优](../6-galbot/3-sim-align/6.3.1-physics-tuning.md) | 新增 | 物理参数调优（主线项目）：稳定性探针、dt / 迭代 / 偏移 / GPU 缓冲四组扫描、主线取舍与重训判据 | T-6.3.1 |
 | 2026-10-11 | [sim2real 清单](../6-galbot/7-deploy/6.7.3-sim2real-checklist.md) | 新增 | sim2real 清单：观测/动作/执行器/时序/安全/辨识六组核对项、关节目标越限实测、本项目差距 | T-6.7.3 |
-| 2026-10-11 | [定量评估与失败案例分析](../6-galbot/6-eval/6.6.2-evaluation.md) | 新增 | 定量评估与失败案例分析（主线项目）：Wilson 区间、按条件切片、失败归类、评估分布对照、阈值敏感性 | T-6.6.2 |
 | 2026-10-11 | [策略导出（JIT / ONNX）](../6-galbot/7-deploy/6.7.1-policy-export.md) | 新增 | 策略导出（JIT / ONNX）：动态批、三种加载一致性、推理延迟、接口说明 | T-6.7.1 |
-| 2026-10-11 | [训练脚本 train.py 做了什么](../9-source/9.4-train-script.md) | 新增 | 训练脚本 train.py 做了什么（源码导读） | T-0.8m、T-9.4 |
-| 2026-10-11 | [术语表（中英对照）](../0-map/0.8-glossary.md) | 修订 | 术语表补第二批 22 条 | T-0.8l、T-6.4.7 |
 | 2026-10-11 | [Mimic 数据生成与模仿学习](../6-galbot/4-task/6.4.7-mimic.md) | 新增 | Mimic 数据生成与 BC 训练（主线项目） | T-0.8l、T-6.4.7 |
 | 2026-10-11 | [遥操作采集示教数据](../6-galbot/4-task/6.4.6-teleop-demos.md) | 新增 | 遥操作采集示教数据（脚本化示教、pick_place 环境、IK 偏移雅可比修正） | T-6.4.6 |
 | 2026-10-11 | [Isaac Lab Mimic 与模仿学习](../4-isaaclab/4.19-mimic.md) | 新增 | Isaac Lab Mimic 示范数据生成 | T-4.19 |
