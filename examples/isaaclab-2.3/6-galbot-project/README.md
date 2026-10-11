@@ -647,6 +647,19 @@ GALBOT_REACH_CKPT=<model_999.pt> $PY -m pytest tests/regression -q   # 区间回
 
 预期（本站实测，2026-10-11）：`13 passed, 1 skipped`（系统 Python）；`3 passed, 1 deselected`（冒烟）；确定性与区间回归各 1 passed。换机器后指纹用例会跳过，可用 `GALBOT_RECORD_GOLDEN=1` 重新记录。系统 pytest 加载插件出错时，加 `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1`。
 
+## 3.8：渲染与材质
+
+新增：`scripts/render_cost.py`。同一桌面场景、同一 640×480 视角，比较不渲染 / RTX 实时 / 路径追踪（1 spp）每个物理步的耗时与按进程显存，并读出机器人材质的着色器类型；`--broken_mdl` 放一个材质路径不存在的方块。
+
+```bash
+python scripts/render_cost.py --headless --mode none
+python scripts/render_cost.py --headless --enable_cameras --mode rt --save rt.png
+python scripts/render_cost.py --headless --enable_cameras --mode pt --save pt.png
+python scripts/render_cost.py --headless --enable_cameras --mode rt --steps 10 --broken_mdl --save mdl.png
+```
+
+预期（本站实测，2026-10-11）：`mode none：每个物理步 8.4 ms`、`mode rt：… 15.0 ms`、`mode pt：… 21–22 ms`；材质一行 `OmniPBR.mdl ×144，pbr.mdl ×114`；`--broken_mdl` 时日志有 `could not find module '::does_not_exist'`。
+
 ## 目录
 
 ```text
@@ -684,6 +697,7 @@ GALBOT_REACH_CKPT=<model_999.pt> $PY -m pytest tests/regression -q   # 区间回
 │   ├── sweep_physics.py  plot_sweep.py  pick_place_teacher.py   # 物理参数稳定性探针与画图、示教控制器（6.3.1）
 │   ├── compare_direct_manager.py   # Manager 版与 Direct 版 reach 的逐步比对、行数统计（6.4.4）
 │   ├── asset_manifest.py        # 写 / 校验生成资产的清单（6.1.7）
+│   ├── render_cost.py           # 渲染模式的代价、机器人材质（3.8）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 ├── tests/  pytest.ini          # 无 GPU / 冒烟 / 回归三层测试（7.4）
