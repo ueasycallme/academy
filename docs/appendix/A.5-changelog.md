@@ -27,6 +27,8 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-11 | [Isaac Lab Mimic 与模仿学习](../4-isaaclab/4.19-mimic.md) | 新增 | Isaac Lab Mimic 示范数据生成 | T-4.19 |
+| 2026-10-11 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《Isaac Lab Mimic 与模仿学习》修订 | T-4.19 |
 | 2026-10-10 | [遥操作与设备](../4-isaaclab/4.20-teleop-devices.md) | 新增 | 遥操作设备与示范录制 | T-4.20 |
 | 2026-10-10 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《批量克隆与性能》修订 | T-0.8l、T-3.10、T-4.20、T-6.2.3、T-6.7.2、T-7.2、T-8.2、T-8.3、T-8.4b、T-8.5、T-9.1、T-9.3 |
 | 2026-10-10 | [通过 ROS 2 在仿真中闭环运行策略](../6-galbot/7-deploy/6.7.2-ros2-closed-loop.md) | 新增 | 通过 ROS 2 在仿真中闭环运行策略 | T-0.8l、T-6.7.2、T-9.3 |
