@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-09
+# 验证日期：2026-10-09（--task 为 6.4.4 所加，验证日期 2026-10-11）
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """给训练"算账"用的小工具（7.2）：在 Galbot-Reach-v0 上用零动作计时 env.step，并对照三种内存读数。
 
@@ -15,6 +15,7 @@
 
     python scripts/profile_env.py --headless --num_envs 1024
     python scripts/profile_env.py --headless --num_envs 1024 --cprofile generated/profile/env_step.prof
+    python scripts/profile_env.py --headless --num_envs 1024 --task Galbot-Reach-Direct-v0   # 6.4.4
 """
 
 import argparse
@@ -26,6 +27,7 @@ import time
 from isaaclab.app import AppLauncher
 
 parser = argparse.ArgumentParser(description="env.step 计时与内存读数")
+parser.add_argument("--task", default="Galbot-Reach-v0", help="6.4.4 用它比较 Direct 版 Galbot-Reach-Direct-v0")
 parser.add_argument("--num_envs", type=int, default=1024)
 parser.add_argument("--steps", type=int, default=200)
 parser.add_argument("--cprofile", default=None, help="把计时循环的 cProfile 统计写到这个文件")
@@ -59,10 +61,10 @@ def host_mem_gib() -> tuple[float, float]:
 
 
 def main() -> None:
-    cfg = parse_env_cfg("Galbot-Reach-v0", device=args.device, num_envs=args.num_envs)
-    env = gym.make("Galbot-Reach-v0", cfg=cfg).unwrapped
+    cfg = parse_env_cfg(args.task, device=args.device, num_envs=args.num_envs)
+    env = gym.make(args.task, cfg=cfg).unwrapped
     env.reset()
-    act = torch.zeros(env.num_envs, env.action_manager.total_action_dim, device=env.device)
+    act = torch.zeros(env.num_envs, env.single_action_space.shape[0], device=env.device)
 
     # 给 sim.step 套计时器，单独算出 env.step 里物理所占的时间
     phys = [0.0]
@@ -102,7 +104,7 @@ def main() -> None:
         pstats.Stats(prof).sort_stats("tottime").print_stats(15)
     step_ms, phys_ms = el / args.steps * 1000, phys[0] / args.steps * 1000
     print(f"[7.2] num_envs {args.num_envs}，decimation {cfg.decimation}：每个环境步 {step_ms:.2f} ms，"
-          f"其中物理（{cfg.decimation} 次 sim.step）{phys_ms:.2f} ms，其余（管理器、Python）{step_ms - phys_ms:.2f} ms")
+          f"其中物理（{cfg.decimation} 次 sim.step）{phys_ms:.2f} ms，其余（管理器或 Direct 的方法、Python）{step_ms - phys_ms:.2f} ms")
     mib = 2**20
     print(f"[7.2] torch 显存：memory_allocated {torch.cuda.memory_allocated() / mib:.0f} MiB，"
           f"memory_reserved {torch.cuda.memory_reserved() / mib:.0f} MiB，max_memory_allocated "

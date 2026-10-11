@@ -607,6 +607,21 @@ python scripts/plot_sweep.py --dt <dt 各组日志> --iters <迭代各组日志>
 
 预期（本站实测，2026-10-11）：主线默认 `[sweep] 汇总：成功 20 / 20；成功回合的滑移 中位 0.50 cm、最大 0.85 cm`、`每控制步墙上时间 中位 42.56 ms`；开头打印机器人与方块的生效偏移（默认 `接触 1.36–5.26 mm，静止 0.00–0.00 mm（184 个形状）`）。buffers 模式 1024 个环境配小缓冲时，日志出现 `Contact buffer overflow detected` 与 `Patch buffer overflow detected`。
 
+## 6.4.4：用 Direct 方式重写 reach
+
+新增：`tasks/direct/reach/`（注册 `Galbot-Reach-Direct-v0`）、`scripts/compare_direct_manager.py`；`eval_reach.py`、`profile_env.py` 可用 `--task Galbot-Reach-Direct-v0`。
+
+```bash
+python scripts/compare_direct_manager.py record --headless --task Galbot-Reach-v0 --out m.npz
+python scripts/compare_direct_manager.py record --headless --task Galbot-Reach-Direct-v0 --out d.npz
+python scripts/compare_direct_manager.py diff m.npz d.npz
+python scripts/compare_direct_manager.py lines            # 不需要 Isaac Sim
+python scripts/rsl_rl/train.py --task Galbot-Reach-Direct-v0 --headless --seed 42 --run_name seed42
+python scripts/eval_reach.py --headless --task Galbot-Reach-Direct-v0 --checkpoint logs/rsl_rl/galbot_reach_direct/<运行>/model_999.pt
+```
+
+预期（本站实测，2026-10-11）：`diff` 各行为 `全程最大 0；全程 ≤ 1e-05`，`超时：一致，发生在第 [360] 步`；`lines` 的文件合计 154 / 186；评估 `中位数 2.73 cm，90% 分位 6.31 cm，< 2 cm 32.2%，< 5 cm 80.9%`，与 Manager 版种子 42 相同。
+
 ## 目录
 
 ```text
@@ -642,6 +657,7 @@ python scripts/plot_sweep.py --dt <dt 各组日志> --iters <迭代各组日志>
 │   ├── eval_report.py           # 读逐样本 CSV 出评估表与图（6.6.2）
 │   ├── sim2real_report.py       # 打印要核对的接口常量与目标越限情况（6.7.3）
 │   ├── sweep_physics.py  plot_sweep.py  pick_place_teacher.py   # 物理参数稳定性探针与画图、示教控制器（6.3.1）
+│   ├── compare_direct_manager.py   # Manager 版与 Direct 版 reach 的逐步比对、行数统计（6.4.4）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 ├── ros2/reach_policy_node.py    # 策略节点：系统 Humble + onnxruntime（6.7.2）
@@ -652,5 +668,5 @@ python scripts/plot_sweep.py --dt <dt 各组日志> --iters <迭代各组日志>
         ├── __init__.py
         ├── assets/              # 资产路径（6.1.1）、自碰撞过滤对 physics.py（6.1.4）、驱动参数表 drives.py（6.1.5）、机器人配置 galbot.py（6.1.6）
         ├── scenes/              # 场景配置：reach.py（6.2.1）、lift.py（6.4.3）、sensors.py（6.2.2）
-        └── tasks/               # 任务（6.4.1 起）：manager_based/reach/、lift/（6.4.3）、pick_place/（6.4.6）
+        └── tasks/               # 任务（6.4.1 起）：manager_based/reach/、lift/（6.4.3）、pick_place/（6.4.6）；direct/reach/（6.4.4）
 ```

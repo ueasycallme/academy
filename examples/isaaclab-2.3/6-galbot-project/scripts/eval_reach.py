@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2（rsl_rl 3.1.2）
-# 验证日期：2026-10-08（--record_obs 为 6.7.1 所加，验证日期 2026-10-11；--csv、--widen_targets 为 6.6.2 所加，验证日期 2026-10-11）
+# 验证日期：2026-10-08（--record_obs 为 6.7.1 所加，验证日期 2026-10-11；--csv、--widen_targets 为 6.6.2 所加，验证日期 2026-10-11；Direct 版支持为 6.4.4 所加，验证日期 2026-10-11）
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """评估一个 reach 策略（6.5.1）：跑一个完整回合，在每段目标（4 s）的最后一步记录 TCP 误差。
 
@@ -46,10 +46,14 @@ import galbot_academy.tasks  # noqa: F401
 def main() -> None:
     env_cfg = parse_env_cfg(args.task, device=args.device, num_envs=args.num_envs)
     env_cfg.seed = args.seed
+    direct = not hasattr(env_cfg, "commands")  # Direct 版（6.4.4）：命令与动作参数是配置类的普通字段
     if args.action_scale is not None:
-        env_cfg.actions.arm_action.scale = args.action_scale
+        if direct:
+            env_cfg.action_scale = args.action_scale
+        else:
+            env_cfg.actions.arm_action.scale = args.action_scale
     if args.widen_targets:
-        r, w = env_cfg.commands.ee_pose.ranges, args.widen_targets
+        r, w = (env_cfg if direct else env_cfg.commands.ee_pose.ranges), args.widen_targets
         r.pos_x, r.pos_y, r.pos_z = [(lo - w, hi + w) for lo, hi in (r.pos_x, r.pos_y, r.pos_z)]
     agent_cfg = load_cfg_from_registry(args.task, "rsl_rl_cfg_entry_point")
     env = RslRlVecEnvWrapper(gym.make(args.task, cfg=env_cfg))
@@ -61,7 +65,8 @@ def main() -> None:
     robot = base.scene["robot"]
     arm = [i for i, n in enumerate(robot.joint_names) if n.startswith("right_arm_joint")]
     arm = arm or list(range(robot.num_joints))  # 其他机器人（如官方 Franka 对照）：看全部关节
-    cmd = base.command_manager.get_term("ee_pose")
+    # Direct 版把 pose_command_b、metrics 放在环境自身，计算时机与命令项相同（6.4.4）
+    cmd = base if direct else base.command_manager.get_term("ee_pose")
     seg = round(cmd.cfg.resampling_time_range[0] / base.step_dt)  # 每段目标的控制步数
     T = int(base.max_episode_length)
 
