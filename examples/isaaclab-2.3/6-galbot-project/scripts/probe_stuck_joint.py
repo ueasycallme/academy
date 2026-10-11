@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-08
+# 验证日期：2026-10-08（--usd 默认值为 T-0.8n 所改：未单独验证）
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """复现并检查 6.1.4 中"右臂卡在 1.45 rad"的情形（6.1.4，T-6.1.4b 探针）。
 
@@ -25,7 +25,7 @@ import sys
 from isaaclab.app import AppLauncher
 
 parser = argparse.ArgumentParser(description="复现右臂卡住")
-parser.add_argument("--usd", default="generated/galbot_fixed_base/galbot.usd")
+parser.add_argument("--usd", default=None, help="默认取 generated_asset_dir()/galbot_fixed_base/galbot.usd（环境变量 GALBOT_GENERATED_DIR 可改）")
 parser.add_argument("--no_sleep", action="store_true", help="sleep_threshold 与 stabilization_threshold 设为 0")
 parser.add_argument("--kick", type=float, default=0.0, help="t=5 s 时给 joint3 加的速度（rad/s）")
 parser.add_argument("--vel_limit_at5", type=float, default=None, help="t=5 s 时把所有关节速度上限改为该值（rad/s）")
@@ -44,6 +44,8 @@ import isaaclab.sim as sim_utils
 from isaaclab.actuators import ImplicitActuatorCfg
 from isaaclab.assets import Articulation, ArticulationCfg
 
+from galbot_academy.assets.paths import generated_asset_dir
+
 STUCK_POSE = 13  # 种子 0 的序列中卡住的那一组（从 0 计）
 
 
@@ -57,7 +59,7 @@ def main() -> None:
         ArticulationCfg(
             prim_path="/World/Galbot",
             spawn=sim_utils.UsdFileCfg(
-                usd_path=os.path.abspath(args.usd),
+                usd_path=os.path.abspath(args.usd or generated_asset_dir() / "galbot_fixed_base" / "galbot.usd"),
                 articulation_props=sim_utils.ArticulationRootPropertiesCfg(enabled_self_collisions=False, **no_sleep),
             ),
             actuators={"all": ImplicitActuatorCfg(joint_names_expr=[".*"], stiffness=None, damping=None)},

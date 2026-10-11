@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-08
+# 验证日期：2026-10-08（--usd 默认值为 T-0.8n 所改：未单独验证）
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """重力力矩与重力下的保持（6.1.5）。
 
@@ -26,7 +26,7 @@ import sys
 from isaaclab.app import AppLauncher
 
 parser = argparse.ArgumentParser(description="重力力矩统计与保持测试")
-parser.add_argument("--usd", default="generated/galbot_fixed_base/galbot.usd")
+parser.add_argument("--usd", default=None, help="默认取 generated_asset_dir()/galbot_fixed_base/galbot.usd（环境变量 GALBOT_GENERATED_DIR 可改）")
 parser.add_argument("--num", type=int, default=64, help="机器人台数 = 随机姿态数（第 0 台为零位）")
 parser.add_argument("--seed", type=int, default=0)
 parser.add_argument("--solver_iters", type=int, nargs=2, default=None, metavar=("POS", "VEL"),
@@ -47,6 +47,7 @@ import isaaclab.sim as sim_utils
 from isaaclab.assets import Articulation, ArticulationCfg
 
 from galbot_academy.assets.drives import GROUPS, make_actuators
+from galbot_academy.assets.paths import generated_asset_dir
 
 SPACING = 3.0
 
@@ -60,7 +61,7 @@ def main() -> None:
     robot = Articulation(
         ArticulationCfg(
             prim_path="/World/envs/env_.*/Robot",
-            spawn=sim_utils.UsdFileCfg(usd_path=os.path.abspath(args.usd), articulation_props=sim_utils.ArticulationRootPropertiesCfg(
+            spawn=sim_utils.UsdFileCfg(usd_path=os.path.abspath(args.usd or generated_asset_dir() / "galbot_fixed_base" / "galbot.usd"), articulation_props=sim_utils.ArticulationRootPropertiesCfg(
                 **({} if args.solver_iters is None else {"solver_position_iteration_count": args.solver_iters[0], "solver_velocity_iteration_count": args.solver_iters[1]}))),
             actuators=make_actuators(use_usd_gains=args.usd_gains),
         )

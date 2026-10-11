@@ -27,14 +27,19 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-12 | [术语表（中英对照）](../0-map/0.8-glossary.md) | 修订 | 术语表补第四批 16 条 | T-0.8n |
+| 2026-10-12 | [Nucleus 与资产服务](../2-usd-kit/2.8-nucleus.md) | 新增 | Nucleus 与资产服务：三种资产来源、asset_root 设置与 Isaac Lab 路径、本地化三步、断网与子集包的坑 | T-0.8n、T-2.8 |
+| 2026-10-12 | [传感器](../3-isaacsim/3.6-sensors.md) | 修订 | 随《术语表（中英对照）》修订 | T-0.8n |
+| 2026-10-12 | [渲染与材质](../3-isaacsim/3.8-rendering.md) | 修订 | 随《术语表（中英对照）》修订 | T-0.8n |
+| 2026-10-12 | [Replicator 与合成数据](../3-isaacsim/3.9-replicator.md) | 修订 | 随《术语表（中英对照）》修订 | T-0.8n |
+| 2026-10-12 | [Sensors 抽象](../4-isaaclab/4.8-sensors.md) | 修订 | 随《术语表（中英对照）》修订 | T-0.8n |
+| 2026-10-12 | [底盘导航任务](../6-galbot/4-task/6.4.5-base-navigation.md) | 新增 | 底盘速度跟踪（轮式版）：滚子空转根因与过滤对、速度任务定义、三次训练如实记录 | T-0.8n、T-6.4.5、T-7.5 |
+| 2026-10-12 | [多 GPU 与分布式训练](../6-galbot/5-train/6.5.4-multi-gpu.md) | 新增 | 多 GPU 与分布式训练（来源版）：--distributed 机制、torchrun 命令、单卡实测路径、扩展代价 | T-0.8n、T-6.5.4 |
 | 2026-10-12 | [仿真与真机行为对比](../6-galbot/3-sim-align/6.3.2-sim-vs-real.md) | 新增 | 仿真与真机行为对比（方法论版）：阶跃响应指标、仿真侧三种执行器对照、拟合方法与 sim-to-sim 演示 | T-6.3.2 |
 | 2026-10-12 | [sim2real 清单](../6-galbot/7-deploy/6.7.3-sim2real-checklist.md) | 修订 | 随《仿真与真机行为对比》修订 | T-6.3.2 |
 | 2026-10-12 | [仿真代码的测试与 CI](../7-infra/7.4-testing-ci.md) | 修订 | 随《团队协作规范》修订 | T-6.3.2、T-7.6 |
 | 2026-10-12 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《底盘导航任务》修订 | T-2.8、T-6.3.2、T-6.4.5、T-6.5.4、T-7.5、T-7.6 |
-| 2026-10-12 | [多 GPU 与分布式训练](../6-galbot/5-train/6.5.4-multi-gpu.md) | 新增 | 多 GPU 与分布式训练（来源版）：--distributed 机制、torchrun 命令、单卡实测路径、扩展代价 | T-6.5.4 |
-| 2026-10-12 | [Nucleus 与资产服务](../2-usd-kit/2.8-nucleus.md) | 新增 | Nucleus 与资产服务：三种资产来源、asset_root 设置与 Isaac Lab 路径、本地化三步、断网与子集包的坑 | T-2.8 |
 | 2026-10-12 | [团队协作规范](../7-infra/7.6-team-conventions.md) | 新增 | 团队协作规范：项目结构、配置继承约定、命名、提交前清单（CONTRIBUTING.md）、评审看什么 | T-7.6 |
-| 2026-10-12 | [底盘导航任务](../6-galbot/4-task/6.4.5-base-navigation.md) | 新增 | 底盘速度跟踪（轮式版）：滚子空转根因与过滤对、速度任务定义、三次训练如实记录 | T-6.4.5、T-7.5 |
 | 2026-10-12 | [数据管理](../7-infra/7.5-data-management.md) | 新增 | 数据管理：四类数据的体积与可追溯链、DATA.md | T-6.4.5、T-7.5 |
 | 2026-10-11 | [多智能体环境](../4-isaaclab/4.17-multi-agent.md) | 新增 | 多智能体环境：DirectMARLEnv 与 DirectRLEnv 对照、IPPO / MAPPO 短训、拼成单智能体的封装 | T-4.17 |
 | 2026-10-11 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《Isaac Lab Mimic 与模仿学习》修订 | T-0.8l、T-0.8m、T-1.6、T-3.6、T-3.8、T-3.9、T-4.17、T-4.19、T-6.1.7、T-6.3.1、T-6.4.4、T-6.4.6、T-6.4.7、T-6.6.2、T-6.7.1、T-6.7.3、T-7.4、T-9.4、T-A.4 |

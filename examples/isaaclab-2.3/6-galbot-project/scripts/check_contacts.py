@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-09-30
+# 验证日期：2026-09-30（--usd 默认值为 T-0.8n 所改：未单独验证）
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """碰撞相关的验证实验（6.1.4）：自碰撞开 / 关时，零位、随机臂姿、夹爪闭合下的接触与稳定性。
 
@@ -28,7 +28,7 @@ import sys
 from isaaclab.app import AppLauncher
 
 parser = argparse.ArgumentParser(description="碰撞验证实验")
-parser.add_argument("--usd", default="generated/galbot_fixed_base/galbot.usd")
+parser.add_argument("--usd", default=None, help="默认取 generated_asset_dir()/galbot_fixed_base/galbot.usd（环境变量 GALBOT_GENERATED_DIR 可改）")
 parser.add_argument("--self_collision", action="store_true", help="开启 Articulation 自碰撞")
 parser.add_argument("--contact_offset", type=float, default=None, help="通过 spawn 的 collision_props 设置接触偏移")
 parser.add_argument("--no_filter", action="store_true", help="去掉资产里写好的自碰撞过滤对（对照实验）")
@@ -49,6 +49,8 @@ from isaaclab.actuators import ImplicitActuatorCfg
 from isaaclab.assets import Articulation, ArticulationCfg
 from isaaclab.sensors import ContactSensor, ContactSensorCfg
 
+from galbot_academy.assets.paths import generated_asset_dir
+
 FORCE_EPS = 0.01  # N；净接触力超过它才算"有接触"
 
 
@@ -56,7 +58,7 @@ def main() -> None:
     dt = 1 / 120
     sim = sim_utils.SimulationContext(sim_utils.SimulationCfg(dt=dt, device=args.device))
     spawn = sim_utils.UsdFileCfg(
-        usd_path=os.path.abspath(args.usd),
+        usd_path=os.path.abspath(args.usd or generated_asset_dir() / "galbot_fixed_base" / "galbot.usd"),
         activate_contact_sensors=True,
         articulation_props=sim_utils.ArticulationRootPropertiesCfg(enabled_self_collisions=args.self_collision),
         collision_props=None if args.contact_offset is None else sim_utils.CollisionPropertiesCfg(contact_offset=args.contact_offset),
