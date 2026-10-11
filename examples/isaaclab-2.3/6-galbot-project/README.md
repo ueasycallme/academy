@@ -540,6 +540,28 @@ python scripts/plot_mimic_data.py --source ./datasets/galbot_pick_place.hdf5 --g
 - 训练 2000 epoch：23 min 48 s，最后一个 epoch 的 `"Loss": -31.79`。
 - 评估：`Successful trials: 38, out of 100 trials`，约 58 min；`eval_bc_pick_place.py` 30 回合：`[eval] 成功 11 / 30`，约 18 min。
 
+## 6.7.1：策略导出
+
+新增：`scripts/export_policy.py`（不启动 Isaac Sim，复用 Isaac Lab 的导出器）、`scripts/bench_policy.py`（一致性与延迟）、`scripts/make_policy_spec.py`（接口说明）、`ros2/policy_spec.py`（节点侧核对；`reach_policy_node.py` 加了 `-p spec:=`，带它在 ROS 2 下启动节点：未验证（本站 session 未在 ROS 2 下实跑））；`eval_reach.py` 加了 `--record_obs`。onnxruntime 要装进 Isaac Lab 的环境：`pip install onnxruntime==1.20.1`。
+
+```bash
+RUN=logs/rsl_rl/galbot_reach/<运行>
+python scripts/export_policy.py $RUN/model_999.pt --dynamic-batch                      # → $RUN/deploy/policy.pt、policy.onnx
+python scripts/make_policy_spec.py --headless --checkpoint $RUN/model_999.pt           # → $RUN/deploy/policy_spec.json
+python scripts/eval_reach.py --headless --num_envs 2 --checkpoint $RUN/model_999.pt --record_obs traj.npz
+python scripts/bench_policy.py consistency $RUN/model_999.pt --traj traj.npz
+python scripts/bench_policy.py latency $RUN/model_999.pt
+python ros2/policy_spec.py $RUN/deploy/policy.onnx $RUN/deploy/policy_spec.json        # 节点侧的核对，可单独运行
+```
+
+预期（本站实测，2026-10-11，i7-14700KF + RTX 5070）：
+
+- 导出：`[export] 观测 28 维 → 动作 7 维；归一化：Identity`；不加 `--dynamic-batch` 时，ONNX 的计算图与 `play.py` 导出的相同。
+- 接口说明：`[spec] … 观测 28 维（joint_pos 7, joint_vel 7, pose_command 7, actions 7），动作 7 维，控制 30.0 Hz`。
+- 一致性：TorchScript 与检查点差 0；ONNX 在评估轨迹上最大差 1.43e-06。
+- 延迟（中位数）：onnxruntime CPU 批 1 约 3.4 μs，torch CPU 1 线程批 1 约 9 μs，torch GPU 批 1 约 29 μs。torch 默认线程数、批 64 的结果不稳定（20 或 64 μs），见 6.7.1 坑三。
+- `policy_spec.py`：`spec ok: [('joint_pos', 0, 7), …], action 7 @ 30.0 Hz`。
+
 ## 目录
 
 ```text
@@ -571,9 +593,11 @@ python scripts/plot_mimic_data.py --source ./datasets/galbot_pick_place.hdf5 --g
 │   ├── run_ros2_sim.py          # ROS 2 闭环仿真端、进程内对照（6.7.2）
 │   ├── record_pick_place.py  check_mimic_interface.py  replay_pick_place.py  sweep_grasp_pose.py   # pick-place 示范（6.4.6）
 │   ├── run_isaaclab_script.py  mimic_pipeline.sh  eval_bc_pick_place.py  plot_mimic_data.py   # Mimic 生成与 BC（6.4.7）
+│   ├── export_policy.py  bench_policy.py  make_policy_spec.py   # 策略导出、一致性与延迟、接口说明（6.7.1）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 ├── ros2/reach_policy_node.py    # 策略节点：系统 Humble + onnxruntime（6.7.2）
+├── ros2/policy_spec.py          # 核对 policy_spec.json，节点启动时调用，可单独运行（6.7.1）
 └── source/galbot_academy/
     ├── setup.py  pyproject.toml  config/extension.toml
     └── galbot_academy/

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：系统 ROS 2 Humble（/opt/ros/humble，Python 3.10）+ onnxruntime 1.20.1 + numpy 1.26.4
-# 验证日期：2026-10-10
+# 验证日期：2026-10-10（6.7.1 加的 spec 参数与动态批维度检查：policy_spec.py 已离线验证，节点在 ROS 2 下带 spec 启动未验证）
 """reach 策略的 ROS 2 节点（6.7.2）：订阅观测，用 ONNX Runtime 推理，发布动作。
 
 接口约定（与 scripts/run_ros2_sim.py 一致）：
@@ -14,6 +14,8 @@
 用法（系统 Python 或带 onnxruntime 的 venv，先 source /opt/ros/humble/setup.bash）::
 
     python reach_policy_node.py --ros-args -p onnx:=<运行目录>/exported/policy.onnx
+    # 6.7.1：用 export_policy.py 导出的部署件，并按 policy_spec.json 核对接口
+    python reach_policy_node.py --ros-args -p onnx:=<运行目录>/deploy/policy.onnx -p spec:=<运行目录>/deploy/policy_spec.json
 """
 
 import numpy as np
@@ -24,7 +26,8 @@ from rclpy.node import Node
 from rclpy.qos import HistoryPolicy, QoSProfile, ReliabilityPolicy
 from std_msgs.msg import Float32MultiArray
 
-OBS_DIM, ACT_DIM = 28, 7
+from policy_spec import ACT_DIM, OBS_DIM, check_input_shape, check_spec  # 同目录；不依赖 rclpy，可单独测试（6.7.1）
+
 # 可靠传输、只保留最新几条：同步方式下每步只有一条观测在路上
 QOS = QoSProfile(reliability=ReliabilityPolicy.RELIABLE, history=HistoryPolicy.KEEP_LAST, depth=10)
 
@@ -33,10 +36,14 @@ class ReachPolicyNode(Node):
     def __init__(self):
         super().__init__("reach_policy")
         path = self.declare_parameter("onnx", "").value
+        spec_path = self.declare_parameter("spec", "").value
         self.session = ort.InferenceSession(path, providers=["CPUExecutionProvider"])
         inp = self.session.get_inputs()[0]
-        # play.py 导出的模型批大小固定为 1（6.6.1）；观测维度不对时直接报错，不要静默截断
-        assert list(inp.shape) == [1, OBS_DIM], f"ONNX 输入形状 {inp.shape}，期望 [1, {OBS_DIM}]"
+        # 观测维度不对时直接报错，不要静默截断；给了 spec 就核对观测顺序与维度（6.7.1）
+        check_input_shape(inp.shape)
+        if spec_path:
+            spec = check_spec(spec_path, path)
+            self.get_logger().info(f"spec ok: {[t['name'] for t in spec['observation']['terms']]}")
         self.input_name = inp.name
         self.pub = self.create_publisher(Float32MultiArray, "/galbot/reach/action", QOS)
         self.create_subscription(Float32MultiArray, "/galbot/reach/obs", self.on_obs, QOS)

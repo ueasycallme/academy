@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2（rsl_rl 3.1.2）
-# 验证日期：2026-10-08
+# 验证日期：2026-10-08（--record_obs 为 6.7.1 所加，验证日期 2026-10-11）
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """评估一个 reach 策略（6.5.1）：跑一个完整回合，在每段目标（4 s）的最后一步记录 TCP 误差。
 
@@ -24,6 +24,8 @@ parser.add_argument("--num_envs", type=int, default=256)
 parser.add_argument("--seed", type=int, default=0)
 parser.add_argument("--action_scale", type=float, default=None, help="训练时改过动作 scale 的，评估时要用同一个值（6.5.2）")
 parser.add_argument("--vel_limit", type=float, default=None, help="评估时把右臂关节速度上限改为该值（rad/s，诊断用）")
+parser.add_argument("--record_obs", default=None, help="把前 --record_envs 个环境每步的策略输入与输出存成 .npz（6.7.1 一致性比对用）")
+parser.add_argument("--record_envs", type=int, default=2)
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 simulation_app = AppLauncher(args).app
@@ -66,9 +68,14 @@ def main() -> None:
     q_hist = []
     obs = env.get_observations()
     pos_err, rot_err, stuck = [], [], 0
+    rec_obs, rec_act = [], []
     with torch.inference_mode():
         for k in range(T - 1):  # 最后一步会触发超时重置，在它之前读
-            obs, _, _, _ = env.step(policy(obs))
+            actions = policy(obs)
+            if args.record_obs:
+                rec_obs.append(obs["policy"][: args.record_envs].cpu().numpy())
+                rec_act.append(actions[: args.record_envs].cpu().numpy())
+            obs, _, _, _ = env.step(actions)
             q_hist = (q_hist + [robot.data.joint_pos[:, arm].clone()])[-win:]
             if (k + 1) % seg == 0 or k == T - 2:
                 pe, re = cmd.metrics["position_error"].clone(), cmd.metrics["orientation_error"].clone()
@@ -84,6 +91,12 @@ def main() -> None:
     print(f"  位置误差：均值 {pe.mean().item() * 100:.2f} cm，最大 {pe.max().item() * 100:.2f} cm")  # 6.6.1 加
     print(f"  姿态误差：中位数 {re.median().item():.3f} rad，90% 分位 {re.quantile(0.9).item():.3f} rad")
     print(f"  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：{stuck} / {n}")
+    if args.record_obs:
+        import numpy as np
+
+        # 形状 (步数, 环境数, 维数)；actions 是进程内策略（仿真设备上）算出的动作
+        np.savez(args.record_obs, obs=np.stack(rec_obs), actions=np.stack(rec_act))
+        print(f"  记录：{args.record_obs}，obs {np.stack(rec_obs).shape}，actions {np.stack(rec_act).shape}")
     env.close()
 
 

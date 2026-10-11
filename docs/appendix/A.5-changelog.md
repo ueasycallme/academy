@@ -27,7 +27,8 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
-| 2026-10-11 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《Isaac Lab Mimic 与模仿学习》修订 | T-0.8l、T-0.8m、T-4.19、T-6.4.6、T-6.4.7、T-9.4 |
+| 2026-10-11 | [策略导出（JIT / ONNX）](../6-galbot/7-deploy/6.7.1-policy-export.md) | 新增 | 策略导出（JIT / ONNX）：动态批、三种加载一致性、推理延迟、接口说明 | T-6.7.1 |
+| 2026-10-11 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《Isaac Lab Mimic 与模仿学习》修订 | T-0.8l、T-0.8m、T-4.19、T-6.4.6、T-6.4.7、T-6.7.1、T-9.4 |
 | 2026-10-11 | [训练脚本 train.py 做了什么](../9-source/9.4-train-script.md) | 新增 | 训练脚本 train.py 做了什么（源码导读） | T-0.8m、T-9.4 |
 | 2026-10-11 | [术语表（中英对照）](../0-map/0.8-glossary.md) | 修订 | 术语表补第二批 22 条 | T-0.8l、T-6.4.7 |
 | 2026-10-11 | [Mimic 数据生成与模仿学习](../6-galbot/4-task/6.4.7-mimic.md) | 新增 | Mimic 数据生成与 BC 训练（主线项目） | T-0.8l、T-6.4.7 |
