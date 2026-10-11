@@ -645,7 +645,7 @@ $PY -m pytest tests/gpu -m slow -q                           # 确定性回归�
 GALBOT_REACH_CKPT=<model_999.pt> $PY -m pytest tests/regression -q   # 区间回归：必须单独一次调用，同进程已起 Kit 时会跳过
 ```
 
-预期（本站实测，2026-10-11）：`13 passed, 1 skipped`（系统 Python；7.6 加了 `test_versions.py` 后为 `16 passed, 1 skipped`）；`3 passed, 1 deselected`（冒烟）；确定性与区间回归各 1 passed。换机器后指纹用例会跳过，可用 `GALBOT_RECORD_GOLDEN=1` 重新记录。系统 pytest 加载插件出错时，加 `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1`。
+预期（本站实测，2026-10-11）：`13 passed, 1 skipped`（系统 Python；之后的页面会加用例：7.6 后为 `16 passed, 1 skipped`，6.3.2 后为 `19 passed, 1 skipped`）；`3 passed, 1 deselected`（冒烟）；确定性与区间回归各 1 passed。换机器后指纹用例会跳过，可用 `GALBOT_RECORD_GOLDEN=1` 重新记录。系统 pytest 加载插件出错时，加 `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1`。
 
 ## 3.8：渲染与材质
 
@@ -702,6 +702,20 @@ python scripts/rsl_rl/train.py --task Galbot-Reach-v0 --headless --seed 42 --max
 
 预期（本站实测，2026-10-12，RTX 5070）：两次都是 `Iteration time: 1.51s`、`Time elapsed: 00:00:31`，按进程显存 3041 MiB，两个 `model_19.pt` 逐字节相同（单卡时 rsl_rl 不进分布式分支）。
 
+## 6.3.2：仿真与真机行为对比（方法论，sim-to-sim）
+
+本站没有真机，这一节只在仿真里演示方法：用一组执行器参数生成"伪真机"曲线，再用网格拟合找回来，不代表真机结论。新增 `scripts/fit_actuator.py`（不需要 Isaac Sim）、`tests/unit/test_fit_actuator.py`；`step_response.py` 加 `--actuator delayed`、`--delays`、`--grid`；`plot_step.py` 能并排画几份 CSV。
+
+```bash
+python scripts/step_response.py --headless --actuator implicit --gains 200:40,400:40,800:40 --step 0.05 --csv cmp_implicit.csv
+python scripts/step_response.py --headless --actuator delayed --gains 400:40 --delays 0,1,2,3 --step 0.05 --csv cmp_delayed.csv
+python scripts/step_response.py --headless --actuator delayed --gains 600:30 --delays 2 --step 0.05 --csv ref_005.csv   # 伪真机
+python scripts/step_response.py --headless --actuator delayed --grid "300,400,500,600,700,800,900;10,20,30,40,50;0,1,2,3" --step 0.05 --csv grid_005.csv
+python scripts/fit_actuator.py --pair ref_005.csv:grid_005.csv --noise 0.002 --truth 600:30:2
+```
+
+预期（本站实测，2026-10-12）：隐式 400:40 一行上升 `0.192`、超调 `2.7`；延迟每多 1 步，调节时间多约 0.008 s；网格 140 台，按进程显存约 2.4 GB；拟合输出 `拟合 K 600（+0%）/ D 30（+0%）/ 延迟 2（+0 步）`。
+
 ## 7.6：团队协作规范
 
 新增：`CONTRIBUTING.md`（提交前清单）、`scripts/check_versions.py`（核对关键包版本，只读包元数据，不启动 Isaac Sim）、`tests/unit/test_versions.py`。
@@ -752,6 +766,7 @@ python scripts/check_versions.py      # 用 Isaac 的 Python
 │   ├── render_cost.py           # 渲染模式的代价、机器人材质（3.8）
 │   ├── probe_rollers.py  eval_base_vel.py   # 轮式底盘：滚子空转探针、速度跟踪评估（6.4.5）
 │   ├── check_versions.py        # 核对关键包版本（7.6）
+│   ├── fit_actuator.py          # 网格拟合执行器参数（6.3.2）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 ├── tests/  pytest.ini          # 无 GPU / 冒烟 / 回归三层测试（7.4）

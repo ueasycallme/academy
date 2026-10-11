@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-08
+# 验证日期：2026-10-08（--actuator delayed、--delays、--grid 为 6.3.2 所加，验证日期 2026-10-12）
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """单关节阶跃响应（6.1.5）。
 
@@ -17,6 +17,10 @@
     python scripts/step_response.py --headless --effort 1000             # 力矩上限改用厂商 USD 的 1000
     python scripts/step_response.py --headless --vel_limit 100           # 放开速度上限
     python scripts/step_response.py --headless --csv generated/step/implicit.csv
+    python scripts/step_response.py --headless --actuator delayed --gains 400:40 --delays 0,1,2,3   # 6.3.2：延迟 0–3 个物理步
+    python scripts/step_response.py --headless --actuator delayed --grid "200,400,800;20,40,80;0,1,2" --csv cand.csv   # 6.3.2：候选网格
+
+读数时机（6.3.2）：每个物理步 write_data_to_sim → sim.step → robot.update 后读一次 joint_pos，曲线的采样间隔就是 dt。
 """
 
 import argparse
@@ -27,12 +31,15 @@ from isaaclab.app import AppLauncher
 ARM_JOINTS = [f"{s}_arm_joint{i}" for s in ("left", "right") for i in range(1, 8)]
 
 parser = argparse.ArgumentParser(description="单关节阶跃响应")
-parser.add_argument("--usd", default="generated/galbot_fixed_base/galbot.usd")
+parser.add_argument("--usd", default=None, help="默认取 generated_asset_dir()/galbot_fixed_base/galbot.usd（环境变量 GALBOT_GENERATED_DIR 可改）")
 parser.add_argument("--joint", default="right_arm_joint2", choices=ARM_JOINTS, help="被测关节（臂关节）")
 parser.add_argument("--step", type=float, default=0.5, help="阶跃幅度（rad）")
 parser.add_argument("--gains", default="100:10,400:10,400:40,400:120,1600:80,4000:200",
                     help="逗号分隔的 stiffness:damping，每组一台机器人")
-parser.add_argument("--actuator", choices=["implicit", "ideal"], default="implicit")
+parser.add_argument("--actuator", choices=["implicit", "ideal", "delayed"], default="implicit",
+                    help="delayed：DelayedPDActuator（显式 PD + 指令延迟若干物理步，6.3.2）")
+parser.add_argument("--delays", default="0", help="delayed 时每台的延迟（物理步），逗号分隔；只给一个则所有台相同")
+parser.add_argument("--grid", default=None, help='候选网格 "kp1,kp2;kd1,kd2;d1,d2"：取笛卡儿积，每个组合一台（覆盖 --gains / --delays，6.3.2）')
 parser.add_argument("--effort", type=float, default=None, help="被测关节的力矩上限（N·m）；默认沿用 USD（= URDF effort）")
 parser.add_argument("--vel_limit", type=float, default=None, help="被测关节的速度上限（rad/s）；默认沿用 USD（= URDF velocity）")
 parser.add_argument("--dt", type=float, default=1 / 120)
@@ -50,15 +57,18 @@ from pathlib import Path
 import torch
 
 import isaaclab.sim as sim_utils
-from isaaclab.actuators import IdealPDActuatorCfg, ImplicitActuatorCfg
+import itertools
+
+from isaaclab.actuators import DelayedPDActuatorCfg, IdealPDActuatorCfg, ImplicitActuatorCfg
 from isaaclab.assets import Articulation, ArticulationCfg
 
 from galbot_academy.assets.drives import GROUPS, make_actuators
+from galbot_academy.assets.paths import generated_asset_dir
 
 SPACING = 3.0
 
 
-def build_actuators(gains: list[tuple[float, float]]) -> dict:
+def build_actuators(gains: list[tuple[float, float]], max_delay: int = 0) -> dict:
     """参数表的各组，但被测关节单独成组（各组正则互不重叠）。"""
     actuators = make_actuators()
     arms = GROUPS["arms"]
@@ -68,6 +78,9 @@ def build_actuators(gains: list[tuple[float, float]]) -> dict:
                   effort_limit_sim=args.effort, velocity_limit_sim=args.vel_limit)
     if args.actuator == "implicit":
         actuators["test"] = ImplicitActuatorCfg(**common)
+    elif args.actuator == "delayed":
+        # 每台的延迟在 sim.reset() 之后逐台写进延迟缓冲（main 里），这里只给上限
+        actuators["test"] = DelayedPDActuatorCfg(**common, effort_limit=args.effort, min_delay=0, max_delay=max_delay)
     else:
         # 显式执行器在模型内按 effort_limit 截断（未设时取 USD 值），effort_limit_sim 只管 PhysX 层（4.7）
         actuators["test"] = IdealPDActuatorCfg(**common, effort_limit=args.effort)
@@ -97,7 +110,20 @@ def metrics(t: torch.Tensor, q: torch.Tensor, q0: float, step: float) -> dict:
 
 
 def main() -> None:
-    gains = [tuple(float(x) for x in g.split(":")) for g in args.gains.split(",")]
+    if args.grid:
+        kps, kds, ds = ([float(x) for x in part.split(",")] for part in args.grid.split(";"))
+        combos = list(itertools.product(kps, kds, ds))
+        gains = [(k, d) for k, d, _ in combos]
+        delays = [int(x) for _, _, x in combos]
+    else:
+        gains = [tuple(float(x) for x in g.split(":")) for g in args.gains.split(",")]
+        delays = [int(x) for x in args.delays.split(",")]
+        delays = delays * len(gains) if len(delays) == 1 else delays
+        if len(delays) != len(gains):  # 只给一组增益、多个延迟时，增益沿用到每台
+            gains = gains * len(delays) if len(gains) == 1 else gains
+    assert len(gains) == len(delays), "--gains 与 --delays 的组数要相同（或其一只有一组）"
+    if args.actuator != "delayed":
+        delays = [0] * len(gains)
     n = len(gains)
     dt = args.dt
     sim = sim_utils.SimulationContext(sim_utils.SimulationCfg(dt=dt, device=args.device))
@@ -105,9 +131,9 @@ def main() -> None:
         sim_utils.create_prim(f"/World/envs/env_{i}", "Xform", translation=(SPACING * i, 0.0, 0.0))
     robot = Articulation(ArticulationCfg(
         prim_path="/World/envs/env_.*/Robot",
-        spawn=sim_utils.UsdFileCfg(usd_path=os.path.abspath(args.usd), articulation_props=sim_utils.ArticulationRootPropertiesCfg(
+        spawn=sim_utils.UsdFileCfg(usd_path=os.path.abspath(args.usd or generated_asset_dir() / "galbot_fixed_base" / "galbot.usd"), articulation_props=sim_utils.ArticulationRootPropertiesCfg(
             **({} if args.solver_iters is None else {"solver_position_iteration_count": args.solver_iters[0], "solver_velocity_iteration_count": args.solver_iters[1]}))),
-        actuators=build_actuators(gains),
+        actuators=build_actuators(gains, max(delays)),
     ))
     sim.reset()
     j = robot.joint_names.index(args.joint)
@@ -116,6 +142,11 @@ def main() -> None:
     kd = torch.tensor([g[1] for g in gains], device=robot.device).unsqueeze(1)
     act.stiffness[:] = kp  # 执行器模型里的增益（显式执行器用它算力矩；隐式执行器用它估算 applied_torque）
     act.damping[:] = kd
+    if args.actuator == "delayed":  # 逐台写入延迟（DelayedPDActuator.reset 默认在 [min, max] 里随机取）
+        lags = torch.tensor(delays, dtype=torch.int, device=robot.device)
+        for buf in (act.positions_delay_buffer, act.velocities_delay_buffer, act.efforts_delay_buffer):
+            buf.set_time_lag(lags)
+            buf.reset()
     if args.actuator == "implicit":  # 隐式：真正起作用的是写进 PhysX 的驱动增益
         robot.write_joint_stiffness_to_sim(kp, joint_ids=[j])
         robot.write_joint_damping_to_sim(kd, joint_ids=[j])
@@ -133,30 +164,32 @@ def main() -> None:
     q0 = robot.data.joint_pos[:, j].clone()
     target[:, j] = q0 + args.step
     robot.set_joint_position_target(target)
-    ts, qs, taus = [], [], []
+    ts, qs, taus, vels = [], [], [], []
     for k in range(round(args.seconds / dt)):
         step()
         ts.append((k + 1) * dt)
         qs.append(robot.data.joint_pos[:, j].clone())
         taus.append(robot.data.applied_torque[:, j].abs().clone())
+        vels.append(robot.data.joint_vel[:, j].abs().clone())
     t = torch.tensor(ts, device=robot.device)
     q = torch.stack(qs, dim=1)  # (组, 时间)
     tau = torch.stack(taus, dim=1)
+    vmax = torch.stack(vels, dim=1).amax(dim=1)
     finite = bool(torch.isfinite(q).all())
 
     eff = robot.data.joint_effort_limits[0, j].item()
     vel = robot.data.joint_vel_limits[0, j].item()
     print(f"{args.joint}：{args.actuator}，阶跃 {args.step} rad，dt {dt:.4f} s，力矩上限 {eff:g} N·m，速度上限 {vel:g} rad/s，数值有限 {finite}")
-    print(f"{'stiffness':>9s} {'damping':>8s} {'上升 s':>7s} {'超调 %':>7s} {'调节 s':>7s} {'稳态误差 rad':>12s} {'末段波动 rad':>12s} {'最大力矩':>8s}")
+    print(f"{'stiffness':>9s} {'damping':>8s} {'延迟':>4s} {'上升 s':>7s} {'超调 %':>7s} {'调节 s':>7s} {'稳态误差 rad':>12s} {'末段波动 rad':>12s} {'最大力矩':>8s} {'最大速度':>8s}")
     for i, (k_, d_) in enumerate(gains):
         m = metrics(t, q[i], q0[i].item(), args.step)
-        print(f"{k_:9g} {d_:8g} {m['rise']:7.3f} {m['overshoot']:7.1f} {m['settle']:7.3f} {m['ss_err']:+12.4f} {m['ripple']:12.4f} {tau[i].max().item():8.1f}")
+        print(f"{k_:9g} {d_:8g} {delays[i]:4d} {m['rise']:7.3f} {m['overshoot']:7.1f} {m['settle']:7.3f} {m['ss_err']:+12.4f} {m['ripple']:12.4f} {tau[i].max().item():8.1f} {vmax[i].item():8.3f}")
 
     if args.csv:
         path = Path(args.csv)
         path.parent.mkdir(parents=True, exist_ok=True)
         with open(path, "w") as f:
-            f.write("t," + ",".join(f"{k_:g}:{d_:g}" for k_, d_ in gains) + "\n")
+            f.write("t," + ",".join(f"{k_:g}:{d_:g}:{delays[i]}" for i, (k_, d_) in enumerate(gains)) + "\n")
             for k in range(len(ts)):
                 f.write(f"{ts[k]:.5f}," + ",".join(f"{(q[i, k] - q0[i]).item():.6f}" for i in range(n)) + "\n")
         print(f"曲线已保存 {path}（位置相对阶跃起点）")
