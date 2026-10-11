@@ -27,9 +27,10 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-11 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《Isaac Lab Mimic 与模仿学习》修订 | T-0.8l、T-0.8m、T-4.19、T-6.4.6、T-6.4.7、T-9.4 |
+| 2026-10-11 | [训练脚本 train.py 做了什么](../9-source/9.4-train-script.md) | 新增 | 训练脚本 train.py 做了什么（源码导读） | T-0.8m、T-9.4 |
 | 2026-10-11 | [术语表（中英对照）](../0-map/0.8-glossary.md) | 修订 | 术语表补第二批 22 条 | T-0.8l、T-6.4.7 |
 | 2026-10-11 | [Mimic 数据生成与模仿学习](../6-galbot/4-task/6.4.7-mimic.md) | 新增 | Mimic 数据生成与 BC 训练（主线项目） | T-0.8l、T-6.4.7 |
-| 2026-10-11 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《Isaac Lab Mimic 与模仿学习》修订 | T-0.8l、T-4.19、T-6.4.6、T-6.4.7 |
 | 2026-10-11 | [遥操作采集示教数据](../6-galbot/4-task/6.4.6-teleop-demos.md) | 新增 | 遥操作采集示教数据（脚本化示教、pick_place 环境、IK 偏移雅可比修正） | T-6.4.6 |
 | 2026-10-11 | [Isaac Lab Mimic 与模仿学习](../4-isaaclab/4.19-mimic.md) | 新增 | Isaac Lab Mimic 示范数据生成 | T-4.19 |
 | 2026-10-10 | [遥操作与设备](../4-isaaclab/4.20-teleop-devices.md) | 新增 | 遥操作设备与示范录制 | T-4.20 |
