@@ -2,10 +2,13 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-09-30
-"""Galbot 的碰撞相关设置（6.1.4）。只依赖 pxr，转换脚本与实验脚本共用。"""
+# 验证日期：2026-09-30（pxr 改为调用时导入，6.1.7，验证日期 2026-10-11）
+"""Galbot 的碰撞相关设置（6.1.4）。转换脚本与实验脚本共用。
 
-from pxr import Usd, UsdPhysics
+过滤对列表不依赖 pxr；两个函数在调用时才导入 pxr（6.1.7：资产清单要在不启动 Isaac Sim 时读这份列表）。
+"""
+
+from __future__ import annotations
 
 # 开启自碰撞时要排除的刚体对（6.1.4 实测）。PhysX 只自动排除由关节直接相连的两个刚体，下面几对都不是：
 # - 躯干与头：隔着一个没有碰撞体的连杆 head_link1，零位时就已相互穿透，不排除会把头顶开；
@@ -23,11 +26,13 @@ SELF_COLLISION_FILTERED_PAIRS: list[tuple[str, str]] = [("leg_link5", "head_link
 ]
 
 
-def add_filtered_pairs(stage: Usd.Stage, root_path: str, pairs=SELF_COLLISION_FILTERED_PAIRS) -> int:
+def add_filtered_pairs(stage: "Usd.Stage", root_path: str, pairs=SELF_COLLISION_FILTERED_PAIRS) -> int:
     """为每一对刚体写入 UsdPhysics.FilteredPairsAPI，使它们互不碰撞；返回写入的对数。
 
     写在资产里（转换阶段）时，关系目标随引用一起重映射，机器人放到任何路径、克隆多少份都有效。
     """
+    from pxr import UsdPhysics
+
     for a, b in pairs:
         prim = stage.GetPrimAtPath(f"{root_path}/{a}")
         if not prim.IsValid() or not stage.GetPrimAtPath(f"{root_path}/{b}").IsValid():
@@ -36,8 +41,10 @@ def add_filtered_pairs(stage: Usd.Stage, root_path: str, pairs=SELF_COLLISION_FI
     return len(pairs)
 
 
-def remove_filtered_pairs(stage: Usd.Stage, root_path: str) -> int:
+def remove_filtered_pairs(stage: "Usd.Stage", root_path: str) -> int:
     """去掉 root_path 下所有刚体上的过滤对（对照实验用）；返回处理的刚体数。"""
+    from pxr import UsdPhysics
+
     n = 0
     for prim in stage.GetPrimAtPath(root_path).GetChildren():
         if prim.HasAPI(UsdPhysics.FilteredPairsAPI):

@@ -27,8 +27,10 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-11 | [从 URDF 导入 Isaac Sim](../6-galbot/1-asset/6.1.2-import-urdf.md) | 修订 | 随《资产版本管理》修订 | T-6.1.7 |
+| 2026-10-11 | [资产版本管理](../6-galbot/1-asset/6.1.7-asset-versioning.md) | 新增 | 资产版本管理：LFS / DVC / 来源+脚本三种做法、资产清单 asset_manifest.py、手工修改分层、变更记录 | T-6.1.7 |
+| 2026-10-11 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《Isaac Lab Mimic 与模仿学习》修订 | T-0.8l、T-0.8m、T-3.6、T-4.19、T-6.1.7、T-6.3.1、T-6.4.4、T-6.4.6、T-6.4.7、T-6.6.2、T-6.7.1、T-6.7.3、T-9.4 |
 | 2026-10-11 | [传感器](../3-isaacsim/3.6-sensors.md) | 新增 | 传感器：相机 / 接触 / Imu / 射线四类的读法、更新时机与代价 | T-3.6 |
-| 2026-10-11 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《Isaac Lab Mimic 与模仿学习》修订 | T-0.8l、T-0.8m、T-3.6、T-4.19、T-6.3.1、T-6.4.4、T-6.4.6、T-6.4.7、T-6.6.2、T-6.7.1、T-6.7.3、T-9.4 |
 | 2026-10-11 | [用 Direct 方式重写 reach](../6-galbot/4-task/6.4.4-reach-direct.md) | 新增 | 用 Direct 方式重写 reach：管理器对照表、逐位等价验证、同种子训练与速度对照 | T-6.4.4 |
 | 2026-10-11 | [物理参数调优](../6-galbot/3-sim-align/6.3.1-physics-tuning.md) | 新增 | 物理参数调优（主线项目）：稳定性探针、dt / 迭代 / 偏移 / GPU 缓冲四组扫描、主线取舍与重训判据 | T-6.3.1 |
 | 2026-10-11 | [sim2real 清单](../6-galbot/7-deploy/6.7.3-sim2real-checklist.md) | 新增 | sim2real 清单：观测/动作/执行器/时序/安全/辨识六组核对项、关节目标越限实测、本项目差距 | T-6.7.3 |

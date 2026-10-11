@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-09-30
+# 验证日期：2026-09-30（参数移到 assets/conversion.py、末尾写资产清单为 6.1.7 所改，验证日期 2026-10-11）
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """把 Galbot One Golf 的 URDF 转成 USD（6.1.2）。
 
@@ -30,54 +30,41 @@ simulation_app = AppLauncher(args).app
 from isaaclab.sim.converters import UrdfConverter, UrdfConverterCfg
 
 from galbot_academy.assets import galbot_description_dir, generated_asset_dir
+from galbot_academy.assets.conversion import (  # 参数集中在这里，资产清单（6.1.7）不启动 Isaac Sim 也能读
+    CONVERTER_OPTIONS,
+    MIMIC_DAMPING_RATIO,
+    MIMIC_NATURAL_FREQUENCY,
+    URDF_FILES,
+    gains,
+    variant_dir_name,
+)
+from galbot_academy.assets.manifest import write_manifest
 
-URDF_FILES = {"fixed_base": "galbot_one_golf_fixed_base.urdf", "wheeled": "galbot_one_golf.urdf"}
-
-# 驱动增益（N·m/rad 与 N·m·s/rad），只求能让机器人在重力下站住，细调见 6.1.5。
-# 按正则写的字典在 URDF 转换器里按顺序应用，后面的键覆盖前面的：先通配，后特例。
-# （Isaac Lab 的 ArticulationCfg.actuators 规则相反，键重叠会报错，见 6.1.6。）
-STIFFNESS = {".*": 400.0, "leg_joint[1-3]": 4000.0, ".*_gripper_joint": 100.0}
-DAMPING = {".*": 40.0, "leg_joint[1-3]": 400.0, ".*_gripper_joint": 10.0}
-
-
-# 轮式 URDF 的 40 个全向轮被动滚子：零刚度 + 小阻尼，让滚子自由转动、只带一点阻尼（经验性选择）。
-# 注意：这不是 NaN 的修复。固定根放在 z=0 且有地面时轮子压进地面，才是轮式版出现 NaN 的原因（D-026，见 6.1.2）；
-# 那种情况下结果随阻尼取值时好时坏、并不单调，不能靠调阻尼解决。
-PASSIVE_ROLLER = "wheel_.*_passive_.*"
-PASSIVE_DAMPING = 0.1
 
 
 def make_cfg() -> UrdfConverterCfg:
-    out_dir = generated_asset_dir() / (f"galbot_{args.variant}" + ("_floating" if args.floating_base else ""))
+    out_dir = generated_asset_dir() / variant_dir_name(args.variant, args.floating_base)
     # 字典里的每个正则键都必须匹配到至少一个关节，否则转换器抛 ValueError（而进程返回码仍为 0）。
-    # 固定底座版 URDF 没有被动滚子，所以只在轮式版里加滚子的键；它们放在最后，覆盖前面的通配值。
-    stiffness, damping = dict(STIFFNESS), dict(DAMPING)
-    if args.variant == "wheeled":
-        stiffness[PASSIVE_ROLLER] = 0.0
-        damping[PASSIVE_ROLLER] = PASSIVE_DAMPING
+    # 固定底座版 URDF 没有被动滚子，所以只在轮式版里加滚子的键（conversion.gains）。
+    stiffness, damping = gains(args.variant)
+    opt = CONVERTER_OPTIONS
     return UrdfConverterCfg(
         asset_path=str(galbot_description_dir() / "urdf" / URDF_FILES[args.variant]),
         usd_dir=str(out_dir),
         usd_file_name="galbot.usd",
         force_usd_conversion=True,
         fix_base=not args.floating_base,  # reach 任务用固定底座：把根连杆 base_link 固定到世界
-        merge_fixed_joints=True,  # 合并固定关节两侧的连杆（会有 26–30 条弃用警告，属预期）
+        merge_fixed_joints=opt["merge_fixed_joints"],  # 合并固定关节两侧的连杆（会有 26–30 条弃用警告，属预期）
         # 字段名与效果相反：v2.3.2 中为 True 时才保留 URDF 的 mimic 关系（6.1.2"常见坑"）
-        convert_mimic_joints_to_normal_joints=True,
-        collider_type="convex_hull",
-        self_collision=False,  # 先关闭，需要时在 ArticulationCfg 里再开
+        convert_mimic_joints_to_normal_joints=opt["convert_mimic_joints_to_normal_joints"],
+        collider_type=opt["collider_type"],
+        self_collision=opt["self_collision"],  # 先关闭，需要时在 ArticulationCfg 里再开
         joint_drive=UrdfConverterCfg.JointDriveCfg(
-            drive_type="force",
-            target_type="position",  # mimic 跟随关节由 mimic 约束带动，转换器不会给它们加驱动
+            drive_type=opt["drive_type"],
+            target_type=opt["target_type"],  # mimic 跟随关节由 mimic 约束带动，转换器不会给它们加驱动
             gains=UrdfConverterCfg.JointDriveCfg.PDGainsCfg(stiffness=stiffness, damping=damping),
         ),
     )
-
-
-# mimic 约束的"刚度"：URDF 导入器把关节驱动的 naturalFrequency / dampingRatio（默认 25 / 0.005）写进
-# physxMimicJoint:*，约束很软，夹爪在重力下跟不住主动关节（6.1.2 实测）。转换后改成下面的值。
-MIMIC_NATURAL_FREQUENCY = 1000.0
-MIMIC_DAMPING_RATIO = 1.0
 
 
 def stiffen_mimic_joints(usd_path: str) -> int:
@@ -116,6 +103,8 @@ def main() -> None:
     print(f"Generated USD file: {converter.usd_path}")
     print(f"mimic 关节 {count} 个：naturalFrequency = {MIMIC_NATURAL_FREQUENCY}，dampingRatio = {MIMIC_DAMPING_RATIO}")
     print(f"自碰撞过滤对 {pairs} 对")
+    path = write_manifest(args.variant, args.floating_base)  # 6.1.7：来源、工具链、参数、输出文件的 sha256
+    print(f"资产清单：{path}")
 
 
 if __name__ == "__main__":

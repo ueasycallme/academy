@@ -622,6 +622,18 @@ python scripts/eval_reach.py --headless --task Galbot-Reach-Direct-v0 --checkpoi
 
 预期（本站实测，2026-10-11）：`diff` 各行为 `全程最大 0；全程 ≤ 1e-05`，`超时：一致，发生在第 [360] 步`；`lines` 的文件合计 154 / 186；评估 `中位数 2.73 cm，90% 分位 6.31 cm，< 2 cm 32.2%，< 5 cm 80.9%`，与 Manager 版种子 42 相同。
 
+## 6.1.7：资产版本管理
+
+新增：`scripts/asset_manifest.py`（写 / 校验 `generated/<变体>/MANIFEST.json`，不需要 Isaac Sim）、`assets/conversion.py`（转换参数，从 `convert_galbot.py` 移来）、`assets/manifest.py`。`convert_galbot.py` 转换末尾自动写清单；`assets/galbot.py` 被导入时校验固定底座版的清单，不一致只发 `UserWarning`。
+
+```bash
+python scripts/convert_galbot.py --headless       # 末行多一行：资产清单：…/generated/galbot_fixed_base/MANIFEST.json
+python scripts/asset_manifest.py verify           # 一致时退出码 0
+python scripts/asset_manifest.py write            # 给已有的生成目录补写清单
+```
+
+预期（本站实测，2026-10-11）：`[manifest] 一致：来源、工具链、参数、文件都与清单相同`。改了 `assets/conversion.py` 的参数而没重新转换时，会列出 `参数 post_processing.mimic_natural_frequency：1000.0 → 500.0` 这类差异，退出码 1。
+
 ## 目录
 
 ```text
@@ -658,6 +670,7 @@ python scripts/eval_reach.py --headless --task Galbot-Reach-Direct-v0 --checkpoi
 │   ├── sim2real_report.py       # 打印要核对的接口常量与目标越限情况（6.7.3）
 │   ├── sweep_physics.py  plot_sweep.py  pick_place_teacher.py   # 物理参数稳定性探针与画图、示教控制器（6.3.1）
 │   ├── compare_direct_manager.py   # Manager 版与 Direct 版 reach 的逐步比对、行数统计（6.4.4）
+│   ├── asset_manifest.py        # 写 / 校验生成资产的清单（6.1.7）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 ├── ros2/reach_policy_node.py    # 策略节点：系统 Humble + onnxruntime（6.7.2）
@@ -666,7 +679,7 @@ python scripts/eval_reach.py --headless --task Galbot-Reach-Direct-v0 --checkpoi
     ├── setup.py  pyproject.toml  config/extension.toml
     └── galbot_academy/
         ├── __init__.py
-        ├── assets/              # 资产路径（6.1.1）、自碰撞过滤对 physics.py（6.1.4）、驱动参数表 drives.py（6.1.5）、机器人配置 galbot.py（6.1.6）
+        ├── assets/              # 资产路径（6.1.1）、自碰撞过滤对 physics.py（6.1.4）、驱动参数表 drives.py（6.1.5）、机器人配置 galbot.py（6.1.6）、转换参数 conversion.py 与清单 manifest.py（6.1.7）
         ├── scenes/              # 场景配置：reach.py（6.2.1）、lift.py（6.4.3）、sensors.py（6.2.2）
         └── tasks/               # 任务（6.4.1 起）：manager_based/reach/、lift/（6.4.3）、pick_place/（6.4.6）；direct/reach/（6.4.4）
 ```

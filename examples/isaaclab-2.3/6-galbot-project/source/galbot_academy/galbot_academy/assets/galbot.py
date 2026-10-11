@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-08
+# 验证日期：2026-10-08（导入时的资产清单校验为 6.1.7 所加，验证日期 2026-10-11）
 """Galbot One Golf 的 Isaac Lab 配置（6.1.6）。
 
 - GALBOT_ONE_GOLF_CFG：固定底座版，第 6 部分的 reach 等任务都用它；
@@ -17,6 +17,7 @@ from isaaclab.actuators import ImplicitActuatorCfg
 from isaaclab.assets import ArticulationCfg
 
 from .drives import make_actuators
+from .manifest import warn_if_stale
 from .paths import generated_asset_dir
 
 # reach 用的手臂（6.1.6 定，之后各页保持一致）
@@ -77,6 +78,9 @@ GALBOT_ONE_GOLF_CFG = ArticulationCfg(
     actuators=make_actuators(),  # 参数表见 drives.py（6.1.5）
 )
 """Galbot One Golf，固定底座。"""
+
+# 6.1.7：导入本模块（即建环境）时，核对固定底座版资产与 MANIFEST.json；不一致只发警告，不中断
+warn_if_stale("fixed_base")
 
 
 # 轮式版：浮动根 + 4 个主动轮。只派生出来供 6.4.5 起步，本部分没有用它训练，轮子的阻尼是占位值（未验证）。
