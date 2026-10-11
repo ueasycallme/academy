@@ -6,7 +6,7 @@
 """Galbot One Golf 的 Isaac Lab 配置（6.1.6）。
 
 - GALBOT_ONE_GOLF_CFG：固定底座版，第 6 部分的 reach 等任务都用它；
-- GALBOT_ONE_GOLF_WHEELED_CFG：轮式版（浮动根），由 .replace() 派生，留给 6.4.5，本部分不用。
+- GALBOT_ONE_GOLF_WHEELED_CFG：轮式版（浮动根），由 .replace() 派生，6.4.5 的底盘速度跟踪用它。
 
 USD 由 scripts/convert_galbot.py 生成（6.1.2），路径经由 GALBOT_GENERATED_DIR 约定（6.1.1）。
 本模块要在 Isaac Sim 启动后导入；galbot_academy.assets 不会自动导入它。

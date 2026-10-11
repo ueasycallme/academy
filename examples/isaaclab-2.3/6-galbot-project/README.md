@@ -690,6 +690,16 @@ python scripts/record_pick_place.py --headless --num_demos 10 --dataset_file ./d
 
 预期（本站实测，2026-10-11）：文件已存在时打印 `./datasets/galbot_pick_place.hdf5 已存在；换一个 --dataset_file，或加 --overwrite 覆盖`，不启动 Kit。
 
+## 7.6：团队协作规范
+
+新增：`CONTRIBUTING.md`（提交前清单）、`scripts/check_versions.py`（核对关键包版本，只读包元数据，不启动 Isaac Sim）、`tests/unit/test_versions.py`。
+
+```bash
+python scripts/check_versions.py      # 用 Isaac 的 Python
+```
+
+预期（本站实测，2026-10-12）：列出 isaacsim 5.1.0.0、isaaclab 0.54.2、isaaclab_tasks 0.11.12、isaaclab_rl 0.4.7、rsl-rl-lib 3.1.2、torch 2.7.0+cu128，最后一行 `[check_versions] 全部一致`，返回码 0；有不一致时逐条列出，返回码 1。
+
 ## 目录
 
 ```text
@@ -729,10 +739,12 @@ python scripts/record_pick_place.py --headless --num_demos 10 --dataset_file ./d
 │   ├── asset_manifest.py        # 写 / 校验生成资产的清单（6.1.7）
 │   ├── render_cost.py           # 渲染模式的代价、机器人材质（3.8）
 │   ├── probe_rollers.py  eval_base_vel.py   # 轮式底盘：滚子空转探针、速度跟踪评估（6.4.5）
+│   ├── check_versions.py        # 核对关键包版本（7.6）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 ├── tests/  pytest.ini          # 无 GPU / 冒烟 / 回归三层测试（7.4）
 ├── DATA.md                     # 数据目录约定（7.5）
+├── CONTRIBUTING.md             # 提交前清单（7.6）
 ├── ros2/reach_policy_node.py    # 策略节点：系统 Humble + onnxruntime（6.7.2）
 ├── ros2/policy_spec.py          # 核对 policy_spec.json，节点启动时调用，可单独运行（6.7.1）
 └── source/galbot_academy/
