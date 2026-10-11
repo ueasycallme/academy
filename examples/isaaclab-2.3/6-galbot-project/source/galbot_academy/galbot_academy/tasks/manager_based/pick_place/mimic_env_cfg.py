@@ -30,13 +30,13 @@ class GalbotPickPlaceMimicEnvCfg(GalbotPickPlaceEnvCfg, MimicEnvCfg):
         dg.generation_select_src_per_subtask = True
         dg.generation_transform_first_robot_pose = False
         dg.generation_interpolate_from_last_target_pose = True
-        dg.max_num_failures = 25
+        dg.max_num_failures = 25  # 2.3.2 的生成代码不读这一项，凑不够成功条数时会一直试下去（6.4.7 坑二）
         dg.seed = 1
         common = dict(
             selection_strategy="nearest_neighbor_object",
             selection_strategy_kwargs={"nn_k": 3},
             # 动作噪声（每轴标准差）。官方 Franka 取 0.03，但本项目示教每步只走 1 cm，0.03 让噪声（每步约 5 cm）
-            # 盖过动作本身，生成 490 次尝试 0 次成功（6.4.7 坑）。取示教步长的一半
+            # 盖过动作本身，生成 494 次尝试 0 次成功（6.4.7 坑）。取示教步长的一半
             action_noise=0.005,
             num_interpolation_steps=5,
             num_fixed_steps=0,
