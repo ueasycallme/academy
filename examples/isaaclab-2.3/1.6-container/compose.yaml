@@ -1,0 +1,43 @@
+# Copyright (c) 2026, Isaac Academy.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# 未验证（本机无 Docker）。卷与 GPU 的写法照 Isaac Lab v2.3.2 docker/docker-compose.yaml（1.6）。
+services:
+  galbot:
+    build:
+      context: ..                       # examples/isaaclab-2.3/
+      dockerfile: 1.6-container/Dockerfile
+      args:
+        ISAACSIM_VERSION: "5.1.0"
+    image: isaac-academy-galbot:2.3.2
+    environment:
+      - ACCEPT_EULA=Y
+    network_mode: host                  # livestream 用宿主网络（TCP 49100、UDP 47998，7.1）
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      # 缓存：着色器、计算缓存等，删掉容器也保留，第二次启动快得多
+      - isaac-cache-kit:/isaac-sim/kit/cache
+      - isaac-cache-ov:/root/.cache/ov
+      - isaac-cache-gl:/root/.cache/nvidia/GLCache
+      - isaac-cache-compute:/root/.nv/ComputeCache
+      - isaac-logs:/root/.nvidia-omniverse/logs
+      # 本项目的产物：用命名卷，不让容器里 root 写出的文件落进宿主的源码目录
+      - galbot-generated:/workspace/generated
+      - galbot-logs:/workspace/galbot-project/logs
+    stdin_open: true
+    tty: true
+
+volumes:
+  isaac-cache-kit:
+  isaac-cache-ov:
+  isaac-cache-gl:
+  isaac-cache-compute:
+  isaac-logs:
+  galbot-generated:
+  galbot-logs:
