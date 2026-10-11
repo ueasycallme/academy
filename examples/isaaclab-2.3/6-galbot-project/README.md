@@ -496,6 +496,28 @@ python scripts/run_ros2_sim.py --headless --mode inproc --episodes 64 --checkpoi
 
 ros2 模式加了 `--checkpoint` 时，会多打印一行"外部节点动作与进程内 torch 策略的最大差：1.91e-06"，大于 10⁻⁵ 就说明接口有错（6.7.2 坑一）。仿真端进程显存 5058 MiB、主机内存 6.9 GB（inproc 为 2327 MiB、3.6 GB）。
 
+## 6.4.6：pick-place 示范（脚本化示教）
+
+新增：`tasks/manager_based/pick_place/`（注册 `Galbot-PickPlace-IK-Rel-v0`、`Galbot-PickPlace-IK-Rel-Mimic-v0`）、`scripts/record_pick_place.py`、`scripts/check_mimic_interface.py`、`scripts/replay_pick_place.py`、`scripts/sweep_grasp_pose.py`。
+
+```bash
+python scripts/sweep_grasp_pose.py --headless                         # 抓取姿态扫描（表 2），约 11 分钟
+python scripts/record_pick_place.py --headless --no_export --num_demos 20 --max_attempts 20   # 只测成功率
+python scripts/record_pick_place.py --headless --num_demos 10 --dataset_file ./datasets/galbot_pick_place.hdf5
+python scripts/check_mimic_interface.py --headless --dataset_file ./datasets/galbot_pick_place.hdf5
+python scripts/replay_pick_place.py --headless --enable_cameras --demo demo_0 --out_dir ./videos/pick_place
+# 坑一、坑二的对照：换回原版 IK 动作项 / 打开机器人重力
+python scripts/record_pick_place.py --headless --no_export --num_demos 10 --max_attempts 10 --stock_ik
+python scripts/record_pick_place.py --headless --no_export --num_demos 10 --max_attempts 10 --robot_gravity
+```
+
+预期（本站实测，RTX 5070，2026-10-11）：
+
+- 成功率：`[rec] 成功 20 / 尝试 20（100%）`，示范长度 482–640 步；`--stock_ik` 为 0 / 10（全部 hover 段超时），`--robot_gravity` 为 0 / 10（9 次 lift 段超时）。
+- 录制：`[rec] 成功 10 / 尝试 10（100%）`，墙上 248 s，进程显存 2401 MiB，主机内存 3.7 GB，文件约 3.2 MB。
+- 接口检查：每条 `grasp 首次为真在第 132 步；重放结束 success=True；动作往返最大差 ≤ 7.5e-08`，最后 `开环重放后仍然成功：10 / 10`。
+- 重放：`demo_0：514 帧，640×360`，进程显存 4646 MiB，主机内存 7.1 GB；`--width 1280` 在 16 GB 主机上被内存保护停掉。
+
 ## 目录
 
 ```text
@@ -525,6 +547,7 @@ ros2 模式加了 `--checkpoint` 时，会多打印一行"外部节点动作与�
 │   ├── check_dr.py              # 域随机化读回检查（6.4.2）
 │   ├── eval_reach.py  plot_training.py   # 评估检查点、画训练曲线（6.5.1）
 │   ├── run_ros2_sim.py          # ROS 2 闭环仿真端、进程内对照（6.7.2）
+│   ├── record_pick_place.py  check_mimic_interface.py  replay_pick_place.py  sweep_grasp_pose.py   # pick-place 示范（6.4.6）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 ├── ros2/reach_policy_node.py    # 策略节点：系统 Humble + onnxruntime（6.7.2）
@@ -534,5 +557,5 @@ ros2 模式加了 `--checkpoint` 时，会多打印一行"外部节点动作与�
         ├── __init__.py
         ├── assets/              # 资产路径（6.1.1）、自碰撞过滤对 physics.py（6.1.4）、驱动参数表 drives.py（6.1.5）、机器人配置 galbot.py（6.1.6）
         ├── scenes/              # 场景配置：reach.py（6.2.1）、lift.py（6.4.3）、sensors.py（6.2.2）
-        └── tasks/               # 任务（6.4.1 起）：manager_based/reach/
+        └── tasks/               # 任务（6.4.1 起）：manager_based/reach/、lift/（6.4.3）、pick_place/（6.4.6）
 ```
