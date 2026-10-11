@@ -690,6 +690,18 @@ python scripts/record_pick_place.py --headless --num_demos 10 --dataset_file ./d
 
 预期（本站实测，2026-10-11）：文件已存在时打印 `./datasets/galbot_pick_place.hdf5 已存在；换一个 --dataset_file，或加 --overwrite 覆盖`，不启动 Kit。
 
+## 6.5.4：多 GPU 与分布式训练
+
+本站只有一张 GPU，只实测了 `nproc_per_node=1` 这条路径（命令与代码路径能通），多卡命令未验证。
+
+```bash
+torchrun --nproc_per_node=1 scripts/rsl_rl/train.py --task Galbot-Reach-v0 --headless --distributed --seed 42 --max_iterations 20 --run_name dist1
+python scripts/rsl_rl/train.py --task Galbot-Reach-v0 --headless --seed 42 --max_iterations 20 --run_name nodist1   # 对照
+# 多卡（未验证）：python -m torch.distributed.run --nnodes=1 --nproc_per_node=<卡数> scripts/rsl_rl/train.py --task Galbot-Reach-v0 --headless --distributed
+```
+
+预期（本站实测，2026-10-12，RTX 5070）：两次都是 `Iteration time: 1.51s`、`Time elapsed: 00:00:31`，按进程显存 3041 MiB，两个 `model_19.pt` 逐字节相同（单卡时 rsl_rl 不进分布式分支）。
+
 ## 7.6：团队协作规范
 
 新增：`CONTRIBUTING.md`（提交前清单）、`scripts/check_versions.py`（核对关键包版本，只读包元数据，不启动 Isaac Sim）、`tests/unit/test_versions.py`。
