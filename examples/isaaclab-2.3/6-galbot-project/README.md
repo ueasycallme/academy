@@ -583,6 +583,17 @@ python scripts/eval_report.py --reach s0.csv s1.csv s2.csv --reach_dr dr.csv --r
 - `eval_report.py`：合并 2304 个样本，< 5 cm 为 81.3%（79.6–82.8）；失败 431 个，其中"停住没到" 15 个、"还在动" 416 个。
 - BC 100 回合：`[eval] 成功 38 / 100`，与 6.4.7 的 `play.py` 逐回合相同；`eval_report.py --bc_source` 按方块起点切片：源示范覆盖范围内 47.4%，范围外 25.6%。
 
+## 6.7.3：sim2real 清单
+
+新增：`scripts/sim2real_report.py`。它读 6.7.1 的 `policy_spec.json` 与 URDF，打印关节名序、限位、动作换算、控制频率、超时策略；给了 `--traj` 时，再用评估轨迹算关节目标会不会越限。不需要 Isaac Sim。
+
+```bash
+python scripts/sim2real_report.py --spec logs/rsl_rl/galbot_reach/<运行>/deploy/policy_spec.json \
+    --urdf ../../../third_party/galbot_one_golf_description/urdf/galbot_one_golf_fixed_base.urdf --traj traj.npz
+```
+
+预期（本站实测，2026-10-11）：控制 30.0 Hz；7 个右臂关节的 URDF 速度上限都是 1.5 rad/s。用 256 个环境的轨迹（`eval_reach.py --num_envs 256 --record_obs traj.npz --record_envs 256`）：`越限（256 个环境 × 359 步）：按步 16182 / 91904（17.6%）；按环境 245 / 256（95.7%）`，越限的是 joint2、4、6、7。
+
 ## 目录
 
 ```text
@@ -616,6 +627,7 @@ python scripts/eval_report.py --reach s0.csv s1.csv s2.csv --reach_dr dr.csv --r
 │   ├── run_isaaclab_script.py  mimic_pipeline.sh  eval_bc_pick_place.py  plot_mimic_data.py   # Mimic 生成与 BC（6.4.7）
 │   ├── export_policy.py  bench_policy.py  make_policy_spec.py   # 策略导出、一致性与延迟、接口说明（6.7.1）
 │   ├── eval_report.py           # 读逐样本 CSV 出评估表与图（6.6.2）
+│   ├── sim2real_report.py       # 打印要核对的接口常量与目标越限情况（6.7.3）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 ├── ros2/reach_policy_node.py    # 策略节点：系统 Humble + onnxruntime（6.7.2）
