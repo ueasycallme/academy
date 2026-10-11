@@ -5,5 +5,8 @@ generated/
 # 训练输出
 logs/
 outputs/
+# 示教数据（6.4.6 录制、6.4.7 生成）与录像，见 DATA.md
+datasets/
+videos/
 *.egg-info/
 __pycache__/

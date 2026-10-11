@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-09-30（参数移到 assets/conversion.py、末尾写资产清单为 6.1.7 所改，验证日期 2026-10-11）
+# 验证日期：2026-09-30（参数移到 assets/conversion.py、末尾写资产清单为 6.1.7 所改，验证日期 2026-10-11；轮式版写滚子过滤对为 6.4.5 所加，验证日期 2026-10-11）
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """把 Galbot One Golf 的 URDF 转成 USD（6.1.2）。
 
@@ -85,13 +85,17 @@ def stiffen_mimic_joints(usd_path: str) -> int:
 
 
 def filter_self_collision_pairs(usd_path: str) -> int:
-    """把 6.1.4 的自碰撞过滤对写入入口 USD 的根层；返回写入的对数。自碰撞本身仍关闭，由 ArticulationCfg 决定开不开。"""
+    """把 6.1.4 的自碰撞过滤对写入入口 USD 的根层；轮式版另加同一轮内滚子之间的过滤对（6.4.5）。返回写入的对数。
+    自碰撞本身仍关闭，由 ArticulationCfg 决定开不开。"""
     from pxr import Usd
 
-    from galbot_academy.assets.physics import add_filtered_pairs
+    from galbot_academy.assets.physics import ROLLER_FILTERED_PAIRS, add_filtered_pairs
 
     stage = Usd.Stage.Open(usd_path)
-    count = add_filtered_pairs(stage, stage.GetDefaultPrim().GetPath().pathString)
+    root = stage.GetDefaultPrim().GetPath().pathString
+    count = add_filtered_pairs(stage, root)
+    if args.variant == "wheeled":
+        count += add_filtered_pairs(stage, root, ROLLER_FILTERED_PAIRS)
     stage.GetRootLayer().Save()
     return count
 

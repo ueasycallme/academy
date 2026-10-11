@@ -34,11 +34,15 @@ parser.add_argument("--max_steps", type=int, default=900, help="一次尝试的�
 parser.add_argument("--approach_deg", type=float, default=60.0, help="接近方向与竖直向下的夹角（°），见 6.4.6\"抓取姿态\"")
 parser.add_argument("--seed", type=int, default=0)
 parser.add_argument("--no_export", action="store_true", help="只统计成功率，不写文件（调控制器用）")
+parser.add_argument("--overwrite", action="store_true", help="允许覆盖已有的 --dataset_file（7.5 坑一）")
 parser.add_argument("--robot_gravity", action="store_true", help="对照：打开机器人的重力（环境默认关掉，6.4.6 坑二）")
 parser.add_argument("--stock_ik", action="store_true", help="对照：换回 Isaac Lab 原版 DifferentialInverseKinematicsAction（6.4.6 坑一）")
 parser.add_argument("--trace", action="store_true", help="每 15 步打印段名、误差、方块相对 TCP 的位置、右臂关节离限位的最小余量")
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
+# Isaac Lab 的 HDF5DatasetFileHandler.create() 以 "w" 打开文件，同名文件会被清空重写，不提示（7.5 坑一）
+if not args.no_export and os.path.exists(args.dataset_file) and not args.overwrite:
+    sys.exit(f"{args.dataset_file} 已存在；换一个 --dataset_file，或加 --overwrite 覆盖")
 simulation_app = AppLauncher(args).app
 
 import gymnasium as gym

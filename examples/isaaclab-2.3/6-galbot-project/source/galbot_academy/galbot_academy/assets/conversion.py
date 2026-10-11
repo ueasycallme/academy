@@ -53,7 +53,7 @@ def gains(variant: str) -> tuple[dict, dict]:
 
 def conversion_params(variant: str, floating_base: bool) -> dict:
     """一个变体的全部生成参数：转换器选项 + 转换后对 USD 的修改。写进清单，也用于校验。"""
-    from .physics import SELF_COLLISION_FILTERED_PAIRS
+    from .physics import ROLLER_FILTERED_PAIRS, SELF_COLLISION_FILTERED_PAIRS
 
     stiffness, damping = gains(variant)
     return {
@@ -66,6 +66,7 @@ def conversion_params(variant: str, floating_base: bool) -> dict:
         "post_processing": {
             "mimic_natural_frequency": MIMIC_NATURAL_FREQUENCY,  # 6.1.2
             "mimic_damping_ratio": MIMIC_DAMPING_RATIO,
-            "self_collision_filtered_pairs": [list(p) for p in SELF_COLLISION_FILTERED_PAIRS],  # 6.1.4
+            "self_collision_filtered_pairs": [list(p) for p in SELF_COLLISION_FILTERED_PAIRS]
+            + ([list(p) for p in ROLLER_FILTERED_PAIRS] if variant == "wheeled" else []),  # 6.1.4；轮式版另加滚子（6.4.5）
         },
     }

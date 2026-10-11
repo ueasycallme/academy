@@ -30,7 +30,8 @@
 10. spawn 阶段的 `collision_props` 对**实例内**的碰撞体不生效，只打印一条 WARNING（T-6.1.4，已由 reviews/T-6.1.4.md 复核）。要改实例内碰撞体的属性，得在转换阶段或直接写进资产。
 11. 本项目的 reach 任务**开启自碰撞并带过滤对**：头与躯干在零位即相互穿透，小臂 link5–link7 与夹爪指节的凸包也会重叠；转换后由 `assets/physics.py` 把 7 对自碰撞过滤对写进资产（T-6.1.4，已由 reviews/T-6.1.4.md 复核）。
 12. 移动底盘变体不能用 `fix_root_link=False` 关掉固定根（抛 `RuntimeError`）；`convert_galbot.py` 为此新增 `--floating_base`（T-6.1.6，已由 reviews/T-6.1.6.md 复核）。
-13. 轮式版静置时被动滚子会空转到 200–320 rad/s（T-6.1.6 实测，已由 reviews/T-6.1.6.md 复核）；登记给 6.4.5（底盘导航，P3）。
+13. 轮式版静置时被动滚子会空转到 200–320 rad/s（T-6.1.6 实测，已由 reviews/T-6.1.6.md 复核）；登记给 6.4.5（底盘导航，P3）。**已解决（T-6.4.5，2026-10-11）**：根因是自碰撞下滚子碰撞球（半径 8 cm、离轮轴 2.5 cm）与同轮滚子、底盘重叠互顶；转换时写入 220 对过滤对后静置 0.2 rad/s（单变量对照，reviews/T-6.4.5.md 复核）。阻尼 / 摩擦 / 限速 / 锁死均无效，阻尼与锁死还会发散。
+15. `ActionTermCfg.clip` 作用在 raw × scale + offset **之后**（v2.3.2 `joint_actions.py` L173–L178），单位是缩放后的目标量；T-6.4.5 曾把轮速 clip 写成 ±1 以为是归一化动作，实际把轮速目标限在 ±1 rad/s（reviews/T-6.4.5.md）。
 14. reset 事件只把它写到的关节恢复到默认姿态，其余关节停在 USD 零位（Galbot 腿偏离 2.3 rad）；官方 Franka 用 `reset_joints_by_scale` 覆盖全部关节所以没遇到。本项目加 `reset_scene_to_default(reset_joint_targets=True)` 后非任务关节偏离 ≤ 0.035（T-6.4.1，已由 reviews/T-6.4.1.md 用排除对照复核：去掉后非任务关节偏离 2.41 rad，加上后 ≤ 0.038）。
 
 ## 范围与取舍

@@ -83,7 +83,7 @@ GALBOT_ONE_GOLF_CFG = ArticulationCfg(
 warn_if_stale("fixed_base")
 
 
-# 轮式版：浮动根 + 4 个主动轮。只派生出来供 6.4.5 起步，本部分没有用它训练，轮子的阻尼是占位值（未验证）。
+# 轮式版：浮动根 + 4 个主动轮，6.4.5 用于底盘速度跟踪（轮子阻尼 10 沿用 6.1.6 的取值，6.4.5 开环实测 0.5 m/s 指令跑到 0.454 m/s）。
 # 资产要用 convert_galbot.py --variant wheeled --floating_base 单独转换：固定根版的 Articulation 根就在那个固定关节上，
 # 不能靠 fix_root_link=False 把它关掉（实测创建 Articulation 失败，6.1.6）。
 GALBOT_ONE_GOLF_WHEELED_CFG = GALBOT_ONE_GOLF_CFG.replace(
@@ -95,9 +95,12 @@ GALBOT_ONE_GOLF_WHEELED_CFG = GALBOT_ONE_GOLF_CFG.replace(
     actuators={
         **make_actuators(),
         # 主动轮：速度控制，stiffness 为 0，只用 damping 跟踪目标速度（Isaac Lab 的 Ridgeback 配置对底盘虚拟关节 dummy_base_* 同样如此）
-        "wheels": ImplicitActuatorCfg(joint_names_expr=["wheel[1-4]_joint"], stiffness=0.0, damping=10.0),
+        # 力矩与速度上限：URDF 里轮子是 continuous、没有 <limit>，转换后等于无上限；取同仓库 mjcf/galbot_one_golf.xml L894–L897 的 forcerange / ctrlrange
+        "wheels": ImplicitActuatorCfg(
+            joint_names_expr=["wheel[1-4]_joint"], stiffness=0.0, damping=10.0, effort_limit_sim=120.0, velocity_limit_sim=25.0
+        ),
         # 被动滚子：沿用 USD（刚度 0、小阻尼，6.1.2）
         "rollers": ImplicitActuatorCfg(joint_names_expr=["wheel_[1-4]_passive_.*"], stiffness=None, damping=None),
     },
 )
-"""Galbot One Golf，轮式底盘（浮动根）。未用于训练。"""
+"""Galbot One Golf，轮式底盘（浮动根）。6.4.5 用它训练底盘速度跟踪；资产转换时写入滚子过滤对（6.4.5）。"""

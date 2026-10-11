@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-09-30（pxr 改为调用时导入，6.1.7，验证日期 2026-10-11）
+# 验证日期：2026-09-30（pxr 改为调用时导入，6.1.7，验证日期 2026-10-11；滚子过滤对为 6.4.5 所加，验证日期 2026-10-11）
 """Galbot 的碰撞相关设置（6.1.4）。转换脚本与实验脚本共用。
 
 过滤对列表不依赖 pxr；两个函数在调用时才导入 pxr（6.1.7：资产清单要在不启动 Isaac Sim 时读这份列表）。
@@ -52,3 +52,10 @@ def remove_filtered_pairs(stage: "Usd.Stage", root_path: str) -> int:
             UsdPhysics.FilteredPairsAPI(prim).GetFilteredPairsRel().SetTargets([])
             n += 1
     return n
+
+
+# 轮式版（6.4.5）：每个全向轮 10 个被动滚子，碰撞体都是半径 8 cm、离轮轴 2.5 cm 的球（URDF），同一轮内彼此深度重叠。
+# 开着自碰撞时它们互相顶，滚子空转到每秒数百弧度、底盘漂移（6.4.5 实测）。只排除同一轮内滚子之间的碰撞。
+ROLLER_FILTERED_PAIRS: list[tuple[str, str]] = [
+    (f"wheel_{w}_passive_{i}", f"wheel_{w}_passive_{j}") for w in range(1, 5) for i in range(10) for j in range(i + 1, 10)
+] + [(f"wheel_{w}_passive_{i}", "base_link") for w in range(1, 5) for i in range(10)]  # 滚子与底盘也重叠（底盘经固定关节并入 base_link）

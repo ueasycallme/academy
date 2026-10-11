@@ -645,7 +645,7 @@ $PY -m pytest tests/gpu -m slow -q                           # 确定性回归�
 GALBOT_REACH_CKPT=<model_999.pt> $PY -m pytest tests/regression -q   # 区间回归：必须单独一次调用，同进程已起 Kit 时会跳过
 ```
 
-预期（本站实测，2026-10-11）：`13 passed, 1 skipped`（系统 Python）；`3 passed, 1 deselected`（冒烟）；确定性与区间回归各 1 passed。换机器后指纹用例会跳过，可用 `GALBOT_RECORD_GOLDEN=1` 重新记录。系统 pytest 加载插件出错时，加 `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1`。
+预期（本站实测，2026-10-11）：`13 passed, 1 skipped`（系统 Python；7.6 加了 `test_versions.py` 后为 `16 passed, 1 skipped`）；`3 passed, 1 deselected`（冒烟）；确定性与区间回归各 1 passed。换机器后指纹用例会跳过，可用 `GALBOT_RECORD_GOLDEN=1` 重新记录。系统 pytest 加载插件出错时，加 `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1`。
 
 ## 3.8：渲染与材质
 
@@ -659,6 +659,36 @@ python scripts/render_cost.py --headless --enable_cameras --mode rt --steps 10 -
 ```
 
 预期（本站实测，2026-10-11）：`mode none：每个物理步 8.4 ms`、`mode rt：… 15.0 ms`、`mode pt：… 21–22 ms`；材质一行 `OmniPBR.mdl ×144，pbr.mdl ×114`；`--broken_mdl` 时日志有 `could not find module '::does_not_exist'`。
+
+## 6.4.5：底盘速度跟踪（轮式版）
+
+先重新转换轮式版（转换时写入 220 对滚子过滤对），再跑探针、训练、评估：
+
+```bash
+python scripts/convert_galbot.py --headless --variant wheeled --floating_base
+python scripts/probe_rollers.py --headless --variant base                        # 滚子空转探针
+python scripts/probe_rollers.py --headless --variant base --roller_pairs remove  # 对照：清掉滚子过滤对
+python scripts/probe_rollers.py --headless --variant base --vx 0.5                # 开环直行 0.5 m/s
+python scripts/rsl_rl/train.py --task Galbot-BaseVel-v0 --headless --seed 42 --run_name clip_limits
+python scripts/eval_base_vel.py --headless --checkpoint logs/rsl_rl/galbot_base_vel/<运行>/model_499.pt
+python scripts/plot_training.py logs/rsl_rl/galbot_base_vel/<运行 1> [<运行 2> …] --preset base_vel --out base_vel_curves.png
+```
+
+预期（本站实测，2026-10-11）：
+- 探针：`滚子碰撞体 sphere：球，半径 0.0800 m，球心离轮心 0.0250 m`；`静置 3 s：滚子 |速度| 中位 0.2`；直行 `实际 vx 中位 0.277`。清掉过滤对时滚子中位约 402 rad/s。
+- 开环直行 0.5 m/s：`实际 vx 中位 0.454`，`底盘最大倾角 0.2°`。
+- 训练：500 次迭代约 22.6 min。
+- 评估：`直行 0.5 m/s：实际均值 vx 0.569`，成功 96.9%；侧移、原地转过冲；`合计 256 回合 … 成功 29.7%`（未达标，见 6.4.5）；最后一行打印主动轮全程最大的速度目标与力矩。
+
+## 7.5：数据管理
+
+新增：`DATA.md`（数据目录、命名、能否重新生成）；`.gitignore` 补上 `datasets/`、`videos/`；`record_pick_place.py` 加 `--overwrite`，`--dataset_file` 已存在时默认退出，不再静默清空旧文件。
+
+```bash
+python scripts/record_pick_place.py --headless --num_demos 10 --dataset_file ./datasets/galbot_pick_place.hdf5   # 文件已存在：退出
+```
+
+预期（本站实测，2026-10-11）：文件已存在时打印 `./datasets/galbot_pick_place.hdf5 已存在；换一个 --dataset_file，或加 --overwrite 覆盖`，不启动 Kit。
 
 ## 目录
 
@@ -698,16 +728,18 @@ python scripts/render_cost.py --headless --enable_cameras --mode rt --steps 10 -
 │   ├── compare_direct_manager.py   # Manager 版与 Direct 版 reach 的逐步比对、行数统计（6.4.4）
 │   ├── asset_manifest.py        # 写 / 校验生成资产的清单（6.1.7）
 │   ├── render_cost.py           # 渲染模式的代价、机器人材质（3.8）
+│   ├── probe_rollers.py  eval_base_vel.py   # 轮式底盘：滚子空转探针、速度跟踪评估（6.4.5）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 ├── tests/  pytest.ini          # 无 GPU / 冒烟 / 回归三层测试（7.4）
+├── DATA.md                     # 数据目录约定（7.5）
 ├── ros2/reach_policy_node.py    # 策略节点：系统 Humble + onnxruntime（6.7.2）
 ├── ros2/policy_spec.py          # 核对 policy_spec.json，节点启动时调用，可单独运行（6.7.1）
 └── source/galbot_academy/
     ├── setup.py  pyproject.toml  config/extension.toml
     └── galbot_academy/
         ├── __init__.py
-        ├── assets/              # 资产路径（6.1.1）、自碰撞过滤对 physics.py（6.1.4）、驱动参数表 drives.py（6.1.5）、机器人配置 galbot.py（6.1.6）、转换参数 conversion.py 与清单 manifest.py（6.1.7）
+        ├── assets/              # 资产路径（6.1.1）、自碰撞过滤对 physics.py（6.1.4）、驱动参数表 drives.py（6.1.5）、机器人配置 galbot.py（6.1.6）、转换参数 conversion.py 与清单 manifest.py（6.1.7）、全向底盘几何 omni_base.py（6.4.5）
         ├── scenes/              # 场景配置：reach.py（6.2.1）、lift.py（6.4.3）、sensors.py（6.2.2）
-        └── tasks/               # 任务（6.4.1 起）：manager_based/reach/、lift/（6.4.3）、pick_place/（6.4.6）；direct/reach/（6.4.4）
+        └── tasks/               # 任务（6.4.1 起）：manager_based/reach/、lift/（6.4.3）、pick_place/（6.4.6）；direct/reach/（6.4.4）；manager_based/base_vel/（6.4.5）
 ```
