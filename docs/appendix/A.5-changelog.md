@@ -27,11 +27,12 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-11 | [仿真代码的测试与 CI](../7-infra/7.4-testing-ci.md) | 新增 | 仿真代码的测试与 CI：三层测试、Kit 里的 pytest、回归阈值、GitHub Actions 无 GPU 工作流 | T-7.4 |
+| 2026-10-11 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《Isaac Lab Mimic 与模仿学习》修订 | T-0.8l、T-0.8m、T-1.6、T-3.6、T-4.19、T-6.1.7、T-6.3.1、T-6.4.4、T-6.4.6、T-6.4.7、T-6.6.2、T-6.7.1、T-6.7.3、T-7.4、T-9.4、T-A.4 |
 | 2026-10-11 | [术语表（中英对照）](../0-map/0.8-glossary.md) | 修订 | 术语表补第二批 22 条；术语表补第三批 20 条 | T-0.8l、T-0.8m、T-6.4.7、T-A.4 |
 | 2026-10-11 | [Actuator 模型](../4-isaaclab/4.7-actuators.md) | 修订 | 随《术语表（中英对照）》修订 | T-0.8m、T-A.4 |
 | 2026-10-11 | [Sensors 抽象](../4-isaaclab/4.8-sensors.md) | 修订 | 随《术语表（中英对照）》修订 | T-0.8m、T-A.4 |
 | 2026-10-11 | [定量评估与失败案例分析](../6-galbot/6-eval/6.6.2-evaluation.md) | 新增 | 定量评估与失败案例分析（主线项目）：Wilson 区间、按条件切片、失败归类、评估分布对照、阈值敏感性 | T-0.8m、T-6.6.2、T-A.4 |
-| 2026-10-11 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 随《Isaac Lab Mimic 与模仿学习》修订 | T-0.8l、T-0.8m、T-1.6、T-3.6、T-4.19、T-6.1.7、T-6.3.1、T-6.4.4、T-6.4.6、T-6.4.7、T-6.6.2、T-6.7.1、T-6.7.3、T-9.4、T-A.4 |
 | 2026-10-11 | [训练脚本 train.py 做了什么](../9-source/9.4-train-script.md) | 新增 | 训练脚本 train.py 做了什么（源码导读） | T-0.8m、T-9.4、T-A.4 |
 | 2026-10-11 | [社区项目与论文代码索引（标注版本）](../appendix/A.4-community-projects.md) | 新增 | 社区项目与论文代码索引（标注版本） | T-0.8m、T-A.4 |
 | 2026-10-11 | [容器化环境](../1-env/1.6-container.md) | 新增 | 容器方式运行 Isaac Sim / Isaac Lab：NGC 镜像、NVIDIA Container Toolkit、缓存卷、headless 与 GUI 部署（本机无 Docker，未验证） | T-1.6 |

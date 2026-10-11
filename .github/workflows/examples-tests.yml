@@ -1,0 +1,43 @@
+# 主线 Galbot 项目的无 GPU 测试（7.4）：转换参数、资产清单、部署接口核对、评估统计。
+# 不装 Isaac Sim；有 GPU 的冒烟与训练回归要在本机或自托管 GPU runner 上跑（见 7.4）。
+# 只在项目目录或本文件改动时触发，改网站正文不会跑它。
+name: Galbot project tests (no GPU)
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "examples/isaaclab-2.3/6-galbot-project/**"
+      - ".github/workflows/examples-tests.yml"
+  pull_request:
+    paths:
+      - "examples/isaaclab-2.3/6-galbot-project/**"
+      - ".github/workflows/examples-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: examples/isaaclab-2.3/6-galbot-project
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: examples/isaaclab-2.3/6-galbot-project/tests/requirements-ci.txt
+
+      - name: Install test dependencies (pinned)
+        run: pip install -r tests/requirements-ci.txt
+
+      - name: Run tests without GPU
+        # tests/conftest.py 在没有 isaaclab 的 Python 里不收集 tests/gpu/；-m "not gpu" 再排除区间回归
+        run: python -m pytest tests -m "not gpu" -q

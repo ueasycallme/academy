@@ -634,6 +634,19 @@ python scripts/asset_manifest.py write            # 给已有的生成目录补�
 
 预期（本站实测，2026-10-11）：`[manifest] 一致：来源、工具链、参数、文件都与清单相同`。改了 `assets/conversion.py` 的参数而没重新转换时，会列出 `参数 post_processing.mimic_natural_frequency：1000.0 → 500.0` 这类差异，退出码 1。
 
+## 7.4：测试与 CI
+
+新增：`tests/`（`unit/` 无 GPU、`gpu/` 冒烟与确定性回归、`regression/` 区间回归）、`pytest.ini`、`tests/requirements-ci.txt`；`ros2/policy_spec.py` 的 `onnxruntime` 改为在命令行入口里导入。
+
+```bash
+python3 -m pytest tests -q                                   # 系统 Python：只跑无 GPU 层
+$PY -m pytest tests/gpu -m "not slow" -q                     # Isaac 的 Python：冒烟
+$PY -m pytest tests/gpu -m slow -q                           # 确定性回归（指纹在 tests/gpu/golden_ppo.json）
+GALBOT_REACH_CKPT=<model_999.pt> $PY -m pytest tests/regression -q   # 区间回归：必须单独一次调用，同进程已起 Kit 时会跳过
+```
+
+预期（本站实测，2026-10-11）：`13 passed, 1 skipped`（系统 Python）；`3 passed, 1 deselected`（冒烟）；确定性与区间回归各 1 passed。换机器后指纹用例会跳过，可用 `GALBOT_RECORD_GOLDEN=1` 重新记录。系统 pytest 加载插件出错时，加 `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1`。
+
 ## 目录
 
 ```text
@@ -673,6 +686,7 @@ python scripts/asset_manifest.py write            # 给已有的生成目录补�
 │   ├── asset_manifest.py        # 写 / 校验生成资产的清单（6.1.7）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
+├── tests/  pytest.ini          # 无 GPU / 冒烟 / 回归三层测试（7.4）
 ├── ros2/reach_policy_node.py    # 策略节点：系统 Humble + onnxruntime（6.7.2）
 ├── ros2/policy_spec.py          # 核对 policy_spec.json，节点启动时调用，可单独运行（6.7.1）
 └── source/galbot_academy/

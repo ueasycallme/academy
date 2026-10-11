@@ -1,0 +1,4 @@
+# 7.4：CI 跑无 GPU 层所需的包，钉死版本，避免 numpy 等升级后结果漂移（与 Isaac Sim 5.1 环境里的 numpy 1.26.4 一致）
+pytest==8.3.3
+numpy==1.26.4
+matplotlib==3.8.4

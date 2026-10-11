@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Python 3.10（系统 ROS 2 Humble 一侧）+ onnxruntime 1.20.1；不依赖 rclpy
-# 验证日期：2026-10-11
+# 验证日期：2026-10-11（onnxruntime 改为入口内导入为 7.4 所改，同日验证）
 """读取并核对 policy_spec.json（6.7.1）。策略节点启动时调用；不依赖 rclpy，可以单独测试：
 
     python policy_spec.py <deploy>/policy.onnx <deploy>/policy_spec.json
@@ -11,8 +11,6 @@
 import hashlib
 import json
 import sys
-
-import onnxruntime as ort
 
 OBS_DIM, ACT_DIM = 28, 7
 # 策略节点按这个顺序拼观测（与仿真端 run_ros2_sim.py 一致）；policy_spec.json 里的顺序必须相同
@@ -41,6 +39,8 @@ def check_spec(spec_path: str, onnx_path: str) -> dict:
 
 
 if __name__ == "__main__":
+    import onnxruntime as ort  # 只有命令行入口要读 ONNX；两个检查函数不依赖它，测试可在没装 onnxruntime 的环境里跑（7.4）
+
     onnx_path, spec_path = sys.argv[1], sys.argv[2]
     try:
         check_input_shape(ort.InferenceSession(onnx_path, providers=["CPUExecutionProvider"]).get_inputs()[0].shape)
