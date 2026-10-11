@@ -594,6 +594,19 @@ python scripts/sim2real_report.py --spec logs/rsl_rl/galbot_reach/<运行>/deplo
 
 预期（本站实测，2026-10-11）：控制 30.0 Hz；7 个右臂关节的 URDF 速度上限都是 1.5 rad/s。用 256 个环境的轨迹（`eval_reach.py --num_envs 256 --record_obs traj.npz --record_envs 256`）：`越限（256 个环境 × 359 步）：按步 16182 / 91904（17.6%）；按环境 245 / 256（95.7%）`，越限的是 joint2、4、6、7。
 
+## 6.3.1：物理参数调优
+
+新增：`scripts/sweep_physics.py`（稳定性探针）、`scripts/plot_sweep.py`（画图，不需要 Isaac Sim）、`scripts/pick_place_teacher.py`（示教控制器，从 `record_pick_place.py` 抽出，录制行为不变）。
+
+```bash
+python scripts/sweep_physics.py --headless                                  # 主线默认，20 次抓取，约 8 分钟
+python scripts/sweep_physics.py --headless --dt 1/240 --decimation 8        # 每次只改一项：--pos_iters / --vel_iters / --contact_offset / --rest_offset
+python scripts/sweep_physics.py --headless --mode buffers --num_envs 1024 --gpu_max_rigid_patch_count 4096 --gpu_max_rigid_contact_count 16384
+python scripts/plot_sweep.py --dt <dt 各组日志> --iters <迭代各组日志> --out sweep.png
+```
+
+预期（本站实测，2026-10-11）：主线默认 `[sweep] 汇总：成功 20 / 20；成功回合的滑移 中位 0.50 cm、最大 0.85 cm`、`每控制步墙上时间 中位 42.56 ms`；开头打印机器人与方块的生效偏移（默认 `接触 1.36–5.26 mm，静止 0.00–0.00 mm（184 个形状）`）。buffers 模式 1024 个环境配小缓冲时，日志出现 `Contact buffer overflow detected` 与 `Patch buffer overflow detected`。
+
 ## 目录
 
 ```text
@@ -628,6 +641,7 @@ python scripts/sim2real_report.py --spec logs/rsl_rl/galbot_reach/<运行>/deplo
 │   ├── export_policy.py  bench_policy.py  make_policy_spec.py   # 策略导出、一致性与延迟、接口说明（6.7.1）
 │   ├── eval_report.py           # 读逐样本 CSV 出评估表与图（6.6.2）
 │   ├── sim2real_report.py       # 打印要核对的接口常量与目标越限情况（6.7.3）
+│   ├── sweep_physics.py  plot_sweep.py  pick_place_teacher.py   # 物理参数稳定性探针与画图、示教控制器（6.3.1）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 ├── ros2/reach_policy_node.py    # 策略节点：系统 Humble + onnxruntime（6.7.2）
