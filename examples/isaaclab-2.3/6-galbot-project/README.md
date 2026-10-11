@@ -562,6 +562,27 @@ python ros2/policy_spec.py $RUN/deploy/policy.onnx $RUN/deploy/policy_spec.json 
 - 延迟（中位数）：onnxruntime CPU 批 1 约 3.4 μs，torch CPU 1 线程批 1 约 9 μs，torch GPU 批 1 约 29 μs。torch 默认线程数、批 64 的结果不稳定（20 或 64 μs），见 6.7.1 坑三。
 - `policy_spec.py`：`spec ok: [('joint_pos', 0, 7), …], action 7 @ 30.0 Hz`。
 
+## 6.6.2：定量评估与失败案例分析
+
+新增：`scripts/eval_report.py`（读逐样本 CSV，出区间、切片、失败模式、阈值敏感性的表与图 1，不需要 Isaac Sim）；`eval_reach.py` 加了 `--csv`、`--widen_targets`，`eval_bc_pick_place.py` 加了 `--csv`，原有打印不变。
+
+```bash
+CK=logs/rsl_rl/galbot_reach/<运行>/model_999.pt
+for s in 0 1 2; do python scripts/eval_reach.py --headless --checkpoint $CK --seed $s --csv s$s.csv; done
+python scripts/eval_reach.py --headless --checkpoint $CK --seed 0 --task Galbot-Reach-DR-v0 --csv dr.csv
+python scripts/eval_reach.py --headless --checkpoint $CK --seed 0 --widen_targets 0.05 --csv wide.csv
+python scripts/eval_bc_pick_place.py --headless --checkpoint <model_epoch_2000.pth> --num_rollouts 100 --csv bc100.csv   # 约 58 分钟
+python scripts/eval_report.py --reach s0.csv s1.csv s2.csv --reach_dr dr.csv --reach_wide wide.csv --bc bc100.csv \
+    --bc_source ./datasets/galbot_pick_place.hdf5 --out_dir generated/eval
+```
+
+预期（本站实测，2026-10-11，RTX 5070）：
+
+- reach 每次约 30 s，种子 0 的打印与 6.6.1 逐位相同（中位数 2.73 cm，< 5 cm 80.9%）；种子 1、2 的中位数为 2.92、2.99 cm。
+- 开域随机化：中位数 2.95 cm；目标范围外扩 5 cm：中位数 3.92 cm，< 5 cm 63.3%。
+- `eval_report.py`：合并 2304 个样本，< 5 cm 为 81.3%（79.6–82.8）；失败 431 个，其中"停住没到" 15 个、"还在动" 416 个。
+- BC 100 回合：`[eval] 成功 38 / 100`，与 6.4.7 的 `play.py` 逐回合相同；`eval_report.py --bc_source` 按方块起点切片：源示范覆盖范围内 47.4%，范围外 25.6%。
+
 ## 目录
 
 ```text
@@ -594,6 +615,7 @@ python ros2/policy_spec.py $RUN/deploy/policy.onnx $RUN/deploy/policy_spec.json 
 │   ├── record_pick_place.py  check_mimic_interface.py  replay_pick_place.py  sweep_grasp_pose.py   # pick-place 示范（6.4.6）
 │   ├── run_isaaclab_script.py  mimic_pipeline.sh  eval_bc_pick_place.py  plot_mimic_data.py   # Mimic 生成与 BC（6.4.7）
 │   ├── export_policy.py  bench_policy.py  make_policy_spec.py   # 策略导出、一致性与延迟、接口说明（6.7.1）
+│   ├── eval_report.py           # 读逐样本 CSV 出评估表与图（6.6.2）
 │   ├── list_envs.py  zero_agent.py  random_agent.py
 │   └── rsl_rl/                  # train.py、play.py、cli_args.py（来自模板）
 ├── ros2/reach_policy_node.py    # 策略节点：系统 Humble + onnxruntime（6.7.2）

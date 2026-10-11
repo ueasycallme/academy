@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2（rsl_rl 3.1.2）
-# 验证日期：2026-10-08（--record_obs 为 6.7.1 所加，验证日期 2026-10-11）
+# 验证日期：2026-10-08（--record_obs 为 6.7.1 所加，验证日期 2026-10-11；--csv、--widen_targets 为 6.6.2 所加，验证日期 2026-10-11）
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """评估一个 reach 策略（6.5.1）：跑一个完整回合，在每段目标（4 s）的最后一步记录 TCP 误差。
 
@@ -26,6 +26,8 @@ parser.add_argument("--action_scale", type=float, default=None, help="训练时�
 parser.add_argument("--vel_limit", type=float, default=None, help="评估时把右臂关节速度上限改为该值（rad/s，诊断用）")
 parser.add_argument("--record_obs", default=None, help="把前 --record_envs 个环境每步的策略输入与输出存成 .npz（6.7.1 一致性比对用）")
 parser.add_argument("--record_envs", type=int, default=2)
+parser.add_argument("--csv", default=None, help="逐样本写 CSV（6.6.2）：每段末尾一行，列定义见 eval_report.py")
+parser.add_argument("--widen_targets", type=float, default=0.0, help="把目标采样范围在 x、y、z 上各向外扩这么多米（6.6.2 评估分布对照）")
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 simulation_app = AppLauncher(args).app
@@ -46,6 +48,9 @@ def main() -> None:
     env_cfg.seed = args.seed
     if args.action_scale is not None:
         env_cfg.actions.arm_action.scale = args.action_scale
+    if args.widen_targets:
+        r, w = env_cfg.commands.ee_pose.ranges, args.widen_targets
+        r.pos_x, r.pos_y, r.pos_z = [(lo - w, hi + w) for lo, hi in (r.pos_x, r.pos_y, r.pos_z)]
     agent_cfg = load_cfg_from_registry(args.task, "rsl_rl_cfg_entry_point")
     env = RslRlVecEnvWrapper(gym.make(args.task, cfg=env_cfg))
     runner = OnPolicyRunner(env, agent_cfg.to_dict(), log_dir=None, device=agent_cfg.device)
@@ -69,9 +74,12 @@ def main() -> None:
     obs = env.get_observations()
     pos_err, rot_err, stuck = [], [], 0
     rec_obs, rec_act = [], []
+    rows = []  # --csv：(env, 段, 目标 xyz, 位置误差, 姿态误差, 最后 0.5 s 关节位置最大变化)
     with torch.inference_mode():
         for k in range(T - 1):  # 最后一步会触发超时重置，在它之前读
             actions = policy(obs)
+            # 本步算误差用的是 step 之前的目标：命令项先算误差、再重采样（command_manager.py L158–L165）
+            target = cmd.pose_command_b[:, :3].clone()
             if args.record_obs:
                 rec_obs.append(obs["policy"][: args.record_envs].cpu().numpy())
                 rec_act.append(actions[: args.record_envs].cpu().numpy())
@@ -81,6 +89,10 @@ def main() -> None:
                 pe, re = cmd.metrics["position_error"].clone(), cmd.metrics["orientation_error"].clone()
                 moved = (q_hist[-1] - q_hist[0]).abs().max(dim=1).values  # 最后 0.5 s 内关节位置的最大变化
                 pos_err.append(pe)
+                if args.csv:
+                    seg_id = (k + 1) // seg if (k + 1) % seg == 0 else (k + 1) // seg + 1
+                    for e in range(args.num_envs):
+                        rows.append((e, seg_id, *target[e].tolist(), pe[e].item(), re[e].item(), moved[e].item()))
                 rot_err.append(re)
                 stuck += int(((pe > 0.05) & (moved < 0.01)).sum())
     pe, re = torch.cat(pos_err), torch.cat(rot_err)
@@ -91,6 +103,15 @@ def main() -> None:
     print(f"  位置误差：均值 {pe.mean().item() * 100:.2f} cm，最大 {pe.max().item() * 100:.2f} cm")  # 6.6.1 加
     print(f"  姿态误差：中位数 {re.median().item():.3f} rad，90% 分位 {re.quantile(0.9).item():.3f} rad")
     print(f"  误差 > 5 cm 且最后 0.5 s 内右臂关节位置变化 < 0.01 rad 的样本（停住但没到）：{stuck} / {n}")
+    if args.csv:
+        import csv
+
+        with open(args.csv, "w", newline="") as f:
+            w = csv.writer(f)
+            w.writerow(["seed", "task", "widen", "env", "segment", "target_x", "target_y", "target_z", "pos_err", "rot_err", "moved"])
+            for r in rows:
+                w.writerow([args.seed, args.task, args.widen_targets, *r[:2], *(f"{v:.6f}" for v in r[2:])])
+        print(f"  逐样本：{args.csv}，{len(rows)} 行")
     if args.record_obs:
         import numpy as np
 
