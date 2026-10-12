@@ -70,6 +70,8 @@ def main():
         if n not in out_rows:
             issues.append(("一般", pages[n]["file"][5:], f"{n} 不在 OUTLINE 里", ""))
             continue
+        if pages[n]["placeholder"]:
+            continue  # 占位页的 H1 由生成器加"（待写）"，按设计如此，不比对（占位页数由 audit-placeholders 管）
         n_cmp += 1
         o, t, h = out_rows[n], pages[n]["title"], pages[n]["h1"]
         if norm(t) != norm(h):
@@ -78,8 +80,6 @@ def main():
             issues.append(("人工看", pages[n]["file"][5:], "OUTLINE 标题与页面 title 不一致", f"OUTLINE「{o}」/ title「{t}」"))
         if "待写" in t or "待写" in h:
             issues.append(("一般", pages[n]["file"][5:], "标题里还有“待写”", t))
-        if pages[n]["placeholder"]:
-            issues.append(("一般", pages[n]["file"][5:], "仍是占位页", ""))
     # toctree
     seen = collections.Counter()
     for f, t in texts.items():

@@ -29,6 +29,8 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-12 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-2.8、T-6.3.2、T-6.4.5、T-6.5.4、T-7.5、T-7.6、T-8.7、T-AUDIT-02a |
+| 2026-10-12 | ["`isaaclab` 命令行与入口点"](../8-frontier/8.7-isaaclab-cli.md) | 新增 | `isaaclab` 命令行与入口点（3.0 子命令、安装选择器、train 三层分流、外部任务注册、与 2.3 对照） | T-8.7 |
 | 2026-10-12 | [底盘导航任务](../6-galbot/4-task/6.4.5-base-navigation.md) | 新增 | 底盘速度跟踪（轮式版）：滚子空转根因与过滤对、速度任务定义、三次训练如实记录；底盘速度跟踪调参轮：主线 std025b 过门槛（5 种子 96.9%）；开环侧移翻倒属于物理伪影，训练中的倾覆主因未查；评估口径改为倾覆即失败 | T-0.8n、T-6.4.5、T-6.4.5b、T-7.5 |
 | 2026-10-12 | [定量评估与失败案例分析](../6-galbot/6-eval/6.6.2-evaluation.md) | 修订 | 常见坑回链 6.4.5 坑七：评估时失败终止要记为失败 | T-6.4.5b |
 | 2026-10-12 | [Isaac Academy](../index.md) | 修订 | 占位页：8.7–8.10 |  |
@@ -63,7 +65,6 @@ sources_checked: 2026-10-09
 | 2026-10-12 | [⑦ 部署](../6-galbot/7-deploy/index.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-AUDIT-02a |
 | 2026-10-12 | [仿真代码的测试与 CI](../7-infra/7.4-testing-ci.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-6.3.2、T-7.6、T-AUDIT-02a |
 | 2026-10-12 | [团队协作规范](../7-infra/7.6-team-conventions.md) | 新增 | 团队协作规范：项目结构、配置继承约定、命名、提交前清单（CONTRIBUTING.md）、评审看什么；全站一致性修正 16 条 | T-0.8o、T-7.6、T-AUDIT-02a |
-| 2026-10-12 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-2.8、T-6.3.2、T-6.4.5、T-6.5.4、T-7.5、T-7.6、T-AUDIT-02a |
 | 2026-10-12 | [InteractiveScene 如何克隆环境](../9-source/9.2-scene-cloning.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-AUDIT-02a |
 | 2026-10-12 | [Articulation 数据是怎么来的](../9-source/9.3-articulation-data.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-AUDIT-02a |
 | 2026-10-12 | [Isaac Lab 常用 API 速查表](../appendix/A.1-api-cheatsheet.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-AUDIT-02a |
