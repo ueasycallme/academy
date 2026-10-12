@@ -669,16 +669,19 @@ python scripts/convert_galbot.py --headless --variant wheeled --floating_base
 python scripts/probe_rollers.py --headless --variant base                        # 滚子空转探针
 python scripts/probe_rollers.py --headless --variant base --roller_pairs remove  # 对照：清掉滚子过滤对
 python scripts/probe_rollers.py --headless --variant base --vx 0.5                # 开环直行 0.5 m/s
-python scripts/rsl_rl/train.py --task Galbot-BaseVel-v0 --headless --seed 42 --run_name clip_limits
+python scripts/probe_rollers.py --headless --num_envs 256 --vx 0 --vy 0.5 --drive_s 10   # 开环侧移：约 6 s 后成批翻倒（坑六）
+python scripts/rsl_rl/train.py --task Galbot-BaseVel-v0 --headless --seed 42 --run_name std025b
 python scripts/eval_base_vel.py --headless --checkpoint logs/rsl_rl/galbot_base_vel/<运行>/model_499.pt
+python scripts/diag_base_vel.py --headless --mode fixed --checkpoint logs/rsl_rl/galbot_base_vel/<运行>/model_499.pt   # 逐步诊断
 python scripts/plot_training.py logs/rsl_rl/galbot_base_vel/<运行 1> [<运行 2> …] --preset base_vel --out base_vel_curves.png
 ```
 
 预期（本站实测，2026-10-11）：
 - 探针：`滚子碰撞体 sphere：球，半径 0.0800 m，球心离轮心 0.0250 m`；`静置 3 s：滚子 |速度| 中位 0.2`；直行 `实际 vx 中位 0.277`。清掉过滤对时滚子中位约 402 rad/s。
 - 开环直行 0.5 m/s：`实际 vx 中位 0.454`，`底盘最大倾角 0.2°`。
-- 训练：500 次迭代约 22.6 min。
-- 评估：`直行 0.5 m/s：实际均值 vx 0.569`，成功 96.9%；侧移、原地转过冲；`合计 256 回合 … 成功 29.7%`（未达标，见 6.4.5）；最后一行打印主动轮全程最大的速度目标与力矩。
+- 训练：500 次迭代约 22.6 min（`clip_limits` 那一次，RTX 5070）。
+- 评估（2026-10-12 版，倾覆即失败；主线 `std025b`，RTX 5090）：`合计 256 回合 … 成功 96.5%（247 / 256）；倾覆 9 回合；旧口径成功 98.8%`。重复评估时合计在 92%–97% 之间（6.4.5 表 5 注）。还原旧检查点的配置用 `--wheel_clip 1 --no_wheel_limits` 或 `--dt … --decimation 8`。
+- 开环侧移 10 s：256 台中约 59–114 台倾角越过 0.5 rad，越线时刻中位约 6.3 s。
 
 ## 7.5：数据管理
 
@@ -764,7 +767,7 @@ python scripts/check_versions.py      # 用 Isaac 的 Python
 │   ├── compare_direct_manager.py   # Manager 版与 Direct 版 reach 的逐步比对、行数统计（6.4.4）
 │   ├── asset_manifest.py        # 写 / 校验生成资产的清单（6.1.7）
 │   ├── render_cost.py           # 渲染模式的代价、机器人材质（3.8）
-│   ├── probe_rollers.py  eval_base_vel.py   # 轮式底盘：滚子空转探针、速度跟踪评估（6.4.5）
+│   ├── probe_rollers.py  eval_base_vel.py  diag_base_vel.py   # 轮式底盘：滚子探针、速度跟踪评估、逐步诊断（6.4.5）
 │   ├── check_versions.py        # 核对关键包版本（7.6）
 │   ├── fit_actuator.py          # 网格拟合执行器参数（6.3.2）
 │   ├── list_envs.py  zero_agent.py  random_agent.py

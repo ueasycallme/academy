@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-11
+# 验证日期：2026-10-11（物理参数扫描选项为 6.4.5 调参轮所加，2026-10-12）
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """轮式 Galbot 被动滚子空转的探针（6.4.5，方法同 6.3.1）。
 
@@ -19,6 +19,11 @@
 - friction：滚子关节静摩擦系数改为 --friction；
 - limit：滚子速度上限改为 --vlimit（rad/s）；
 - lock：滚子位置锁死（高刚度），相当于一个不能侧滑的普通轮子，失去全向性，只作对照。
+
+物理参数扫描（6.4.5 调参轮，与 --variant 组合使用，每次只改一项）：--dt、--solver_pos、--contact_offset / --rest_offset（滚子碰撞体）。
+行驶阶段另记：倾角超过 0.5 rad 的台数、底盘水平速度超过 --jump_speed 的台数（速度跳变：主动轮带不到这么快）、根状态出现非有限值的台数，以及三者任一的台数。
+
+    python scripts/probe_rollers.py --headless --num_envs 256 --vx 0 --vy 0.5 --drive_s 10 --solver_pos 32
 
     python scripts/probe_rollers.py --headless --variant base
     python scripts/probe_rollers.py --headless --variant damp --damping 1.0
@@ -43,6 +48,13 @@ parser.add_argument("--vx", type=float, default=0.3)
 parser.add_argument("--vy", type=float, default=0.0)
 parser.add_argument("--wz", type=float, default=0.0)
 parser.add_argument("--seed", type=int, default=0)
+# 物理参数扫描（6.4.5 调参轮）：每次只改一项，默认值即现配置
+parser.add_argument("--dt", type=float, default=1.0 / 120.0, help="物理步长（s）")
+parser.add_argument("--solver_pos", type=int, default=None, help="Articulation 求解器位置迭代次数（默认沿用资产配置 16）")
+parser.add_argument("--contact_offset", type=float, default=None, help="滚子碰撞体的 contactOffset（m），默认不改")
+parser.add_argument("--rest_offset", type=float, default=None, help="滚子碰撞体的 restOffset（m），默认不改")
+parser.add_argument("--jump_speed", type=float, default=1.5,
+                    help="底盘水平速度超过它算一次速度跳变（m/s）。主动轮 6 rad/s 只能带到约 0.9 m/s")
 parser.add_argument("--roller_pairs", choices=["keep", "remove"], default="keep",
                     help="remove：在场景里清掉资产写入的滚子过滤对（它们都写在滚子 prim 上），作对照")
 parser.add_argument("--self_collision", choices=["on", "off"], default="on",
@@ -63,7 +75,7 @@ from isaaclab.utils import configclass  # noqa: E402
 from galbot_academy.assets.galbot import GALBOT_ONE_GOLF_WHEELED_CFG  # noqa: E402
 from galbot_academy.assets.omni_base import WHEEL_JOINTS, body_to_wheel  # noqa: E402
 
-DT = 1.0 / 120.0
+DT = args.dt
 ROLLERS = "wheel_[1-4]_passive_.*"
 
 
@@ -77,6 +89,9 @@ def robot_cfg() -> ArticulationCfg:
     }[args.variant]
     cfg = GALBOT_ONE_GOLF_WHEELED_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
     cfg.actuators = {**cfg.actuators, "rollers": rollers}
+    if args.solver_pos is not None:
+        cfg.spawn = cfg.spawn.replace(
+            articulation_props=cfg.spawn.articulation_props.replace(solver_position_iteration_count=args.solver_pos))
     if args.self_collision == "off":
         cfg.spawn = cfg.spawn.replace(
             articulation_props=cfg.spawn.articulation_props.replace(enabled_self_collisions=False))
@@ -110,11 +125,37 @@ def report_geometry(stage) -> None:
     print("[6.4.5] 没找到滚子的球形碰撞体", flush=True)
 
 
+def set_roller_offsets(stage) -> int:
+    """改所有滚子碰撞体的 contactOffset / restOffset。碰撞体在实例内部（6.1.4），先把实例 prim 设为非实例才能写。"""
+    from pxr import PhysxSchema, Usd, UsdPhysics
+
+    rollers = [p for p in stage.Traverse() if "_passive_" in p.GetName() and p.GetPath().pathString.count("/") == 5]
+    for roller in rollers:
+        for prim in Usd.PrimRange(roller, Usd.TraverseInstanceProxies()):
+            if prim.IsInstance():
+                stage.GetPrimAtPath(prim.GetPath()).SetInstanceable(False)
+    n = 0
+    for roller in rollers:
+        for prim in Usd.PrimRange(roller):
+            if prim.HasAPI(UsdPhysics.CollisionAPI):
+                api = PhysxSchema.PhysxCollisionAPI.Apply(prim)
+                if n == 0:
+                    print(f"[6.4.5] 滚子碰撞体原值 contactOffset {api.GetContactOffsetAttr().Get()}、restOffset {api.GetRestOffsetAttr().Get()}", flush=True)
+                if args.contact_offset is not None:
+                    api.CreateContactOffsetAttr().Set(args.contact_offset)
+                if args.rest_offset is not None:
+                    api.CreateRestOffsetAttr().Set(args.rest_offset)
+                n += 1
+    return n
+
+
 def main() -> None:
     torch.manual_seed(args.seed)
     sim = sim_utils.SimulationContext(sim_utils.SimulationCfg(dt=DT, device=args.device))
     scene = InteractiveScene(SceneCfg(num_envs=args.num_envs, env_spacing=3.0))
     report_geometry(sim.stage)
+    if args.contact_offset is not None or args.rest_offset is not None:
+        print(f"[6.4.5] 改了 {set_roller_offsets(sim.stage)} 个滚子碰撞体的 offset（contact {args.contact_offset}，rest {args.rest_offset}）", flush=True)
     if args.roller_pairs == "remove":
         from pxr import UsdPhysics
 
@@ -149,6 +190,11 @@ def main() -> None:
         n, last = round(seconds / DT), round(1.0 / DT)
         roller_max = torch.zeros(args.num_envs, device=sim.device)
         tilt_max = torch.zeros(args.num_envs, device=sim.device)
+        speed_max = torch.zeros(args.num_envs, device=sim.device)
+        bad = torch.zeros(args.num_envs, dtype=torch.bool, device=sim.device)  # 根状态出现过非有限值
+        tip_t = torch.full((args.num_envs,), float("nan"), device=sim.device)  # 倾角第一次超过 0.5 rad 的时刻（s）
+        p_start = d.root_pos_w[:, :2].clone()
+        tip_dist = torch.full((args.num_envs,), float("nan"), device=sim.device)  # 那一刻离出发点的水平距离（m）
         twist = torch.zeros(args.num_envs, 3, device=sim.device)
         torch.cuda.synchronize()
         t0 = time.perf_counter()
@@ -157,11 +203,16 @@ def main() -> None:
             sim.step(render=False)
             scene.update(DT)
             tilt_max = torch.maximum(tilt_max, torch.acos((-d.projected_gravity_b[:, 2]).clamp(-1.0, 1.0)))  # 底盘倾角
+            speed_max = torch.maximum(speed_max, d.root_lin_vel_w[:, :2].norm(dim=1))
+            bad |= ~torch.isfinite(d.root_state_w).all(dim=1)
+            new_tip = torch.isnan(tip_t) & (tilt_max > 0.5)
+            tip_t[new_tip] = (k + 1) * DT
+            tip_dist[new_tip] = (d.root_pos_w[new_tip, :2] - p_start[new_tip]).norm(dim=1)
             if k >= n - last:
                 roller_max = torch.maximum(roller_max, d.joint_vel[:, roller_ids].abs().max(dim=1).values)
                 twist += torch.cat([d.root_lin_vel_b[:, :2], d.root_ang_vel_b[:, 2:3]], dim=1) / last
         torch.cuda.synchronize()
-        run.tilt = tilt_max
+        run.tilt, run.speed, run.bad, run.tip_t, run.tip_dist = tilt_max, speed_max, bad, tip_t, tip_dist
         return roller_max, twist, (time.perf_counter() - t0) / n * 1000
 
     p0, yaw0 = d.root_pos_w[:, :2].clone(), math_utils.euler_xyz_from_quat(d.root_quat_w)[2].clone()
@@ -171,7 +222,7 @@ def main() -> None:
     finite = bool(torch.isfinite(d.joint_pos).all())
     target = body_to_wheel(args.vx, args.vy, args.wz)
     r_drive, twist, ms2 = run(args.drive_s, target)
-    med = lambda x: x.median().item()  # noqa: E731
+    med = lambda x: x.nanmedian().item()  # noqa: E731  有发散的台时，中位数只算有限值
     print(f"[6.4.5] variant {args.variant}（damping {args.damping}，friction {args.friction}，vlimit {args.vlimit}，自碰撞 {args.self_collision}，滚子过滤对 {args.roller_pairs}），"
           f"{args.num_envs} 台，数值有限 {finite}", flush=True)
     print(f"[6.4.5] 静置 {args.static_s:g} s：滚子 |速度| 中位 {med(r_static):.1f}、最大 {r_static.max().item():.1f} rad/s；"
@@ -179,7 +230,13 @@ def main() -> None:
           f"每物理步 {ms:.2f} ms", flush=True)
     print(f"[6.4.5] 直行 指令 vx {args.vx} vy {args.vy} wz {args.wz}（轮速 {[round(w, 2) for w in target]} rad/s）："
           f"实际 vx 中位 {med(twist[:, 0]):.3f}、vy {med(twist[:, 1]):.3f} m/s、wz {med(twist[:, 2]):.3f} rad/s；"
-          f"滚子 |速度| 中位 {med(r_drive):.1f} rad/s；底盘最大倾角 {math.degrees(run.tilt.max().item()):.1f}°；每物理步 {ms2:.2f} ms", flush=True)
+          f"滚子 |速度| 中位 {med(r_drive):.1f} rad/s；底盘最大倾角 {math.degrees(run.tilt.nan_to_num(0.0).max().item()):.1f}°（超过 0.5 rad 的 {int((run.tilt > 0.5).sum())} 台）；水平速度超过 {args.jump_speed:g} m/s 的 {int((run.speed > args.jump_speed).sum())} 台；根状态发散（非有限）的 {int(run.bad.sum())} 台；三者任一的 {int(((run.tilt > 0.5) | (run.speed > args.jump_speed) | run.bad).sum())} / {args.num_envs} 台；每物理步 {ms2:.2f} ms", flush=True)
+    tt, td = run.tip_t[~torch.isnan(run.tip_t)], run.tip_dist[~torch.isnan(run.tip_t)]
+    if tt.numel():
+        edges = torch.linspace(0, args.drive_s, 6, device=sim.device)
+        counts = [int(((tt > a) & (tt <= b)).sum()) for a, b in zip(edges[:-1], edges[1:])]
+        print(f"[6.4.5] 行驶中倾角越过 0.5 rad 的时刻：中位 {tt.median().item():.2f} s，按 {args.drive_s / 5:g} s 分段 {counts}；"
+              f"越过时离出发点 中位 {td.median().item():.2f}、最小 {td.min().item():.2f}、最大 {td.max().item():.2f} m", flush=True)
     sim.clear_all_callbacks()  # 退出三步：不先释放 SimulationContext，close() 会卡住（本站实测）
     sim.clear_instance()
 

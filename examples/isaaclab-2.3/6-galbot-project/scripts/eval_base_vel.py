@@ -2,14 +2,19 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2（rsl_rl 3.1.2）
-# 验证日期：2026-10-11
+# 验证日期：2026-10-11（倾覆即失败与 --dt / --decimation / --wheel_clip / --no_wheel_limits 为 T-6.4.5b 所改，2026-10-12，RTX 5090 32 GB）
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """评估底盘速度跟踪策略（6.4.5，口径同 6.6.2）：固定几组指令，每组 --num_envs 个回合。
 
 每组：reset 后给定一个固定指令（底盘坐标系），跑 --seconds 秒；在末 --window 秒内，按环境平均底盘的实际速度，
 算线速度误差 ‖v_xy − v_cmd‖ 与角速度误差 |wz − wz_cmd|。报中位数、90% 分位，以及"成功"比例：
-线速度误差 < 0.1 m/s 且角速度误差 < 0.2 rad/s（即本页的目标门槛，逐回合判断）。
+线速度误差 < 0.1 m/s 且角速度误差 < 0.2 rad/s（即本页的目标门槛，逐回合判断），并且这 --seconds 秒内没有因倾覆终止。
+倾覆的环境会被自动重置，末段窗口里的速度取自新回合；旧版（2026-10-11）不检查这一点，倾覆的回合也可能算成功（6.4.5 坑七），
+所以另打印一个"旧口径"成功率作对照。
 另外记录全程（所有组、所有步）主动轮速度目标与施加力矩的最大绝对值，用来判断执行器上限有没有被碰到。
+
+评估要用检查点训练时的配置。现配置之外的检查点用下面几个选项还原（6.4.5 表 4）：
+--dt / --decimation（std025b_dt240：1/240、8），--wheel_clip 1 --no_wheel_limits（seed42、std025：修正 clip 与加上限之前）。
 
     python scripts/eval_base_vel.py --headless --checkpoint logs/rsl_rl/galbot_base_vel/<运行>/model_499.pt
 """
@@ -26,6 +31,10 @@ parser.add_argument("--num_envs", type=int, default=64)
 parser.add_argument("--seconds", type=float, default=4.0)
 parser.add_argument("--window", type=float, default=2.0)
 parser.add_argument("--seed", type=int, default=0)
+parser.add_argument("--dt", type=float, default=None, help="物理步长，默认用任务配置")
+parser.add_argument("--decimation", type=int, default=None, help="默认用任务配置")
+parser.add_argument("--wheel_clip", type=float, default=None, help="动作 clip 为 ±该值（rad/s），默认用任务配置")
+parser.add_argument("--no_wheel_limits", action="store_true", help="主动轮不设力矩与速度上限（6.4.5 加上限之前的配置）")
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 simulation_app = AppLauncher(args).app
@@ -55,6 +64,18 @@ def main() -> None:
     cfg.commands.base_velocity.rel_standing_envs = 0.0
     cfg.commands.base_velocity.resampling_time_range = (1.0e6, 1.0e6)  # 一个回合内不换指令
     cfg.episode_length_s = args.seconds + 1.0
+    if args.dt is not None:
+        cfg.sim.dt = args.dt
+    if args.decimation is not None:
+        cfg.decimation = args.decimation
+        cfg.sim.render_interval = args.decimation
+    if args.wheel_clip is not None:
+        cfg.actions.wheel_action.clip = {".*": (-args.wheel_clip, args.wheel_clip)}
+    if args.no_wheel_limits:
+        cfg.scene.robot.actuators["wheels"].effort_limit_sim = None
+        cfg.scene.robot.actuators["wheels"].velocity_limit_sim = None
+    print(f"[6.4.5] 评估配置：dt {cfg.sim.dt:.6f}、decimation {cfg.decimation}、clip {cfg.actions.wheel_action.clip}、"
+          f"主动轮上限 {cfg.scene.robot.actuators['wheels'].effort_limit_sim} N·m / {cfg.scene.robot.actuators['wheels'].velocity_limit_sim} rad/s", flush=True)
     agent = load_cfg_from_registry(args.task, "rsl_rl_cfg_entry_point")
     env = RslRlVecEnvWrapper(gym.make(args.task, cfg=cfg))
     runner = OnPolicyRunner(env, agent.to_dict(), log_dir=None, device=agent.device)
@@ -65,15 +86,17 @@ def main() -> None:
     robot = base.scene["robot"]
     steps, win = round(args.seconds / base.step_dt), round(args.window / base.step_dt)
     wheel_ids = robot.find_joints(WHEEL_JOINTS, preserve_order=True)[0]
-    all_lin, all_ang = [], []
+    all_lin, all_ang, all_tip = [], [], []
     max_target, max_torque = 0.0, 0.0
     with torch.inference_mode():
         for name, (vx, vy, wz) in SCENARIOS.items():
             ranges.lin_vel_x, ranges.lin_vel_y, ranges.ang_vel_z = (vx, vx), (vy, vy), (wz, wz)
             obs, _ = env.reset()  # 重置时按新范围重采样指令
             acc = torch.zeros(args.num_envs, 3, device=base.device)
+            tipped = torch.zeros(args.num_envs, dtype=torch.bool, device=base.device)
             for k in range(steps):
                 obs, _, _, _ = env.step(policy(obs))
+                tipped |= base.termination_manager.get_term("tipped")
                 max_target = max(max_target, robot.data.joint_vel_target[:, wheel_ids].abs().max().item())
                 max_torque = max(max_torque, robot.data.applied_torque[:, wheel_ids].abs().max().item())
                 if k >= steps - win:
@@ -81,15 +104,20 @@ def main() -> None:
             cmd = torch.tensor([vx, vy, wz], device=base.device)
             lin = (acc[:, :2] - cmd[:2]).norm(dim=1)
             ang = (acc[:, 2] - cmd[2]).abs()
-            ok = ((lin < LIN_OK) & (ang < ANG_OK)).float().mean().item()
+            ok_old = (lin < LIN_OK) & (ang < ANG_OK)
+            ok = (ok_old & ~tipped).float().mean().item()
             all_lin.append(lin)
             all_ang.append(ang)
+            all_tip.append(tipped)
             print(f"[6.4.5] {name}：实际均值 vx {acc[:, 0].mean():.3f}、vy {acc[:, 1].mean():.3f} m/s、wz {acc[:, 2].mean():.3f} rad/s；"
                   f"线速度误差 中位 {lin.median():.3f}、90% {lin.quantile(0.9):.3f} m/s；角速度误差 中位 {ang.median():.3f}、"
-                  f"90% {ang.quantile(0.9):.3f} rad/s；成功 {ok * 100:.1f}%（{args.num_envs} 回合）", flush=True)
-    lin, ang = torch.cat(all_lin), torch.cat(all_ang)
+                  f"90% {ang.quantile(0.9):.3f} rad/s；成功 {ok * 100:.1f}%（{args.num_envs} 回合）；倾覆 {int(tipped.sum())} 回合；"
+                  f"旧口径成功 {ok_old.float().mean().item() * 100:.1f}%", flush=True)
+    lin, ang, tip = torch.cat(all_lin), torch.cat(all_ang), torch.cat(all_tip)
+    ok_old = (lin < LIN_OK) & (ang < ANG_OK)
     print(f"[6.4.5] 合计 {len(lin)} 回合：线速度误差 中位 {lin.median():.3f} m/s，角速度误差 中位 {ang.median():.3f} rad/s；"
-          f"成功 {((lin < LIN_OK) & (ang < ANG_OK)).float().mean().item() * 100:.1f}%", flush=True)
+          f"成功 {(ok_old & ~tip).float().mean().item() * 100:.1f}%（{int((ok_old & ~tip).sum())} / {len(lin)}）；倾覆 {int(tip.sum())} 回合；"
+          f"旧口径成功 {ok_old.float().mean().item() * 100:.1f}%", flush=True)
     limits = (robot.data.joint_vel_limits[0, wheel_ids].max().item(), robot.data.joint_effort_limits[0, wheel_ids].max().item())
     print(f"[6.4.5] 主动轮全程最大：速度目标 {max_target:.2f} rad/s，施加力矩 {max_torque:.2f} N·m（上限 {limits[0]:.4g} rad/s、{limits[1]:.4g} N·m）", flush=True)
     env.close()

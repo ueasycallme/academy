@@ -92,9 +92,9 @@ class EventCfg:
 
 @configclass
 class RewardsCfg:
-    # 权重与标准差照 Isaac Lab 速度跟踪任务（locomotion/velocity）
-    track_lin_vel_xy = RewTerm(func=mdp.track_lin_vel_xy_exp, weight=1.0, params={"command_name": "base_velocity", "std": math.sqrt(0.25)})
-    track_ang_vel_z = RewTerm(func=mdp.track_ang_vel_z_exp, weight=0.5, params={"command_name": "base_velocity", "std": math.sqrt(0.25)})
+    # 权重照 Isaac Lab 速度跟踪任务（locomotion/velocity）；std 由 √0.25 收窄到 0.25（6.4.5 调参轮 std025b）
+    track_lin_vel_xy = RewTerm(func=mdp.track_lin_vel_xy_exp, weight=1.0, params={"command_name": "base_velocity", "std": 0.25})
+    track_ang_vel_z = RewTerm(func=mdp.track_ang_vel_z_exp, weight=0.5, params={"command_name": "base_velocity", "std": 0.25})
     action_rate = RewTerm(func=mdp.action_rate_l2, weight=-0.01)
     flat_orientation = RewTerm(func=mdp.flat_orientation_l2, weight=-2.0)  # 侧倾惩罚
 
@@ -117,6 +117,6 @@ class GalbotBaseVelEnvCfg(ManagerBasedRLEnvCfg):
 
     def __post_init__(self):
         self.sim.dt = 1 / 120
-        self.decimation = 4  # 30 Hz，同主线
+        self.decimation = 4  # 30 Hz，同主线。改成 1/240、8 的对照（std025b_dt240）没有降低训练中的倾覆，见 6.4.5
         self.sim.render_interval = self.decimation
         self.episode_length_s = 12.0  # 3 段指令
