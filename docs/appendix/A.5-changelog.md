@@ -29,14 +29,15 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-12 | [术语表（中英对照）](../0-map/0.8-glossary.md) | 修订 | 术语表补第四批 16 条；术语表第五批；术语表第六批：3.0 专栏扩展的 9 条新词与 5 条回链 | T-0.8n、T-0.8o、T-0.8p、T-AUDIT-02a |
+| 2026-10-12 | [`isaaclab` 命令行与入口点](../8-frontier/8.7-isaaclab-cli.md) | 新增 | `isaaclab` 命令行与入口点（3.0 子命令、安装选择器、train 三层分流、外部任务注册、与 2.3 对照） | T-0.8p、T-8.7 |
+| 2026-10-12 | [Kit-less 工作流实测](../8-frontier/8.8-kitless.md) | 新增 | Kit-less 工作流实测：路线 C 能训练、能用 Rerun / Viser 回放、能用 OVRTX 出帧 | T-0.8p、T-8.8 |
 | 2026-10-12 | [策略在 PhysX 与 Newton 之间互通](../8-frontier/8.10-physx-newton-transfer.md) | 新增 | PhysX ↔ Newton 策略迁移：两后端关节顺序不同、3.0 PhysX 检查点换到 Newton 有损（48.4% → 31–32%）、2.3 检查点经两步转换在 3.0 PhysX 上 81.5% 不必重训、阶跃响应两后端几乎重合 | T-8.10 |
 | 2026-10-12 | [2.3 → 3.0 迁移指南](../8-frontier/8.4-migration-23-30.md) | 修订 | 随《策略在 PhysX 与 Newton 之间互通》修订 | T-8.10 |
 | 2026-10-12 | [在 3.0 上跑 Galbot reach](../8-frontier/8.5-galbot-reach-30.md) | 修订 | 随《Kit-less 工作流实测》修订 | T-8.10、T-8.8 |
 | 2026-10-12 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-2.8、T-6.3.2、T-6.4.5、T-6.5.4、T-7.5、T-7.6、T-8.10、T-8.7、T-8.8、T-8.9、T-AUDIT-02a |
 | 2026-10-12 | [Warp 原生数据路径实战](../8-frontier/8.9-warp-data-path.md) | 新增 | Warp 原生数据路径实战：ProxyArray 拷贝语义、奖励项 torch / Warp 两版逐位一致（3.8e-6 m）、Warp 版快约 3 倍但省下的不到一步的 1%，单个奖励项不值得改写；Warp 默认 RELAXED 不查数组设备 | T-8.9 |
 | 2026-10-12 | [多后端架构解读](../8-frontier/8.2-multi-backend.md) | 修订 | 随《Kit-less 工作流实测》修订 | T-8.8 |
-| 2026-10-12 | [Kit-less 工作流实测](../8-frontier/8.8-kitless.md) | 新增 | Kit-less 工作流实测：路线 C 能训练、能用 Rerun / Viser 回放、能用 OVRTX 出帧 | T-8.8 |
-| 2026-10-12 | [`isaaclab` 命令行与入口点](../8-frontier/8.7-isaaclab-cli.md) | 新增 | `isaaclab` 命令行与入口点（3.0 子命令、安装选择器、train 三层分流、外部任务注册、与 2.3 对照） | T-8.7 |
 | 2026-10-12 | [底盘导航任务](../6-galbot/4-task/6.4.5-base-navigation.md) | 新增 | 底盘速度跟踪（轮式版）：滚子空转根因与过滤对、速度任务定义、三次训练如实记录；底盘速度跟踪调参轮：主线 std025b 过门槛（5 种子 96.9%）；开环侧移翻倒属于物理伪影，训练中的倾覆主因未查；评估口径改为倾覆即失败 | T-0.8n、T-6.4.5、T-6.4.5b、T-7.5 |
 | 2026-10-12 | [定量评估与失败案例分析](../6-galbot/6-eval/6.6.2-evaluation.md) | 修订 | 常见坑回链 6.4.5 坑七：评估时失败终止要记为失败 | T-6.4.5b |
 | 2026-10-12 | [Isaac Academy](../index.md) | 修订 | 占位页：8.7–8.10 |  |
@@ -45,7 +46,6 @@ sources_checked: 2026-10-09
 | 2026-10-12 | [产品谱系与改名史](../0-map/0.3-lineage.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-AUDIT-02a |
 | 2026-10-12 | [Isaac Sim 与 Isaac Lab 的边界](../0-map/0.5-sim-lab-boundary.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-AUDIT-02a |
 | 2026-10-12 | [一个 RL step 里发生了什么](../0-map/0.6-one-step.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-AUDIT-02a |
-| 2026-10-12 | [术语表（中英对照）](../0-map/0.8-glossary.md) | 修订 | 术语表补第四批 16 条；术语表第五批 | T-0.8n、T-0.8o、T-AUDIT-02a |
 | 2026-10-12 | [版本兼容矩阵](../1-env/1.1-compat-matrix.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-AUDIT-02a |
 | 2026-10-12 | [容器化环境](../1-env/1.6-container.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-AUDIT-02a |
 | 2026-10-12 | [用 Python 操作 USD](../2-usd-kit/2.5-usd-python.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-AUDIT-02a |
