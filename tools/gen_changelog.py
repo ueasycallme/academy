@@ -68,7 +68,7 @@ def page_title(path: str, rev: str) -> str:
     """取该提交时的页面标题：frontmatter 的 title，没有就用第一个一级标题。用提交时的版本，结果不随以后的改名变化。"""
     text = file_at(rev, path) or ""
     m = re.search(r"^title:\s*(.+)$", text, re.M) or re.search(r"^# (.+)$", text, re.M)
-    return m.group(1).strip() if m else Path(path).stem
+    return m.group(1).strip().strip('"\'') if m else Path(path).stem
 
 
 # 少数历史提交的标题是内部过程说明，读者看不懂，这里手工改写：(提交 sha 前缀, 页面) → 一句话
