@@ -1,5 +1,5 @@
-// 表格内行内代码的断行点（T-SITE-09）。
-// 长类名、长路径没有空格，会把表格列撑宽。这里在 "." "/" "_" 之后插入 <wbr>（可选断行点），
+// 正文行内代码的断行点（T-SITE-09；T-AUDIT-02a 由表格内扩到全文）。
+// 长类名、长路径没有空格，会把表格列撑宽、在窄屏上撑破页面。这里在 "." "/" "_" 之后插入 <wbr>（可选断行点），
 // 让浏览器优先在这些位置换行，而不是在单词中间任意断开。<wbr> 不会被复制，复制出的代码不变。
 (() => {
   const BREAK_AFTER = /([./_])(?=.)/g;
@@ -19,7 +19,7 @@
       node.replaceWith(frag);
     });
   };
-  const run = () => document.querySelectorAll(".bd-article table code").forEach(addBreaks);
+  const run = () => document.querySelectorAll(".bd-article code").forEach(addBreaks);
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run);
   else run();
 })();

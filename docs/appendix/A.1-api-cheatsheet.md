@@ -155,3 +155,5 @@ asset_cfg = SceneEntityCfg("robot", joint_names=["right_arm_joint[1-7]"])
 ## 版本说明
 
 本页基于 Isaac Lab 2.3.2，3.0 的变化只列 8.4 涉及的部分，见 [8.6 版本追踪](../8-frontier/8.6-version-tracking.md)。
+
+3.0 的差异以 [8.6 版本追踪](../8-frontier/8.6-version-tracking.md) 为准，本页最后核对的版本见该页核对状态表。

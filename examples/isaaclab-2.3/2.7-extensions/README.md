@@ -34,3 +34,5 @@ academy.hello_noimport：is_extension_enabled = True
 日志里的 `Can't find extension with name` 错误对应前两次和拼错名字那次启用，属预期。第二次（add_path 之后立即启用）失败，是因为第一次对这个名字启用失败过（页面坑一）；没有先失败过时，add_path 之后立即启用就会成功。`academy.hello_noimport` 启用成功，但没有打印 `on_startup`。
 
 验证版本：Isaac Sim 5.1.0（pip，Kit 107.3.3）+ Isaac Lab 2.3.2；验证日期 2026-10-08。
+
+GPU：NVIDIA GeForce RTX 5070 12 GB（`exts/*/extension.py` 在 Kit 进程里运行，与 `enable_hello.py` 同一环境）。

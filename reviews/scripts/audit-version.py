@@ -125,6 +125,7 @@ def main():
     # 表注口径（AUDIT-02 起三个数）：共 N 页；逐页归类 M 页（逐行 a 页，其余 b 页）；另有 k 页不涉及 3.0
     note = re.search(r"共 (\d+) 页.*?逐页归类 (\d+) 页(?:（逐行列出 (\d+) 页，其余 (\d+) 页）)?", sec)
     excluded = {"3.11", "A.5"}
+    # 3.11、A.5 默认不涉及 3.0；表 2 若逐行列出了它（如 3.11 自 T-AUDIT-02a 起），就按列出的算
     rest = [p for p, d in pages.items() if d["ver"] is not None and d["num"] and d["num"] not in listed
             and d["num"] not in excluded and "8.6-version" not in p]
     not_unver = [p[5:] for p in rest if "未核对" not in pages[p]["ver"]]
@@ -138,7 +139,7 @@ def main():
         issues.append(("一般", "8-frontier/8.6", f"表注写含版本说明的页面 {note.group(1)} 页，实际 {n_with} 页", ""))
     # 不涉及 3.0 的页：3.11、A.5 与模板页（0-map/_*），它们有版本说明但不进表 2
     n_out = sum(1 for p, d in pages.items() if d["ver"] is not None and "8.6-version" not in p
-                and (d["num"] in excluded or os.path.basename(p).startswith("_")))
+                and ((d["num"] in excluded and d["num"] not in listed) or os.path.basename(p).startswith("_")))
     if note:
         n_cls = len(listed & set(by_num)) + len(rest)
         if int(note.group(2)) != n_cls:

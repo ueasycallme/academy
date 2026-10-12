@@ -64,7 +64,7 @@ sources_checked: 2026-10-09
 | 训练中出现 NaN | [5.8 的"NaN 专项"](../5-rl/5.8-training-debug.md#nan-专项)；轮子压进地面导致的 NaN 见 [3.5](../3-isaacsim/3.5-urdf-mjcf-import.md#常见坑) |
 | 机器人塌下去、姿态不对 | [7.3 的"一套顺序"](../7-infra/7.3-debugging.md#一套顺序)：先零动作看能否站住；驱动参数见 [6.1.5](../6-galbot/1-asset/6.1.5-joint-drive-tuning.md) |
 | 显存不够、环境数上不去 | [6.5.2 的"12 GB 显卡选多少个环境"](../6-galbot/5-train/6.5.2-hyperparameters.md#12-gb-显卡选多少个环境) |
-| 进程返回码是 0，结果却不对 | Isaac Sim 进程的退出码总是 0（[2.5](../2-usd-kit/2.5-usd-python.md#常见坑)）；URDF 转换失败时返回码也是 0（[6.1.2](../6-galbot/1-asset/6.1.2-import-urdf.md#常见坑)） |
+| 进程返回码是 0，结果却不对 | Isaac Sim 进程未捕获的异常时退出码实测为 0，不能靠退出码判断成败（[2.5](../2-usd-kit/2.5-usd-python.md#常见坑)）；URDF 转换失败时返回码也是 0（[6.1.2](../6-galbot/1-asset/6.1.2-import-urdf.md#常见坑)） |
 | 迁移到 3.0 后姿态悄悄错了 | 四元数顺序 WXYZ → XYZW（[8.4](../8-frontier/8.4-migration-23-30.md#四元数-wxyz--xyzw)） |
 | 训练好了，回放却不对 | [6.6.1 的排查表](../6-galbot/6-eval/6.6.1-play-replay.md#回放与训练表现不一致时) |
 
@@ -82,3 +82,5 @@ sources_checked: 2026-10-09
 ## 版本说明
 
 本页收录的错误信息来自 Isaac Sim 5.1.0 + Isaac Lab 2.3.2。3.0 的报错可能不同，见 [8.6 版本追踪](../8-frontier/8.6-version-tracking.md)。
+
+3.0 的差异以 [8.6 版本追踪](../8-frontier/8.6-version-tracking.md) 为准，本页最后核对的版本见该页核对状态表。

@@ -98,4 +98,6 @@ Isaac Lab 的 bug 模板（v2.3.2）要求：重现步骤、Isaac Lab 的 commit
 
 本页链接的版本以 Isaac Sim 5.1.0 + Isaac Lab 2.3.2 为主，3.0 相关入口另行标注。
 
+3.0 的差异以 [8.6 版本追踪](../8-frontier/8.6-version-tracking.md) 为准，本页最后核对的版本见该页核对状态表。
+
 [^bug-tpl]: Isaac Lab `.github/ISSUE_TEMPLATE/bug.md`（tag v2.3.2）<https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/.github/ISSUE_TEMPLATE/bug.md>

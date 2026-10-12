@@ -4,6 +4,8 @@ title: ④ 任务
 
 # ④ 任务
 
+在 Galbot 上写 Isaac Lab 任务：单臂 reach、域随机化、lift、Direct 写法、底盘导航，以及遥操作示教与 Mimic 数据生成；先从 [6.4.1 第一个任务：单臂 reach](6.4.1-reach.md) 读起。
+
 ```{toctree}
 
 
