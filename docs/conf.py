@@ -63,9 +63,8 @@ html_theme_options = {
     "logo": {"text": "Isaac Academy", "image_light": "_static/img/academy-logo.svg", "image_dark": "_static/img/academy-logo.svg", "alt_text": "Isaac Academy"},
     "navbar_start": ["navbar-logo", "academy-subtitle"],
     "navbar_center": [],
-    "navbar_end": ["search-button-field", "theme-switcher", "navbar-icon-links"],
+    "navbar_end": ["search-button-field", "theme-switcher"],  # 不放 GitHub 入口（D-034）
     "navbar_persistent": [],
-    "icon_links": [{"name": "GitHub", "url": "https://github.com/ueasycallme/academy", "icon": "fa-brands fa-github", "type": "fontawesome"}],
     # 公告条是原样输出的 HTML，Sphinx 不会按页面层级改写其中的链接。这里写成自定义域名下的绝对地址
     # （无 JS 时也可用）；_static/js/announcement-close.js 会把它改写为相对 data-content_root 的路径，
     # 使站点在子路径（如 ueasycallme.github.io/academy/）或本地预览下同样可用。
