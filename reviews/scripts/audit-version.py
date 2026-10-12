@@ -78,7 +78,9 @@ def main():
             continue
         link = os.path.relpath("docs/8-frontier/8.6-version-tracking.md", os.path.dirname(p))
         want = FIXED.format(link=link)
-        lines = [l.strip() for l in d["ver"].strip().splitlines() if l.strip()]
+        # 引用式链接定义（"[x]: https://…"）不渲染，不算最后一行
+        lines = [l.strip() for l in d["ver"].strip().splitlines()
+                 if l.strip() and not re.match(r"^\[[^\]^]+\]:\s", l.strip())]
         if want in d["ver"]:
             n_fixed += 1
             if lines[-1] != want:
@@ -120,7 +122,8 @@ def main():
             n_cmp += 1
             if exp and sc != exp:
                 issues.append(("一般", p[5:], f"8.6 表 2 写最后核对 {exp}，页面 sources_checked 为 {sc}", ""))
-    note = re.search(r"共 (\d+) 页.*?逐页归类 (\d+) 页", sec)
+    # 表注口径（AUDIT-02 起三个数）：共 N 页；逐页归类 M 页（逐行 a 页，其余 b 页）；另有 k 页不涉及 3.0
+    note = re.search(r"共 (\d+) 页.*?逐页归类 (\d+) 页(?:（逐行列出 (\d+) 页，其余 (\d+) 页）)?", sec)
     excluded = {"3.11", "A.5"}
     rest = [p for p, d in pages.items() if d["ver"] is not None and d["num"] and d["num"] not in listed
             and d["num"] not in excluded and "8.6-version" not in p]
@@ -133,10 +136,26 @@ def main():
         issues.append(("一般", p, "归入 8.6 表 2“其余”行（未核对），但版本说明里没有“未核对”", ""))
     if note and int(note.group(1)) != n_with:
         issues.append(("一般", "8-frontier/8.6", f"表注写含版本说明的页面 {note.group(1)} 页，实际 {n_with} 页", ""))
+    # 不涉及 3.0 的页：3.11、A.5 与模板页（0-map/_*），它们有版本说明但不进表 2
+    n_out = sum(1 for p, d in pages.items() if d["ver"] is not None and "8.6-version" not in p
+                and (d["num"] in excluded or os.path.basename(p).startswith("_")))
+    if note:
+        n_cls = len(listed & set(by_num)) + len(rest)
+        if int(note.group(2)) != n_cls:
+            issues.append(("一般", "8-frontier/8.6", f"表注写逐页归类 {note.group(2)} 页，实际 {n_cls} 页", ""))
+        if note.group(3) and int(note.group(3)) != len(listed & set(by_num)):
+            issues.append(("一般", "8-frontier/8.6", f"表注写逐行列出 {note.group(3)} 页，实际 {len(listed & set(by_num))} 页", ""))
+        if note.group(4) and int(note.group(4)) != len(rest):
+            issues.append(("一般", "8-frontier/8.6", f"表注写其余 {note.group(4)} 页，实际 {len(rest)} 页", ""))
+        if int(note.group(1)) != n_cls + n_out:  # 8.6 自身没有“版本说明”一节，不计
+            issues.append(("一般", "8-frontier/8.6", f"表注三个数对不上：{note.group(1)} ≠ 归类 {n_cls} + 不涉及 {n_out}", ""))
+    else:
+        issues.append(("一般", "8-frontier/8.6", "表注里找不到“共 N 页 … 逐页归类 M 页”，脚本没能核对", ""))
     for sev, where, what, extra in issues:
         print(f"{sev}\t{where}\t{what}\t{extra}")
     print(f"[version] 正式页 {len(pages)}；含版本说明 {n_with}；有固定句 {n_fixed}；"
-          f"8.6 表 2 逐页列出 {len(listed)} 页（日期逐页比对 {n_cmp} 页）+ 其余 {len(rest)} 页；问题 {len(issues)}")
+          f"8.6 表 2 逐页列出 {len(listed)} 页（日期逐页比对 {n_cmp} 页）+ 其余 {len(rest)} 页；"
+          f"不涉及 3.0 {n_out if note else '?'} 页；问题 {len(issues)}")
     return 0
 
 

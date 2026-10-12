@@ -2,7 +2,7 @@
 
 对 git 里 examples/**/*.py，看文件开头（第一行代码之前的注释与模块 docstring，最多 40 行）是否写了：
   验证版本（"验证版本"或"未验证"）、验证日期（YYYY-MM-DD）、GPU 型号（"GPU"一行）。
-写了"未验证"的文件只要求有这一标记。__init__.py 单列（多为包声明，按"建议"报）。
+写了"未验证"的文件只要求有这一标记。按 D-029 豁免的（模板、GPU 在 README、≤ 15 行的 __init__.py、不依赖 Isaac / torch 的纯工具）列"豁免"，不计入问题。
 分类：头注是 Isaac Lab 版权行的（由 Isaac Lab 模板生成器生成、本站未改头注）记"模板"；
 只缺 GPU、且所在示例目录的 README 写了 GPU 的记"GPU 在 README"。
 另顺带查 `omni.isaac.` 旧命名的 import（CONVENTIONS 第 5 节：除非在讲迁移）。
@@ -75,12 +75,13 @@ def main():
                     tag = "模板"
                 elif miss == ["GPU"] and readme_gpu(a, p):
                     tag = "GPU 在 README"
+                # D-029（2026-10-09）第 3 条：模板文件、GPU 写在 README、≤ 15 行的包声明、不依赖 Isaac / torch 的纯工具豁免
                 if init and len(t.strip().splitlines()) <= 15:
-                    sev = "建议"
+                    sev = "豁免"
                 elif tag:
-                    sev = "建议"
+                    sev = "豁免"
                 elif miss == ["GPU"]:
-                    sev = "建议" if not re.search(r"isaaclab|isaacsim|torch|AppLauncher|SimulationApp", t) else "一般"
+                    sev = "豁免" if not re.search(r"isaaclab|isaacsim|torch|AppLauncher|SimulationApp|omni\.", t) else "建议"
                 else:
                     sev = "一般"
                 issues.append((sev, p, "头注缺：" + "、".join(miss) + (f"（{tag}）" if tag else "")))
@@ -91,7 +92,8 @@ def main():
                 issues.append(("建议", f"{p}:{n}", "使用 omni.isaac.* 旧命名：" + l.strip()[:60]))
     for sev, p, what in sorted(issues):
         print(f"{sev}\t{p}\t{what}")
-    print(f"[examples] .py 文件 {len(files)}；头注齐全或标未验证 {n_ok}；问题 {len(issues)}"
+    ex = sum(i[0] == "豁免" for i in issues)
+    print(f"[examples] .py 文件 {len(files)}；头注齐全或标未验证 {n_ok}；按 D-029 豁免 {ex}；问题 {len(issues) - ex}"
           f"（一般 {sum(i[0] == '一般' for i in issues)}，建议 {sum(i[0] == '建议' for i in issues)}）")
     return 0
 

@@ -38,7 +38,7 @@ def extract(repo, ref):
                 u = u.rstrip(".,;:，。；：）")
                 if in_code and "github.com" not in u and "nvidia" not in u:
                     continue  # 代码块里的示例地址（localhost 等）不查
-                if re.match(r"https?://(localhost|127\.0\.0\.1|0\.0\.0\.0|<)", u):
+                if "…" in u or re.match(r"https?://(localhost|127\.0\.0\.1|0\.0\.0\.0|<)", u):  # "https://…/x" 是省略写法
                     continue
                 urls[u].append(f"{p[5:]}:{i}")
     return urls
