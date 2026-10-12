@@ -4,7 +4,8 @@
 # 用法：reviews/scripts/audit-all.sh [输出目录]
 #   输出目录默认 /tmp/academy-audit-<日期>；每项明细写到 <输出目录>/<项>.txt，最后打印汇总。
 # 以 HEAD 为准：先把仓库克隆到输出目录、在克隆里构建 HTML，不碰工作区（生成器与构建都不写 docs/）。
-# 可选环境变量（给了就用本地克隆核对 GitHub permalink，避免 GitHub 限流）：
+# 可选环境变量：MOBILE=1 另跑 390 px 撑破检查（T-AUDIT-02b，起 Chrome）；
+# 给了下面两个就用本地克隆核对 GitHub permalink，避免 GitHub 限流：
 #   ISAACLAB_REPO=/path/to/IsaacLab   （需含 v2.3.2、v3.0.0-EA 等 tag）
 #   GALBOT_REPO=/path/to/galbot_one_golf_description
 set -euo pipefail
@@ -48,6 +49,14 @@ run 8-glossary     "$PY" "$S/audit-glossary.py" --repo "$OUT/repo" --html "$OUT/
 run 9-crossref     "$PY" "$S/audit-crossref.py" --repo "$OUT/repo"
 run 10-nav         "$PY" "$S/audit-nav.py" --repo "$OUT/repo"
 run 11-figures     "$PY" "$S/audit-figures.py" --repo "$OUT/repo"
+# T-AUDIT-02b：390 px 撑破检查，默认跳过（要起 headless Chrome）；MOBILE=1 时才跑，同样先看可用内存
+if [[ "${MOBILE:-0}" == 1 ]]; then
+  if [[ $(awk '/MemAvailable/ {print int($2/1048576)}' /proc/meminfo) -ge 4 ]]; then
+    run 12-mobile      "$PY" "$S/audit-mobile.py" "$OUT/html"
+  else
+    echo "[mobile] 跳过：可用内存 < 4 GiB" > "$OUT/12-mobile.txt"
+  fi
+fi
 
 echo "== 汇总（明细见 $OUT/*.txt）"
-for n in 1 2 3 4 5 6 7 8 9 10 11; do tail -n 1 "$OUT"/$n-*.txt; done
+for n in 1 2 3 4 5 6 7 8 9 10 11 12; do [[ -e $(ls "$OUT"/$n-*.txt 2>/dev/null | head -1) ]] && tail -n 1 "$OUT"/$n-*.txt; done
