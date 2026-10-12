@@ -73,6 +73,8 @@ def page_title(path: str, rev: str) -> str:
 
 # 少数历史提交的标题是内部过程说明，读者看不懂，这里手工改写：(提交 sha 前缀, 页面) → 一句话
 OVERRIDES = {
+    ("7efa94f", "docs/8-frontier/8.9-warp-data-path.md"):
+        "Warp 原生数据路径实战：ProxyArray 拷贝语义、奖励项 torch / Warp 两版逐位一致（3.8e-6 m）、Warp 版快约 3 倍但省下的不到一步的 1%，单个奖励项不值得改写；Warp 默认 RELAXED 不查数组设备",
     # 8c3e5c7 的提交标题把"倾覆为物理伪影"写成了页面结论，页面实际结论相反（训练中的倾覆更可能来自策略，推断）
     ("8c3e5c7", "docs/6-galbot/4-task/6.4.5-base-navigation.md"):
         "底盘速度跟踪调参轮：主线 std025b 过门槛（5 种子 96.9%）；开环侧移翻倒属于物理伪影，训练中的倾覆主因未查；评估口径改为倾覆即失败",

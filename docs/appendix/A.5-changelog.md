@@ -30,7 +30,7 @@ sources_checked: 2026-10-09
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
 | 2026-10-12 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 全站一致性修正 16 条 | T-0.8o、T-2.8、T-6.3.2、T-6.4.5、T-6.5.4、T-7.5、T-7.6、T-8.7、T-8.8、T-8.9、T-AUDIT-02a |
-| 2026-10-12 | [Warp 原生数据路径实战](../8-frontier/8.9-warp-data-path.md) | 新增 | Warp 原生数据路径实战：ProxyArray 拷贝语义、奖励项 torch / Warp 两版逐位一致（3.8e-6 m）、1024 环境下 Warp 版快约 3 倍但只占整步 1%、Warp 默认 RELAXED 不查数组设备 | T-8.9 |
+| 2026-10-12 | [Warp 原生数据路径实战](../8-frontier/8.9-warp-data-path.md) | 新增 | Warp 原生数据路径实战：ProxyArray 拷贝语义、奖励项 torch / Warp 两版逐位一致（3.8e-6 m）、Warp 版快约 3 倍但省下的不到一步的 1%，单个奖励项不值得改写；Warp 默认 RELAXED 不查数组设备 | T-8.9 |
 | 2026-10-12 | [多后端架构解读](../8-frontier/8.2-multi-backend.md) | 修订 | 随《Kit-less 工作流实测》修订 | T-8.8 |
 | 2026-10-12 | [在 3.0 上跑 Galbot reach](../8-frontier/8.5-galbot-reach-30.md) | 修订 | 随《Kit-less 工作流实测》修订 | T-8.8 |
 | 2026-10-12 | [Kit-less 工作流实测](../8-frontier/8.8-kitless.md) | 新增 | Kit-less 工作流实测：路线 C 能训练、能用 Rerun / Viser 回放、能用 OVRTX 出帧 | T-8.8 |
