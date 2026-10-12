@@ -85,3 +85,15 @@ python scripts/eval_reach.py --checkpoint <运行目录>/model_999.pt physics=is
 | `galbot_academy/tasks/reach/agents/rsl_rl_ppo_cfg.py` | 同名 | `policy` → `actor` / `critic`（rsl_rl 5.x） |
 | `scripts/eval_reach.py` | `scripts/eval_reach.py` | 用 3.0 的预设解析与 `launch_simulation`；指标不变 |
 | `scripts/check_hold.py`、`scripts/convert_galbot_30.py` | — | 新增 |
+
+## 8.9：奖励项的 Warp 内核版
+
+`galbot_academy/tasks/reach/mdp/rewards_warp.py` 是 `tcp_position_error` 的 Warp 内核版，签名相同，可在 `RewardsCfg` 里直接替换。`scripts/bench_reward_warp.py` 逐步比对两版并计时，`scripts/warp_pitfalls.py` 演示 dtype / device 不对时的行为（不启动仿真）。本站在 8.8 的 Kit-less 环境（1.5 路线 C）里跑：
+
+```bash
+export PYTHONPATH=<本目录> GALBOT_GENERATED_DIR=<生成资产的目录> PYTHONUNBUFFERED=1
+python scripts/bench_reward_warp.py --checkpoint <运行>/model_199.pt --num_envs 1024 physics=newton_mjwarp
+python scripts/warp_pitfalls.py
+```
+
+预期（本站实测，RTX 5090，2026-10-12）：`比对 200 步 × 1024 个环境：最大绝对误差 3.8e-06 m`；`单次调用中位：torch 0.14 ms，Warp 0.047 ms`；`env.step 中位 11.0 ms`。Galbot 在 Newton 下仍偶发启动崩溃（本站这一轮 13 次启动崩了 6 次），崩了就重跑。
