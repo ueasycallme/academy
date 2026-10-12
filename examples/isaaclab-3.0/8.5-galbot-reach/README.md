@@ -97,3 +97,27 @@ python scripts/warp_pitfalls.py
 ```
 
 预期（本站实测，RTX 5090，2026-10-12）：`比对 200 步 × 1024 个环境：最大绝对误差 3.8e-06 m`；`单次调用中位：torch 0.14 ms，Warp 0.047 ms`；`env.step 中位 11.0 ms`。Galbot 在 Newton 下仍偶发启动崩溃（本站这一轮 13 次启动崩了 6 次），崩了就重跑。
+
+## 8.10：策略在 PhysX 与 Newton 之间互通
+
+| 脚本 | 说明 |
+|---|---|
+| `scripts/print_ordering.py` | 打印当前后端下的关节 / 刚体顺序与策略观测布局（一行 `ORDER {...}` JSON） |
+| `scripts/step_response_30.py` | 右臂单关节阶跃响应，指标同 6.3.2；`--csv` 写出曲线 |
+| `scripts/plot_step_30.py` | 把几条阶跃曲线画在一张图上 |
+| `scripts/convert_ckpt_23_to_30.py` | 把 2.3（rsl_rl 3.1.2）的检查点改写成 rsl_rl 5.x 的格式，只改键名 |
+| `scripts/eval_reach.py` | 新增 `--load_models_only`（不加载优化器状态）、`--cmd_quat_wxyz`（观测里目标四元数改回 2.3 顺序）；非有限样本单独计数、记为失败 |
+
+在 1.5 路线 A 环境里（两个后端都能跑）：
+
+```bash
+export OMNI_KIT_ACCEPT_EULA=YES PYTHONPATH=<本目录> GALBOT_GENERATED_DIR=<生成资产的目录>
+python scripts/print_ordering.py physics=isaacsim_physx
+python scripts/print_ordering.py physics=newton_mjwarp
+python scripts/eval_reach.py --checkpoint <8.5 的 physx_s42>/model_999.pt physics=newton_mjwarp
+python scripts/convert_ckpt_23_to_30.py <2.3 运行>/model_999.pt model23_as30.pt
+python scripts/eval_reach.py --checkpoint model23_as30.pt --load_models_only --cmd_quat_wxyz physics=isaacsim_physx
+python scripts/step_response_30.py --joint right_arm_joint2 --step 0.05 --csv step_physx.csv physics=isaacsim_physx
+```
+
+预期（本站实测，RTX 5090，2026-10-12）：`right_arm_joint2` 在 PhysX 下序号 10、Newton 下 21；3.0 PhysX 检查点在 Newton 上 `中位数 6.66 cm … < 5 cm 32.0%`；2.3 检查点改回四元数顺序后在 3.0 PhysX 上 `中位数 2.75 cm … < 5 cm 81.5%`；阶跃两后端上升时间都是 0.092 s。
