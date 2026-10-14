@@ -51,6 +51,10 @@ def file_at(rev: str, path: str) -> str | None:
     return r.stdout if r.returncode == 0 else None
 
 
+# 提交标题里写错的任务编号，按 sha 前缀改正（不改历史）：af1d6be 误用了已存在的 T-SITE-15，卡已改名 T-SITE-16
+SUBJECT_FIXES = {"af1d6be": ("T-SITE-15", "T-SITE-16")}
+
+
 def docs_commits() -> list[dict]:
     """改动了 docs/**.md 的提交，新的在前。"""
     out = git("log", f"--since={SINCE} 00:00", "--date=short", "--format=%x00%H|%ad|%s", "--name-only", "--", "docs/")
@@ -58,6 +62,9 @@ def docs_commits() -> list[dict]:
     for block in out.split("\x00")[1:]:
         head, *files = block.strip("\n").split("\n")
         sha, date, subject = head.split("|", 2)
+        for pre, (old, new) in SUBJECT_FIXES.items():
+            if sha.startswith(pre):
+                subject = subject.replace(old, new)
         md = [f for f in files if f.endswith(".md") and f.startswith("docs/") and not f.startswith("docs/_")]
         if md:
             commits.append({"sha": sha, "date": date, "subject": subject, "files": md})

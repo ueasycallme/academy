@@ -1,49 +1,46 @@
-# T-SITE-15 校验报告：示例代码的获取方式
+# T-SITE-15 校验报告：颜色模式按钮改为两态（浅 ↔ 深）
 
-校验 session：isaac-academy-examine，2026-10-15
-结论：**通过**。
+校验 session：isaac-academy-examine，2026-10-09
+结论：**通过**（1 条建议，不阻塞）
 
-## 核对
+## 与主题源码对照
 
-**构建**：
-- 工作区的 docs、examples、`.gitignore` 拷进草稿克隆，提交后在克隆里 `sphinx-build -E -a -W --keep-going` 构建（`scratch/examine/site15_html/`），rc 0。
-- 构建后克隆的 `git status` 是干净的：zip 已被 `.gitignore` 挡住。
-- 另用 `git archive` 把同一提交导出到一个没有 `.git` 的目录再构建（对应 `check_head_build.sh` / `merge_task.sh` 的做法），rc 0，同样打出 298 个文件，`VERSION.txt` 的提交号为"未知"，符合卡上要求。
-- 线上用的 `pages.yml` 是普通的 `actions/checkout`，有 `.git`，所以线上的包会写真实的提交号。
+pydata-sphinx-theme 0.16.1。从 `.venv` 中 `pydata-sphinx-theme.js.map` 的 sourcesContent 读取 `setTheme`、`cycleMode`、`addModeListener` 三个函数。
+- **写入的内容**：`theme-toggle.js` 的 `apply()` 与 `setTheme` 写入相同的四项：`<html>` 的 `data-mode` / `data-theme`、`.dropdown-menu` 的 `dropdown-menu-dark` 类，以及 `localStorage` 的 `mode` / `theme`。
+- **没有照做的部分**：`setTheme` 的 console.log 和 `prefersDark.onchange` 两步，`apply()` 没有做。对两态模式来说，onchange 本来就该是空的，原因见建议 1。
+- **为什么主题的 `cycleMode` 不再执行**：主题在 `.theme-switch-button` 元素上注册 `cycleMode`；本脚本在 document 的捕获阶段调用 `stopPropagation`，事件到不了按钮本身。实测与此一致（见下表，没有出现 auto）。
+- **加载顺序**：构建出的 HTML 里，`theme-toggle.js` 是普通 `<script>`，主题 JS 是 `<script defer>`。所以主题的 `addModeListener` 先执行；本脚本的 `setup` 在 DOMContentLoaded 时才执行。
 
-**zip 内容**（`_build/html/_static/academy-examples.zip`）：
-- 298 个文件，等于 git 跟踪的 `examples/` 下 297 个文件加 `examples/VERSION.txt`；
-- 逐个比对：没有 git 之外的文件，也没有漏掉的；
-- 没有 `__pycache__`、`.pyc`、`generated/`、`logs/`、`outputs/`、`datasets/`、`third_party/`、`.venv/`、`.log`；
-- 顶层是 `examples/`，下分 `isaaclab-2.3/`（259 个）与 `isaaclab-3.0/`（38 个）；
-- 压缩后 0.55 MB，解压后 1.03 MB。卡上"约 1.7 MB"只是估计，内容齐全，不算问题；
-- `VERSION.txt` 写了构建日期与提交号。
-- 1.4 提示框里的链接被 MyST 当成下载角色，多复制了一份到 `_downloads/…/academy-examples.zip`，与 `_static` 那份逐字节相同，不影响使用。
+## 实测
 
-**解压后实跑**：
-- zip 解压到空目录 `scratch/examine/site15_unzip/`，在该目录用本 session 的 5.1 环境（env51，`env -i`）运行 `python examples/isaaclab-2.3/1.4-install/verify_install.py`；
-- rc 0，`SUMMARY: 8/8 passed`（RTX 5090，按进程显存 2667 MiB，7 s）。
+用 worktree 快照在 scratch clone 中构建，http 服务挂在空闲端口上（8765 已被别的服务占用）。headless Chrome 中用同源 iframe 驱动，每一步记录 `data-mode`、`data-theme`、localStorage、可见按钮显示的图标和 body 背景色。共测三种配置：1440 宽；1440 宽、系统深色（`--force-dark-mode`，另用 `matchMedia` 对照确认，这个 flag 确实让 `prefers-color-scheme: dark` 为 true）；500 宽（移动端布局）。三种配置结果完全相同：
 
-**页面路径与 zip**：
-- 按种子 20261015 随机抽 3 页（3.5、3.2、4.4），提到的 `examples/` 路径都在 zip 里；
-- 又把全站 45 页的 57 个 `examples/…` 路径全部核了一遍，0 缺失。
+| 步骤 | mode / theme / localStorage | 图标 | 背景 |
+|---|---|---|---|
+| 首次访问（无存储） | light | light | #fff |
+| 点击 1 / 2 / 3 | dark → light → dark | 随之切换 | #111 / #fff / #111 |
+| 刷新 | dark（保持） | dark | #111 |
+| 再点 1 次 | light | light | #fff |
+| 存的是 auto，加载后 | light | light | #fff |
+| 再点 1 次 | dark | dark | #111 |
+| 设为 dark 后打开另一页（1.8） | dark | dark | #111 |
 
-**页脚**：
-- 链接的 href 随目录深度正确：首页为 `_static/…`，1.4 为 `../_static/…`，6.1.1 为 `../../_static/…`；
-- 在本地服务器上对链接发 HEAD 请求，返回 200；
-- headless Chrome 量得页脚两行在 1440（1.4 页）与 2560（6.1.1 页）下都是 14.4 px，≥ 12 px。
+- **验收标准**：两个方向都一次点击；刷新后、跨页后都能保持；存的 auto 按 light 处理。全部满足。
+- **按钮数量**：每页有 2 个 `.theme-switch-button`（导航栏一个、侧栏一个），任何宽度下只有 1 个可见。测试点的是可见的那个。
+- **报错**：页面 onerror 0 条，Chrome console error 0 条。
+- **其他检查**：本页没有 `.dropdown-menu`，所以深色类那一步不可测，只按源码对照。`check_head_build.sh --worktree`（-W）通过。`conf.py` 的改动只有 `html_js_files` 末尾加了一项。
 
-**文本**：
-- 1.4"第五步"前的"获取本站示例代码"提示框说清了下载、解压、`cd` 到 `examples/` 的上一级，并说明 Isaac Lab 自带的 `scripts/…` 仍在源码目录运行、第 6 部分项目另见 README（链 6.1.1）；
-- 0.1 加了一条指向 1.4 #第五步验证，锚点能解析；
-- 没有写 GitHub 地址（D-034）。
+## 建议（不阻塞）
 
-**审计脚本**（克隆上）：
-- anchors 7306 个，0 问题；version 118 / 116 / 2；nav、figures、examples、placeholders、glossary 都没有新增问题；
-- 390 px 下 1.4、0.1 正常。
-- `audit-crossref` 曾报"`examples/VERSION.txt` 在 examples 里不存在"。这个文件是构建时生成的，所以本 session 在脚本里加了 `GENERATED` 白名单，之后 0 问题。
+| 位置 | 问题 | 依据 | 建议 | 严重度 |
+|---|---|---|---|---|
+| `theme-toggle.js` 中 `setup()` 对 auto 的处理 | 存的是 auto 时，换成 light 的时机是在 DOMContentLoaded，这时主题已经执行过 `setTheme("auto")` | 主题源码：`setTheme` 在 mode 为 auto 时设置 `prefersDark.onchange = autoTheme`，`addModeListener` 由 defer 脚本先执行。推断有两个后果，都只发生在存过 auto 的读者的第一个页面上：① 系统为深色时，页面先按 head 内联脚本显示深色，再翻成浅色，可能闪一下；② 本页停留期间如果系统切换深浅色，`autoTheme` 仍会改写 `data-theme`，使它和 `data-mode = light` 不一致。两点都只是读源码得出的推断，headless 下无法切换系统配色，没有复现 | 把 auto → light 的转换移到脚本顶层立即执行（改写 `localStorage` 和 `dataset.mode`、`dataset.theme`）。本脚本先于 defer 的主题 JS 执行，这样主题的 `setTheme` 读到的就是 light，onchange 会被置空，也不会闪 | 建议 |
 
-## 另记（不作问题）
+## 第 2 轮：建议已采纳（复核）
 
-- `check_head_build.sh --worktree` 直接在工作区的 `docs/` 上构建，所以每次都会在工作区写出 `docs/_static/academy-examples.zip`。它被 `.gitignore` 挡住，不会提交，但意味着这个模式现在会往工作区写文件。本 session 今后只在草稿克隆里构建（校验方不写 `docs/`）。
-- 卡上 `_EXAMPLES_EXCLUDE_DIRS` 之外，代码还排除了 `venv`、`.pytest_cache`，比卡上多两项，合理。
+实现 session 把 auto → light 的转换移到了脚本顶层立即执行：`localStorage` 的 mode 或 `dataset.mode` 为 auto 时，立即 `apply(default)`。
+- **复核方法**：用新的 worktree 快照重新构建，在同样三种配置下重跑上表全部步骤，结果与第 1 轮逐行相同，页面错误和 console error 都是 0 条。
+- **建议的效果有直接证据**：主题的 `setTheme` 每次执行都会打印一条 `[PST]: Changed to <mode> mode …`。在"存的是 auto"那次加载中，这条记录是 `Changed to light mode using the light theme.`，也就是说主题收到的已经是 light，按源码 `prefersDark.onchange` 被置空，不会留下"跟随系统"的监听。全程没有出现 auto。
+- **仍未直接验证的一点**：系统深色下首屏会不会闪一下。原因与第 1 轮相同，headless 下看不到首帧。但转换已经提前到 defer 主题脚本之前，主题不会再按 auto 设置深色。
+
+结论不变：**通过**，建议已关闭。

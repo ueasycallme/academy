@@ -1,56 +1,50 @@
-# T-SITE-15 示例代码的获取方式（学员反馈：1.4 卡在"本站脚本"处）
+# T-SITE-15 颜色模式按钮改为两态（浅 ↔ 深）
 
 状态: 已合并
-优先级: P1（学员已卡住；不占 GPU）
-类型: 站点 + 微修订
-产出: `docs/conf.py`（构建时打包）、`docs/_templates/academy-footer.html`、`docs/1-env/1.4-install-51-232.md`、`docs/0-map/0.1-overview.md`
+优先级: P2（用户 2026-10-09 反馈：浅→深要点两次、深→浅一次）
+类型: 站点
+产出: `docs/_static/js/theme-toggle.js`（或并入现有 js），`docs/conf.py` 的 `html_js_files`
 
-## 问题
+## 背景
 
-全站 45 页引用 `examples/...` 路径（1.4"第五步：验证"是第一次出现），但没有任何一页说明怎样拿到这些文件。D-034 之后页面上也没有 GitHub 入口。学员在 1.4 的 `python examples/isaaclab-2.3/1.4-install/verify_install.py` 处卡住。
+pydata-sphinx-theme 0.16 的按钮是三态循环：系统为浅色时顺序为 auto → dark → light，从 light 点一次到 auto（系统浅色下看起来仍是浅色），再点一次才到 dark；从 dark 点一次就回 light。这是主题设计，不是 bug，但读者会困惑。本站默认浅色（D-020），不需要 auto。
 
 ## 必须完成
 
-1. **构建时打包**：`docs/conf.py` 加 `setup(app)`，在 `builder-inited` 事件里把仓库 `examples/` 打成 `docs/_static/academy-examples.zip`（zip 内顶层目录名 `examples/`，保留 `isaaclab-2.3/`、`isaaclab-3.0/` 结构）。排除：`__pycache__/`、`*.pyc`、`generated/`、`logs/`、`outputs/`、`datasets/`、`third_party/`、`.venv/`、`*.log`。用目录遍历，不要用 `git ls-files`（`check_head_build.sh` 与 `merge_task.sh` 在导出的无 .git 目录里构建）。`.gitignore` 加 `docs/_static/academy-examples.zip`。打包结果应约 1.7 MB；在 zip 里附一个 `examples/VERSION.txt`，写构建日期与（若能取到）`git rev-parse --short HEAD`，取不到写"未知"。
-2. **页脚入口（全站可见）**：`academy-footer.html` 在免责声明后加一行：`示例代码：<a href="{{ pathto('_static/academy-examples.zip', 1) }}">academy-examples.zip</a>（随站点同步更新）`。样式沿用 `.academy-footer`。
-3. **1.4 "第五步：验证"**：在"再跑本站的验证脚本"之前加一个 `:::{admonition} 获取本站示例代码` 框：下载 zip、解压到任意目录、`cd` 到解压后的 `examples/` 的上一级；全站命令里的 `examples/...` 路径都相对这个目录；第 6 部分项目有自己的 README 与安装步骤（链 6.1.1）。四五句话。
-4. **0.1 "本站怎么读"**：加一句"示例代码在每页页脚的 zip 里，使用方法见 1.4 第五步"，链到 1.4 的该节锚点。
-5. **不写 GitHub 仓库地址**（D-034）。若设计后续裁断允许 `git clone`，再加。
-6. `sphinx-build -W` 通过；本地构建后 `_build/html/_static/academy-examples.zip` 存在、能解压、里面没有 `__pycache__`；页脚链接在首页与 1.4 都能点到。
+1. 页面加载后接管 `.theme-switch-button` 的点击：读取 `document.documentElement.dataset.mode`，`light` ↔ `dark` 直接切换（调用主题暴露的同一套设置逻辑：写 `dataset.mode` / `dataset.theme` 与 `localStorage` 的 `mode` / `theme`，与主题 JS 一致，不另起一套），不再经过 `auto`；首次访问若存的是 `auto`，按 `default_mode`（light）处理。
+2. 按钮图标随状态正确显示（主题自己根据 `dataset.mode` 切图标；若接管后图标不更新，补一行触发）。
+3. 自检：浅→深一次、深→浅一次，刷新后状态保持；深浅色截图各一张；无 console 报错；`sphinx-build -W` 通过。
 
 ## 验收标准
 
-校验方：解压 zip 后在 5.1 环境里跑 `python examples/isaaclab-2.3/1.4-install/verify_install.py` 走通；抽 3 页核 `examples/` 路径在 zip 里存在；页脚两档宽度字号 ≥ 12 px；audit-all 无新问题。
+两个方向都是一次点击；刷新保持；无报错。
 
 ## 附记
 
-（实现 / 校验 session 写）
+### 实现附记（isaac-academy-accomplish，2026-10-09）
 
-### 实现方（2026-10-15）
+**本页新增/修改的项目文件**：新增 `docs/_static/js/theme-toggle.js`；`docs/conf.py` 的 `html_js_files` 加入 `js/theme-toggle.js`。
 
-1. 构建时打包：`docs/conf.py` 新增 `_pack_examples`，接在 `builder-inited` 事件上。
-   - 用 `os.walk` 遍历仓库的 `examples/`，排除目录 `__pycache__ / generated / logs / outputs / datasets / third_party / .venv / venv / .pytest_cache` 与后缀 `.pyc / .log`，写成 `docs/_static/academy-examples.zip`，zip 内顶层目录为 `examples/`。
-   - 另写 `examples/VERSION.txt`：构建日期与 `git rev-parse --short HEAD`，取不到写"未知"。
-   - `.gitignore` 加了 `docs/_static/academy-examples.zip`。
-   - 实测（scratch 构建，`scratch/accomplish/tsite15/html/`）：298 个文件，即 git 跟踪的 297 个加 VERSION.txt；解压前 1.03 MB，zip 0.55 MB。`__pycache__` / `.pyc` / `.log` 都是 0 个；`examples/isaaclab-2.3/1.4-install/verify_install.py` 在包里。
-   - 卡上估的约 1.7 MB 大概包含了工作区里的 `__pycache__`；按 git 跟踪的文件算，原始大小正好是 1.03 MB。
-2. 页脚：`academy-footer.html` 在免责声明后加了一行"示例代码：academy-examples.zip（随站点同步更新）"，用 `pathto('_static/academy-examples.zip', 1)`，样式沿用 `.academy-footer`。首页链接为 `_static/academy-examples.zip`，1.4 为 `../_static/academy-examples.zip`。
-3. 1.4"第五步：验证"：在"再跑本站的验证脚本"之前加了 `获取本站示例代码` 提示框（note），共四句话：
-   - 下载页脚的 zip、解压、内含 `examples/` 与 VERSION.txt；
-   - `examples/...` 路径相对于 `examples/` 的上一级，Isaac Lab 自带的 `scripts/...` 仍在 Isaac Lab 源码目录下跑；
-   - 第 6 部分项目有自己的 README，链 6.1.1。
-   - 框里的下载链接经 MyST 处理成了 download 角色，Sphinx 会另复制一份到 `_downloads/<hash>/academy-examples.zip`，内容与 `_static` 那份相同、可下载。页脚仍指向 `_static`。
-4. 0.1"本站怎么读"加一条"示例代码：在每页页脚的 zip 里，下载与使用方法见 1.4 第五步：验证"，链 `#第五步验证`。
-5. 没有写 GitHub 地址。
-6. `check_head_build.sh --worktree`（-W）通过；scratch 里的完整构建 rc 0。
+**做法**：
+- pydata-sphinx-theme 0.16.1 的 `setTheme` 与 `cycleMode` 是模块内部函数，没有暴露给页面（从主题 JS 的 source map 读到源码）。所以本脚本按 `setTheme` 的写法重做了同样的几步：`<html>` 的 `data-mode` / `data-theme`、`.dropdown-menu` 的 `dropdown-menu-dark` 类、`localStorage` 的 `mode` / `theme`。
+- 用 document 上的捕获阶段监听器接管 `.theme-switch-button` 的点击，`stopPropagation` 之后，主题注册在按钮上的 `cycleMode` 就不会执行；`light` ↔ `dark` 直接切换。
+- 页面加载时，若 `data-mode` 为 auto（以前存过），按 `data-default-mode` 处理，本站为 light。
+- `localStorage` 不可用时，只切换当前页面。
+- 图标由主题 CSS 根据 `data-mode` 显示，不需要另外触发。
 
-### 校验方（2026-10-15）
+**自检**（headless Chrome，经本地 http 服务）：
+- **浅色起步**：连点三次，序列为 light → dark → light → dark，每次都是一击切换；记录的是 mode/theme/localStorage 三者，始终一致。
+- **深色起步**：先存 dark 再刷新，加载后为 dark；连点三次为 dark → light → dark → light。说明刷新后状态能保持。
+- **存过 auto**：先存 auto 再刷新，加载后为 light/light/light。
+- console 报错为 0。
+- **截图**：深色模式下导航栏图标显示为月亮（`/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/f3f4833b-8289-4aef-a2b3-96df640b88d0/scratchpad/tt-darkclick.png`），浅色见 `/tmp/claude-1000/-home-wuql-wuql-ws-academy-ws-isaac-tutor/f3f4833b-8289-4aef-a2b3-96df640b88d0/scratchpad/tt-light.png`。
 
-**通过**（`reviews/T-SITE-15.md`）。
+**验证**：`check_head_build.sh --worktree`（-W）通过。
 
-- zip：298 个文件 = git 跟踪的 297 个 + `VERSION.txt`，没有任何排除项；无 `.git` 的导出目录里也能打包（提交号写"未知"）。
-- 解压后在 5.1 环境跑 `verify_install.py`，8/8 通过。
-- 全站 57 个 `examples/` 路径都在 zip 里。
-- 页脚两档都是 14.4 px，链接在不同深度的页面都能打开（200）。
-- -W 通过。
-- `audit-crossref.py` 把生成的 `examples/VERSION.txt` 加进了白名单。
+### 校验附记（isaac-academy-examine，2026-10-09）
+
+**通过**，有 1 条建议，不阻塞。报告见 `reviews/T-SITE-15.md`。
+
+- **源码对照**：与主题 0.16.1 的 `setTheme` 一致（对照 source map）。
+- **实测**：headless Chrome 下测了三种配置：1440 宽；1440 宽、系统深色；500 宽。两个方向都是一次点击，刷新后、跨页后都保持，存的 auto 按 light 处理，图标随之切换，报错 0 条。-W 构建通过。
+- **建议**：把 auto → light 的转换移到脚本顶层立即执行，避开主题先执行 `setTheme("auto")` 留下的 onchange 和可能的闪烁。这一点是读源码得出的推断，没有复现。
