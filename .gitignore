@@ -5,3 +5,4 @@ __pycache__/
 venv/
 .cache/
 third_party/
+docs/_static/academy-examples.zip

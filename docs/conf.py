@@ -108,5 +108,42 @@ def _register_term_ids(app, doctree):
                 slugs[node_id] = (node.line or 0, node_id, node.astext())
 
 
+# 示例代码下载包（T-SITE-15）：构建开始时把仓库的 examples/ 打成 _static/academy-examples.zip，
+# 页脚与 1.4"第五步"指向它。用目录遍历而不是 git ls-files：check_head_build.sh / merge_task.sh
+# 在导出的、没有 .git 的目录里构建。
+_EXAMPLES_EXCLUDE_DIRS = {"__pycache__", "generated", "logs", "outputs", "datasets", "third_party", ".venv", "venv", ".pytest_cache"}
+_EXAMPLES_EXCLUDE_SUFFIXES = (".pyc", ".log")
+
+
+def _pack_examples(app):
+    import datetime
+    import os
+    import subprocess
+    import zipfile
+
+    docs_dir = os.path.dirname(os.path.abspath(__file__))
+    src = os.path.join(os.path.dirname(docs_dir), "examples")
+    out = os.path.join(docs_dir, "_static", "academy-examples.zip")
+    if not os.path.isdir(src):
+        return
+    try:
+        rev = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=docs_dir, capture_output=True, text=True, check=True).stdout.strip() or "未知"
+    except Exception:
+        rev = "未知"
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
+        for root, dirs, files in os.walk(src):
+            dirs[:] = sorted(d for d in dirs if d not in _EXAMPLES_EXCLUDE_DIRS)
+            for name in sorted(files):
+                if name.endswith(_EXAMPLES_EXCLUDE_SUFFIXES):
+                    continue
+                path = os.path.join(root, name)
+                zf.write(path, os.path.join("examples", os.path.relpath(path, src)))
+        zf.writestr(
+            "examples/VERSION.txt",
+            f"academy.kiloong.com 示例代码\n构建日期：{datetime.date.today().isoformat()}\n仓库提交：{rev}\n",
+        )
+
+
 def setup(app):
+    app.connect("builder-inited", _pack_examples)
     app.connect("doctree-read", _register_term_ids)

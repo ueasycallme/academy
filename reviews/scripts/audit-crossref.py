@@ -18,6 +18,7 @@ SRC_EXT = (".py", ".sh", ".usda", ".yaml", ".yml", ".json", ".ini", ".txt", ".to
 PLACEHOLDER = ("<!-- placeholder:", "待写，见 OUTLINE")
 DATE = r"20\d\d-\d\d-\d\d"
 UPSTREAM = {"scripts/create_description.py"}  # Galbot 描述仓库自己的脚本（6.1.1、3.5 讲的），不在本站 examples 里
+GENERATED = {"examples/VERSION.txt"}  # 构建时由 docs/conf.py 写进 academy-examples.zip（T-SITE-15），不在 git 里
 
 
 def git(repo, *a):
@@ -46,7 +47,7 @@ def main():
                 continue
             for m in pat.finditer(line):
                 p = m.group(1).rstrip(".,;:)）。")
-                if "<" in p or "*" in p or "…" in p or p in UPSTREAM:
+                if "<" in p or "*" in p or "…" in p or p in UPSTREAM or p in GENERATED:
                     continue
                 n_ref += 1
                 if p.startswith("examples/"):
