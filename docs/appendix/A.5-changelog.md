@@ -29,6 +29,8 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-20 | [遥操作与设备](../4-isaaclab/4.20-teleop-devices.md) | 修订 | 用户实测回填：4.20 headless 下键盘设备建不成时进程以退出码 0 结束，要看日志 ERROR 行 | T-AUDIT-03b |
+| 2026-10-20 | [策略导出（JIT / ONNX）](../6-galbot/7-deploy/6.7.1-policy-export.md) | 修订 | 用户实测回填：4.20 headless 下键盘设备建不成时进程以退出码 0 结束，要看日志 ERROR 行 | T-AUDIT-03b |
 | 2026-10-15 | [安装 Isaac Sim 5.1 + Isaac Lab 2.3.2（pip 方式）](../1-env/1.4-install-51-232.md) | 修订 | 示例代码的获取方式：页脚提供 academy-examples.zip（构建时打包，随站点更新），1.4 第五步加"获取本站示例代码"提示框，0.1 加指引；1.4 获取示例代码补第二种方式 git clone | T-SITE-16 |
 | 2026-10-15 | [Isaac 体系一页看懂](../0-map/0.1-overview.md) | 修订 | 示例代码的获取方式：页脚提供 academy-examples.zip（构建时打包，随站点更新），1.4 第五步加"获取本站示例代码"提示框，0.1 加指引 | T-SITE-16 |
 | 2026-10-12 | [Isaac 体系一页看懂](../0-map/0.1-overview.md) | 修订 | 收尾巡检修正 4 条（8.5 / 8.4 回填结论标 RTX 5090 | T-AUDIT-03a |

@@ -542,7 +542,7 @@ python scripts/plot_mimic_data.py --source ./datasets/galbot_pick_place.hdf5 --g
 
 ## 6.7.1：策略导出
 
-新增：`scripts/export_policy.py`（不启动 Isaac Sim，复用 Isaac Lab 的导出器）、`scripts/bench_policy.py`（一致性与延迟）、`scripts/make_policy_spec.py`（接口说明）、`ros2/policy_spec.py`（节点侧核对；`reach_policy_node.py` 加了 `-p spec:=`，带它在 ROS 2 下启动节点：未验证（本站 session 未在 ROS 2 下实跑））；`eval_reach.py` 加了 `--record_obs`。onnxruntime 要装进 Isaac Lab 的环境：`pip install onnxruntime==1.20.1`。
+新增：`scripts/export_policy.py`（不启动 Isaac Sim，复用 Isaac Lab 的导出器）、`scripts/bench_policy.py`（一致性与延迟）、`scripts/make_policy_spec.py`（接口说明）、`ros2/policy_spec.py`（节点侧核对；`reach_policy_node.py` 加了 `-p spec:=`，带它在 ROS 2 下启动节点：2026-10-20 在本机实测通过（ROS 2 Humble、onnxruntime 1.20.1，CPU 推理））；`eval_reach.py` 加了 `--record_obs`。onnxruntime 要装进 Isaac Lab 的环境：`pip install onnxruntime==1.20.1`。
 
 ```bash
 RUN=logs/rsl_rl/galbot_reach/<运行>

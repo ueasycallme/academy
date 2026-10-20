@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # 验证版本：Isaac Sim 5.1.0（pip）+ Isaac Lab 2.3.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-08（--usd 默认值为 T-0.8n 所改：未单独验证）
+# 验证日期：2026-10-08（--usd 默认值 2026-10-20 验证：不带 --usd 在 /tmp 下运行，rc=0）
 # GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
 """重力力矩与重力下的保持（6.1.5）。
 

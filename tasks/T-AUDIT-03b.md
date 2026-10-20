@@ -1,6 +1,6 @@
 # T-AUDIT-03b 用户实测回填：4.20 / 6.7.1 / 6.1.x 的"推断 / 未验证"改为实测结论
 
-状态: 待实现
+状态: 已合并
 优先级: P2（微卡，只改文字，约 30 min；不跑 GPU，可穿插在 T-1.6b 的构建等待里做）
 类型: 文字回填
 依赖: T-AUDIT-03（已合并；本卡是其报告里 3 个"本站没跑过"项目的收尾）
@@ -41,3 +41,20 @@
 ## 附记
 
 （实现/校验 session 写）
+
+**实现（accomplish，2026-10-20）**：只读了三份原件，未重跑。
+- 4.20 L131：去掉"本站没有单独跑这一步，推断"，改为 2026-10-20 本机（RTX 5090）实测，补"退出码是 0"及"要看日志里那行 ERROR"一句（日志 02_item1 L138–L140：WARNING、ERROR、rc=0）。
+- 6.7.1 L118：改为"2026-10-20 在本机实测通过（ROS 2 Humble、onnxruntime 1.20.1，RTX 5090 主机）"，并概述两行日志（spec ok；obs ['batch', 28]）。rc=124 是 timeout 20 s 的结果，正文写"之后正常常驻"。
+- 三个脚本第 5 行：括号改为"（--usd 默认值 2026-10-20 验证：不带 --usd 在 /tmp 下运行，rc=0）"，GPU 行未改。用户实际跑的是 proj6 副本：与仓库版逐个 diff，除第 5 行注释外完全一致（proj6 副本原注释是"验证日期 2026-10-12"），改后已 cp 同步到 proj6。
+- grep docs/ 无其他"未单独验证 / 本站没有单独跑这一步 / ROS 2 下实跑"引用，6.1.4 / 6.1.5 / 8.6 不动。两页 `updated:` 改为 2026-10-20，`verified:` 未动。
+- gen_placeholders 只改了 index.md 的生成日期；check_head_build --worktree：-W 构建通过。8.6 表 2 页数不变。
+
+**校验（examine，2026-10-20，第 1 轮）**：退回，2 条低级问题，同轮可修，见 `reviews/T-AUDIT-03b.md`。
+- 三处改动与 `02_item1/2/3` 原件逐条一致：4.20 日志 L138–L140；6.7.1 两行 INFO 加 rc=124（timeout）；三个脚本 rc=0，且不带 `--usd` 加载的就是默认路径。用户跑的 teleop 脚本与 v2.3.2 逐字相同。-W 通过（快照 4531d39）。
+- 问题 1：`examples/isaaclab-2.3/6-galbot-project/README.md` L545 仍写"未验证（本站 session 未在 ROS 2 下实跑）"。
+- 问题 2：6.7.1 L118 的"RTX 5090 主机"建议去掉，或改为"CPU 推理"。节点用的是 `CPUExecutionProvider`。
+
+
+**实现第 2 轮（accomplish，2026-10-20）**：① README L545 改为"2026-10-20 在本机实测通过（ROS 2 Humble、onnxruntime 1.20.1，CPU 推理）"；② 6.7.1 L118 "RTX 5090 主机"改为"CPU 推理"（设计裁断）。grep docs/ 与 examples/ 已无"ROS 2 下实跑 / 未单独验证 / 本站没有单独跑这一步"。
+
+**校验（examine，2026-10-20，第 2 轮）**：通过。README L545 与 6.7.1 L118 都已改为"实测通过（ROS 2 Humble、onnxruntime 1.20.1，CPU 推理）"；docs/、examples/ 不再有残留；快照 e7cd10b，-W 通过。
