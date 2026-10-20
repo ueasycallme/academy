@@ -1,6 +1,6 @@
 # T-AUDIT-01 全站质量巡检（校验 session 主导）
 
-状态: 待校验（报告已交，问题由设计 session 拆微任务）
+状态: 已合并（报告 reviews/AUDIT-01.md 已合并；问题拆为 T-AUDIT-01a/01b 处理完毕，2026-10-20 设计方补关状态）
 优先级: P2（校验方空闲时做；不占 GPU）
 类型: 巡检（产出是报告，不改页面；问题由设计 session 拆成微任务）
 产出: `reviews/AUDIT-01.md` + 自动化脚本放 `reviews/scripts/audit-*.{py,sh}`（可重复运行，以后每月跑一次）
