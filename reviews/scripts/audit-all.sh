@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# T-AUDIT-01 / T-AUDIT-02 全站巡检：一次跑完 11 项检查，打印每项明细与汇总。
+# T-AUDIT-01 / T-AUDIT-02 全站巡检：一次跑完 12 项检查（另有可选的 390 px 一项），打印每项明细与汇总。
 #
 # 用法：reviews/scripts/audit-all.sh [输出目录]
 #   输出目录默认 /tmp/academy-audit-<日期>；每项明细写到 <输出目录>/<项>.txt，最后打印汇总。
@@ -49,14 +49,16 @@ run 8-glossary     "$PY" "$S/audit-glossary.py" --repo "$OUT/repo" --html "$OUT/
 run 9-crossref     "$PY" "$S/audit-crossref.py" --repo "$OUT/repo"
 run 10-nav         "$PY" "$S/audit-nav.py" --repo "$OUT/repo"
 run 11-figures     "$PY" "$S/audit-figures.py" --repo "$OUT/repo"
+# T-SITE-17：页面里的内部叫法（校验方 / 实现方 / reviews/、任务卡号）
+run 12-internal    "$PY" "$S/audit-internal.py" --repo "$OUT/repo"
 # T-AUDIT-02b：390 px 撑破检查，默认跳过（要起 headless Chrome）；MOBILE=1 时才跑，同样先看可用内存
 if [[ "${MOBILE:-0}" == 1 ]]; then
   if [[ $(awk '/MemAvailable/ {print int($2/1048576)}' /proc/meminfo) -ge 4 ]]; then
-    run 12-mobile      "$PY" "$S/audit-mobile.py" "$OUT/html"
+    run 13-mobile      "$PY" "$S/audit-mobile.py" "$OUT/html"
   else
-    echo "[mobile] 跳过：可用内存 < 4 GiB" > "$OUT/12-mobile.txt"
+    echo "[mobile] 跳过：可用内存 < 4 GiB" > "$OUT/13-mobile.txt"
   fi
 fi
 
 echo "== 汇总（明细见 $OUT/*.txt）"
-for n in 1 2 3 4 5 6 7 8 9 10 11 12; do [[ -e $(ls "$OUT"/$n-*.txt 2>/dev/null | head -1) ]] && tail -n 1 "$OUT"/$n-*.txt; done
+for n in 1 2 3 4 5 6 7 8 9 10 11 12 13; do [[ -e $(ls "$OUT"/$n-*.txt 2>/dev/null | head -1) ]] && tail -n 1 "$OUT"/$n-*.txt; done

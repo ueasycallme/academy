@@ -1,6 +1,6 @@
 # T-SITE-17 页面去掉本站内部叫法："校验方 / 实现方"、reviews/ 路径、任务卡号
 
-状态: 实现中（accomplish 10-24 开工，先做与 T-GA-05 不重叠的 21 页）
+状态: 已合并
 优先级: P2（排在 T-GA-05 之后；纯文字，约 1.5 h，不跑 GPU）
 类型: 全站文字清理 + 巡检规则
 依赖: 无（T-GA-05 合并后开工，避免同时改同一批页面）
@@ -51,4 +51,28 @@
   - 6.1.7 L39 `T-6-common`；L90–L96 表格"来源"一列的卡号（属于资产变更记录表，是否算"示例"需要裁断）。
   - 6.4.1 L152：`T-6-common`。
 - **另外发现**：页面里还有约 36 处决策编号（如"D-004""D-032"），也是内部编号，本卡范围没有写到，请设计方决定是否一并处理。
+- **第一批补充（按设计方第 5 条裁断，2026-10-24）**
+  - **6.1.5、6.1.7、6.4.1**：卡号清理。6.1.7 变更记录表"卡片"列改为"详见"，填 6.1.2 / 6.1.4 / 6.1.6 页链接，T-6.1.7 那行写"本页"；"T-6-common"删掉，事实本身已在句中。6.4.1 改为"主线机器显存 12 GB"。
+  - **决策编号**：D-004 改成理由（"本站没有真机"；句子已经说了的就直接删编号）。D-003、D-010、D-017、D-026、D-028 只标出处或句子已写明理由，直接删。
+  - **涉及的页面**：上面 24 页里的 3.7、6.1.2、6.1.3、6.1.4、6.1.5、6.1.7、6.3.1、6.4.5、6.5.2；另有 14 页不在任何一批、也不与 T-GA-05 重叠，一并在第一批处理：5.7、7.3、9.2、4.7、6.3.2、6.5.1、6.4.2、8.1、8.2、8.10、4.12、6.7.2、9.1、6.1.1。
+  - **第一批共改 38 个文件**：前 21 个，加 `6-galbot/1-asset/6.1.5-joint-drive-tuning.md`、`6-galbot/1-asset/6.1.7-asset-versioning.md`、`6-galbot/4-task/6.4.1-reach.md`、`5-rl/5.7-il-vs-rl.md`、`7-infra/7.3-debugging.md`、`9-source/9.2-scene-cloning.md`、`4-isaaclab/4.7-actuators.md`、`6-galbot/3-sim-align/6.3.2-sim-vs-real.md`、`6-galbot/5-train/6.5.1-train-reach-rsl-rl.md`、`6-galbot/4-task/6.4.2-domain-randomization.md`、`8-frontier/8.1-what-changed.md`、`8-frontier/8.2-multi-backend.md`、`8-frontier/8.10-physx-newton-transfer.md`、`4-isaaclab/4.12-event-randomization.md`、`6-galbot/7-deploy/6.7.2-ros2-closed-loop.md`、`9-source/9.1-rl-env-step.md`、`6-galbot/1-asset/6.1.1-galbot-repo.md`。
+  - **自查**：audit-internal 工作区版本在这 38 页上 0 处命中；`grep D-0xx` 在这 38 页上 0 处命中；-W 通过。
+- **第二批**（T-GA-05 合并后）：0.3、1.4、1.7、1.8、1.9、3.5、4.20、6.4.3、6.7.3、A.2、A.3 的内部叫法与卡号；另有决策编号还在 0.8、1.9、3.2、3.11、4.19、4.20、6.7.3、9.3、9.4，这些页都被 T-GA-05 改过。
+- **合并提醒**：`8-frontier/8.1-what-changed.md` 在第一批里只删了图 1 注的"D-010"；T-GA-05 第 2 轮也改了这个文件（L13、图 2），两张卡共有。
 
+- **8.1**：已随 T-GA-05（663c1f7）合并，从第一批清单中划掉。
+- **第二批（accomplish，2026-10-24，T-GA-05 合并后）**：17 页。
+  - **11 页的内部叫法**：0.3、1.4、1.7、1.8、1.9、3.5、4.20、6.4.3、6.7.3、A.2、A.3。改法同第一批。
+    - `reviews/` 引用改为页内写清实测要点：0.3 [^kit-test]、[^ext-check]；1.4、1.9 的 [^env] 改为"本站实测环境的记录（…）"。
+    - "校验环境"改为"另一个环境"（1.4 L165、L242，1.9 L119）。
+    - 4.20"实现方无法操作桌面窗口"改为"写这一页时无法操作桌面窗口"。
+    - A.2、A.3 的维护句改为读者视角。
+  - **决策编号**：0.8、1.9、3.2、3.11、4.19、4.20、6.7.3、9.3、9.4。D-009、D-017、D-018 只标出处，直接删；D-004 句中已说明或改成"本站没有真机"。
+- **全站自查**（audit-internal 工作区版本）：内部角色名、流程用语与 reviews/ 0 处，任务卡号 0 处，涉及 0 页。`grep "D-0[0-9][0-9]"` 在 docs/ 下（A.5 除外）0 处；"校验环境" 0 处。-W 通过。
+- **最终合并清单（54 个文件，均在 docs/ 下；8.1 不在内）**：0-map/0.3-lineage.md 0-map/0.8-glossary.md 1-env/1.4-install-51-232.md 1-env/1.7-install-methods.md 1-env/1.8-dev-tools.md 1-env/1.9-install-troubleshooting.md 2-usd-kit/2.7-extensions.md 3-isaacsim/3.10-ros2-bridge.md 3-isaacsim/3.11-api-map.md 3-isaacsim/3.2-simulation-app.md 3-isaacsim/3.5-urdf-mjcf-import.md 3-isaacsim/3.7-cloner.md 4-isaaclab/4.12-event-randomization.md 4-isaaclab/4.14-direct-env.md 4-isaaclab/4.19-mimic.md 4-isaaclab/4.20-teleop-devices.md 4-isaaclab/4.4-simulation-context.md 4-isaaclab/4.5-interactive-scene.md 4-isaaclab/4.7-actuators.md 4-isaaclab/4.8-sensors.md 5-rl/5.4-parallel-envs.md 5-rl/5.7-il-vs-rl.md 6-galbot/1-asset/6.1.1-galbot-repo.md 6-galbot/1-asset/6.1.2-import-urdf.md 6-galbot/1-asset/6.1.3-vendor-vs-imported-usd.md 6-galbot/1-asset/6.1.4-collision-mass-inertia.md 6-galbot/1-asset/6.1.5-joint-drive-tuning.md 6-galbot/1-asset/6.1.7-asset-versioning.md 6-galbot/2-scene/6.2.1-workbench-scene.md 6-galbot/3-sim-align/6.3.1-physics-tuning.md 6-galbot/3-sim-align/6.3.2-sim-vs-real.md 6-galbot/4-task/6.4.1-reach.md 6-galbot/4-task/6.4.2-domain-randomization.md 6-galbot/4-task/6.4.3-lift.md 6-galbot/4-task/6.4.5-base-navigation.md 6-galbot/5-train/6.5.1-train-reach-rsl-rl.md 6-galbot/5-train/6.5.2-hyperparameters.md 6-galbot/7-deploy/6.7.1-policy-export.md 6-galbot/7-deploy/6.7.2-ros2-closed-loop.md 6-galbot/7-deploy/6.7.3-sim2real-checklist.md 7-infra/7.2-profiling.md 7-infra/7.3-debugging.md 7-infra/7.4-testing-ci.md 8-frontier/8.10-physx-newton-transfer.md 8-frontier/8.2-multi-backend.md 8-frontier/8.5-galbot-reach-30.md 9-source/9.1-rl-env-step.md 9-source/9.2-scene-cloning.md 9-source/9.3-articulation-data.md 9-source/9.4-train-script.md appendix/A.1-api-cheatsheet.md appendix/A.2-error-index.md appendix/A.3-official-resources.md appendix/A.4-community-projects.md 
+
+**校验（examine，2026-10-24）**：通过，1 条建议不阻塞，见 `reviews/T-SITE-17.md`。
+- 第 12 项检查（`audit-internal.py`，已并入 audit-all.sh，范围随 28fbf31 / 95dfe68 / 0edfa3e 三次裁断扩大）在快照 ab4e710 上 0 处一般、0 处建议；开工前是 100 处一般、13 处建议、56 页。
+- 54 个文件、91 个改动块全部核过：消失的数字只有决策编号、卡号和 reviews 文件名，实测数字一处没动。抽查 10 处改写，语义都不变（4.14 两组的条件、6.4.5 指向 6.1.6 / 6.1.2、6.1.7 详见列的链接等）。
+- -W 通过，站内锚点 0 问题。
+- 建议：7.4 L87"本站会在运行后补记"已经过时，examples-tests.yml 自 2026-10-11 起已运行 9 次、全部 success，可以改写成实际结果（这是新增事实，交设计方决定）。
