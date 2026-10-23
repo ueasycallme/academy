@@ -8,7 +8,7 @@ updated: 2026-09-30
 Isaac Academy 是 Isaac Sim / Isaac Lab 的中文学习网站，定位是官方文档之上的"导读层"：讲清体系框架、核心概念和工程落地。解释是原创的，API 细节与参数说明链接到官方文档和源码，不搬运原文。
 
 - **主线版本**：Isaac Sim 5.1.0 + Isaac Lab 2.3.2。
-- **前沿专栏**：Isaac Sim 6.1 + Isaac Lab 3.0.0-EA，内容可能随版本变动。
+- **前沿专栏**：Isaac Sim 6.2 + Isaac Lab 3.0.0 正式版（2026-10-19 发布）。
 - **主线机器人**：[Galbot One Golf](https://github.com/GalaxyGeneralRobotics/galbot_one_golf_description)，从资产导入走到策略部署。
 - **读者起点**：会 Python，没有接触过 Isaac / USD，没有强化学习基础。
 

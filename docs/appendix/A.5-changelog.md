@@ -29,6 +29,52 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-24 | [Isaac 体系一页看懂](../0-map/0.1-overview.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [分层依赖图](../0-map/0.2-layers.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [产品谱系与改名史](../0-map/0.3-lineage.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [名字带 Isaac 但不是一回事](../0-map/0.4-isaac-names.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [Isaac Sim 与 Isaac Lab 的边界](../0-map/0.5-sim-lab-boundary.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [一个 RL step 里发生了什么](../0-map/0.6-one-step.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [学习路线图](../0-map/0.7-learning-paths.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [术语表（中英对照）](../0-map/0.8-glossary.md) | 修订 | 3.0 专栏升级到 v3.0.0 正式版收口：8.6 加 v3.0.0 一行与"文档与代码不一致"表（--headless、默认 PhysX、--rl_library），核对状态全部按 v3.0.0 | T-GA-05 |
+| 2026-10-24 | [版本兼容矩阵](../1-env/1.1-compat-matrix.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [版本选择决策树](../1-env/1.2-version-decision.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [硬件要求与显存预算](../1-env/1.3-hardware.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [安装 Isaac Sim 5.1 + Isaac Lab 2.3.2（pip 方式）](../1-env/1.4-install-51-232.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [二进制安装 vs pip 安装 vs 容器](../1-env/1.7-install-methods.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [开发工具链](../1-env/1.8-dev-tools.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [安装排障手册](../1-env/1.9-install-troubleshooting.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [为什么是 USD](../2-usd-kit/2.1-why-usd.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [USD 核心概念](../2-usd-kit/2.2-usd-concepts.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [Schema：USD 如何描述物理](../2-usd-kit/2.4-physics-schema.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [Nucleus 与资产服务](../2-usd-kit/2.8-nucleus.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [仿真循环](../3-isaacsim/3.1-sim-loop.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [Isaac Sim 的 Python API 地图](../3-isaacsim/3.11-api-map.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [SimulationApp 与 Python 启动方式](../3-isaacsim/3.2-simulation-app.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [PhysX 物理：刚体与碰撞](../3-isaacsim/3.3-rigid-collision.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [关节与 Articulation](../3-isaacsim/3.4-articulation.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [资产导入：URDF 与 MJCF Importer](../3-isaacsim/3.5-urdf-mjcf-import.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [传感器](../3-isaacsim/3.6-sensors.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [渲染与材质](../3-isaacsim/3.8-rendering.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [Replicator 与合成数据](../3-isaacsim/3.9-replicator.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [Isaac Lab 解决什么问题](../4-isaaclab/4.1-why-isaac-lab.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [Isaac Lab Mimic 与模仿学习](../4-isaaclab/4.19-mimic.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [代码仓库地图](../4-isaaclab/4.2-repo-map.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [遥操作与设备](../4-isaaclab/4.20-teleop-devices.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [Assets：Articulation / RigidObject / DeformableObject](../4-isaaclab/4.6-assets.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [第二个任务：lift](../6-galbot/4-task/6.4.3-lift.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [遥操作采集示教数据](../6-galbot/4-task/6.4.6-teleop-demos.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [Mimic 数据生成与模仿学习](../6-galbot/4-task/6.4.7-mimic.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [sim2real 清单](../6-galbot/7-deploy/6.7.3-sim2real-checklist.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [3.0 改了什么、为什么改](../8-frontier/8.1-what-changed.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [Newton 物理引擎](../8-frontier/8.3-newton.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [3.0 版本追踪](../8-frontier/8.6-version-tracking.md) | 修订 | 3.0 专栏升级到 v3.0.0 正式版收口：8.6 加 v3.0.0 一行与"文档与代码不一致"表（--headless、默认 PhysX、--rl_library），核对状态全部按 v3.0.0 | T-GA-05 |
+| 2026-10-24 | [Articulation 数据是怎么来的](../9-source/9.3-articulation-data.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [训练脚本 train.py 做了什么](../9-source/9.4-train-script.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [官方任务拆解：Franka lift](../9-source/9.5-franka-lift.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [常见错误信息索引](../appendix/A.2-error-index.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [官方资源导航（文档、论坛、GitHub、论文）](../appendix/A.3-official-resources.md) | 修订 | 随《术语表（中英对照）》修订 | T-GA-05 |
+| 2026-10-24 | [Isaac Academy](../index.md) | 修订 | 3.0 专栏升级到 v3.0.0 正式版收口：8.6 加 v3.0.0 一行与"文档与代码不一致"表（--headless、默认 PhysX、--rl_library），核对状态全部按 v3.0.0 | T-GA-05 |
 | 2026-10-24 | [`isaaclab` 命令行与入口点](../8-frontier/8.7-isaaclab-cli.md) | 修订 | 8.7 / 8.8 / 8.9 在 v3.0.0 正式版上重测（RTX 5090）：入口点挂任务实测可用，外部回调返回 [] 吞掉 physics= 与逗号选择器被跳过两条正式版仍未修 | T-GA-04 |
 | 2026-10-24 | [Kit-less 工作流实测](../8-frontier/8.8-kitless.md) | 修订 | 随《`isaaclab` 命令行与入口点》修订 | T-GA-04 |
 | 2026-10-24 | [Warp 原生数据路径实战](../8-frontier/8.9-warp-data-path.md) | 修订 | 随《`isaaclab` 命令行与入口点》修订 | T-GA-04 |

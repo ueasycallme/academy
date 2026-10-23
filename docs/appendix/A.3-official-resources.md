@@ -1,7 +1,7 @@
 ---
 title: 官方资源导航（文档、论坛、GitHub、论文）
 updated: 2026-10-09
-sources_checked: 2026-10-09
+sources_checked: 2026-10-24
 ---
 
 # 官方资源导航（文档、论坛、GitHub、论文）
@@ -15,7 +15,7 @@ sources_checked: 2026-10-09
 | 资源 | 链接 | 什么时候来这里 | 本站对应 |
 |---|---|---|---|
 | 文档（v2.3.2） | <https://isaac-sim.github.io/IsaacLab/v2.3.2/index.html> | 查本站主线版本的 API、教程 | [4.1](../4-isaaclab/4.1-why-isaac-lab.md)、[4.2](../4-isaaclab/4.2-repo-map.md) |
-| 文档（main / 3.0 EA） | <https://isaac-sim.github.io/IsaacLab/main/index.html>、<https://isaac-sim.github.io/IsaacLab/v3.0.0-EA/index.html> | 看最新开发版、3.0 | [8.1](../8-frontier/8.1-what-changed.md) |
+| 文档（main / 3.0） | <https://isaac-sim.github.io/IsaacLab/main/index.html>、<https://isaac-sim.github.io/IsaacLab/v3.0.0/index.html> | 看最新开发版、3.0 正式版 | [8.1](../8-frontier/8.1-what-changed.md) |
 | GitHub | <https://github.com/isaac-sim/IsaacLab> | 读源码、对 tag 取 permalink | [4.2](../4-isaaclab/4.2-repo-map.md) |
 | Releases | <https://github.com/isaac-sim/IsaacLab/releases> | 看版本变化与已知问题 | [8.6](../8-frontier/8.6-version-tracking.md) |
 | Discussions | <https://github.com/isaac-sim/IsaacLab/discussions> | 用法类问题、经验交流 | — |

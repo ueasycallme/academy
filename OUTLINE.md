@@ -1,7 +1,7 @@
 # academy.kiloong.com 内容大纲（v0.1，评审稿）
 
 > 站点定位：Isaac Sim / Isaac Lab 体系的"导读层"。解释原创，细节链接官方文档（isaac.kiloong.com 中文翻译站）与源码。
-> 主线版本：Isaac Sim 5.1.0 + Isaac Lab 2.3.2。3.0 前沿专栏基于 Isaac Sim 6.1 + Isaac Lab 3.0.0-EA。
+> 主线版本：Isaac Sim 5.1.0 + Isaac Lab 2.3.2。3.0 前沿专栏基于 Isaac Sim 6.2 + Isaac Lab 3.0.0（正式版，2026-10-23 起，D-035）。
 > 主线机器人：Galbot One Golf（全向轮底盘 + 双臂 + 夹爪 + 腕部相机）。
 > 读者起点：会 Python，未接触 Isaac / USD，无 RL 基础。
 
