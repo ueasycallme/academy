@@ -1,7 +1,7 @@
 ---
 title: Isaac Lab 常用 API 速查表
-updated: 2026-10-09
-sources_checked: 2026-10-09
+updated: 2026-10-23
+sources_checked: 2026-10-23
 ---
 
 # Isaac Lab 常用 API 速查表
@@ -14,7 +14,7 @@ sources_checked: 2026-10-09
 
 | API | 用途 | 常用参数 / 字段 | 定义（v2.3.2） | 本站 | 3.0 变化 |
 |---|---|---|---|---|---|
-| `AppLauncher` | 解析命令行参数并启动 Isaac Sim | `--headless`、`--enable_cameras`、`--device` | [L43](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/app/app_launcher.py#L43) | [3.2](../3-isaacsim/3.2-simulation-app.md) | 未核对 |
+| `AppLauncher` | 解析命令行参数并启动 Isaac Sim | `--headless`、`--enable_cameras`、`--device` | [L43](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/app/app_launcher.py#L43) | [3.2](../3-isaacsim/3.2-simulation-app.md) | 弃用，只保留有限兼容；改用 `add_launcher_args` 与 `launch_simulation`；`--headless`、`--enable_cameras` 已删除 |
 
 **仿真**
 
@@ -42,7 +42,7 @@ sources_checked: 2026-10-09
 | `ArticulationData.joint_pos` | 关节位置 | 形状 (num_envs, num_joints) | [L754](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/assets/articulation/articulation_data.py#L754) | [4.6](../4-isaaclab/4.6-assets.md) | 返回 `ProxyArray`，用 `.torch` |
 | `ArticulationData.root_pos_w` | 根在世界系的位置 | 形状 (num_envs, 3) | [L1016](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/assets/articulation/articulation_data.py#L1016) | [4.6](../4-isaaclab/4.6-assets.md) | 返回 `ProxyArray` |
 | `ArticulationData.body_pos_w / body_quat_w` | 各刚体在世界系的位置、朝向 | 按 `find_bodies()` 的索引取 | [L1056](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/assets/articulation/articulation_data.py#L1056) | [4.6](../4-isaaclab/4.6-assets.md) | `ProxyArray`；四元数 XYZW |
-| `Articulation.set_joint_position_target` | 写关节位置目标（下一次写入仿真时生效） | `target`、`joint_ids`、`env_ids` | [L1079](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/assets/articulation/articulation.py#L1079) | [4.6](../4-isaaclab/4.6-assets.md) | 未核对 |
+| `Articulation.set_joint_position_target` | 写关节位置目标（下一次写入仿真时生效） | `target`、`joint_ids`、`env_ids` | [L1079](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/assets/articulation/articulation.py#L1079) | [4.6](../4-isaaclab/4.6-assets.md) | 移到 `actuators.target_command.set_position_index`，旧方法为弃用转发 |
 | `Articulation.write_joint_state_to_sim` | 直接改关节位置、速度（重置时用） | `position`、`velocity`、`env_ids` | [L561](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/assets/articulation/articulation.py#L561) | [4.6](../4-isaaclab/4.6-assets.md) | 拆成 `_index` / `_mask` |
 | `Articulation.write_root_pose_to_sim` | 直接改根的位姿 | `root_pose`、`env_ids` | [L399](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/assets/articulation/articulation.py#L399) | [4.6](../4-isaaclab/4.6-assets.md) | 拆成 `_index` / `_mask` |
 | `RigidObjectCfg / RigidObject` | 单个刚体资产 | `data.root_pos_w` | [L34](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/assets/rigid_object/rigid_object.py#L34) | [4.6](../4-isaaclab/4.6-assets.md) | `data.*` 返回 `ProxyArray` |
@@ -54,7 +54,7 @@ sources_checked: 2026-10-09
 
 | API | 用途 | 常用参数 / 字段 | 定义（v2.3.2） | 本站 | 3.0 变化 |
 |---|---|---|---|---|---|
-| `ImplicitActuatorCfg` | 由 PhysX 求解的 PD 驱动 | `joint_names_expr`、`stiffness`、`damping` | [L19](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/actuators/actuator_pd_cfg.py#L19) | [4.7](../4-isaaclab/4.7-actuators.md) | `effort_limit_sim` 等字段改名 |
+| `ImplicitActuatorCfg` | 由 PhysX 求解的 PD 驱动 | `joint_names_expr`、`stiffness`、`damping` | [L19](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/actuators/actuator_pd_cfg.py#L19) | [4.7](../4-isaaclab/4.7-actuators.md) | `effort_limit_sim` 等字段改名，旧名 3.1 删除 |
 | `IdealPDActuatorCfg` | 在 Python 侧算力矩的显式 PD | `effort_limit` | [L35](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/actuators/actuator_pd_cfg.py#L35) | [4.7](../4-isaaclab/4.7-actuators.md) | 显式执行器的力矩会被求解器再截断一次 |
 
 **环境与 Manager 配置**
@@ -94,7 +94,7 @@ sources_checked: 2026-10-09
 | `math.quat_from_euler_xyz` | 欧拉角转四元数 | `roll`、`pitch`、`yaw` | [L274](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/utils/math.py#L274) | [8.4](../8-frontier/8.4-migration-23-30.md) | 输出改为 XYZW |
 | `math.combine_frame_transforms` | 两个坐标变换相乘（如根系 → 世界系） | `t01`、`q01`、`t12`、`q12` | [L801](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/utils/math.py#L801) | [6.2.1](../6-galbot/2-scene/6.2.1-workbench-scene.md) | 四元数按 XYZW |
 | `VisualizationMarkers` | 在场景里画标记（目标、坐标系） | `visualize(translations, orientations)` | [L55](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/markers/visualization_markers.py#L55) | [7.3](../7-infra/7.3-debugging.md) | 未核对 |
-| `GaussianNoiseCfg` | 给观测加高斯噪声 | `mean`、`std` | [L56](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/utils/noise/noise_cfg.py#L56) | [4.10](../4-isaaclab/4.10-observation-action.md) | 未核对 |
+| `GaussianNoiseCfg` | 给观测加高斯噪声 | `mean`、`std` | [L56](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/utils/noise/noise_cfg.py#L56) | [4.10](../4-isaaclab/4.10-observation-action.md) | 观测管理器不再先复制再加噪声，自写噪声函数不得原地修改输入 |
 
 **RL 适配层与任务工具**
 
@@ -154,6 +154,6 @@ asset_cfg = SceneEntityCfg("robot", joint_names=["right_arm_joint[1-7]"])
 
 ## 版本说明
 
-本页基于 Isaac Lab 2.3.2，3.0 的变化只列 8.4 涉及的部分，见 [8.6 版本追踪](../8-frontier/8.6-version-tracking.md)。
+本页基于 Isaac Lab 2.3.2，"3.0 变化"一列按 v3.0.0 正式版核对（2026-10-23），只列 8.4 涉及的部分，见 [8.6 版本追踪](../8-frontier/8.6-version-tracking.md)。
 
 3.0 的差异以 [8.6 版本追踪](../8-frontier/8.6-version-tracking.md) 为准，本页最后核对的版本见该页核对状态表。
