@@ -1,10 +1,10 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab 3.0.0-EA（tag v3.0.0-EA，commit ae37b028e）；Isaac Sim 6.1.0.0（pip，可选）
-# 验证日期：2026-10-09
-# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04；主机内存 16 GB
-"""检查 3.0 EA 环境是否装好：Python、PyTorch、Warp、Newton、Isaac Lab，以及（可选的）Isaac Sim。
+# 验证版本：Isaac Lab 3.0.0（tag v3.0.0，commit e3f7d9ff1）；Isaac Sim 6.2.0.0（pip，可选）
+# 验证日期：2026-10-23
+# GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04；主机内存 62 GB
+"""检查 3.0 环境是否装好：Python、PyTorch、Warp、Newton、Isaac Lab，以及（可选的）Isaac Sim。
 
 只做导入与版本检查，不启动仿真、不占 GPU 计算；仿真验证用官方命令
 ``isaaclab train --rl_library rsl_rl --task Isaac-Cartpole-Direct physics=newton_mjwarp``。
@@ -12,7 +12,7 @@
 
     uv run python verify_install_30.py                     # 路线 A（在 Isaac Lab 仓库根目录运行）
     python verify_install_30.py                            # 路线 B / C（先激活环境）
-    python verify_install_30.py --require-isaacsim         # 要求装了 Isaac Sim 6.1（路线 A 加 isaacsim extra、路线 B）
+    python verify_install_30.py --require-isaacsim         # 要求装了 Isaac Sim 6.2（路线 A 加 isaacsim extra、路线 B）
 """
 
 from __future__ import annotations
@@ -42,10 +42,10 @@ def version(dist: str) -> str | None:
         return None
 
 
-# 1. Python：3.0 EA 要求 3.12（pyproject.toml 的 requires-python = ">=3.12,<3.13"）
+# 1. Python：3.0 要求 3.12（pyproject.toml 的 requires-python = ">=3.12,<3.13"）
 check("python", "PASS" if sys.version_info[:2] == (3, 12) else "FAIL", f"{sys.version.split()[0]} ({sys.prefix})")
 
-# 2. PyTorch 与 CUDA
+# 2. PyTorch 与 CUDA：3.0 正式版用 CUDA 13.0 的构建（cu130）；cu128 的 torch 说明装错了源
 torch_ver = version("torch")
 if torch_ver is None:
     check("torch", "FAIL", "not installed")
@@ -53,7 +53,9 @@ else:
     import torch
 
     cuda = torch.cuda.is_available()
-    check("torch", "PASS" if cuda else "FAIL", f"{torch_ver}, cuda={cuda}" + (f", {torch.cuda.get_device_name(0)}" if cuda else ""))
+    build = torch.version.cuda or "cpu"
+    ok = cuda and build.startswith("13.")
+    check("torch", "PASS" if ok else "FAIL", f"{torch_ver}, cuda build {build}, cuda={cuda}" + (f", {torch.cuda.get_device_name(0)}" if cuda else ""))
 
 # 3. Warp 与 Newton（Kit-less 训练的物理后端）
 for dist in ("warp-lang", "newton"):
@@ -71,7 +73,7 @@ check("isaaclab import path", "PASS" if src else "FAIL", src or "namespace packa
 # 5. Isaac Sim（可选）：路线 C 不装它
 sim = version("isaacsim")
 if sim:
-    check("isaacsim", "PASS" if sim.startswith("6.1") else "FAIL", sim)
+    check("isaacsim", "PASS" if sim.startswith("6.2") else "FAIL", sim)
 else:
     check("isaacsim", "FAIL" if args.require_isaacsim else "SKIP", "not installed (Kit-less environment)")
 
