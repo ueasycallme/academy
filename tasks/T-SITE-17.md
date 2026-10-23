@@ -1,6 +1,6 @@
 # T-SITE-17 页面去掉本站内部叫法："校验方 / 实现方"、reviews/ 路径、任务卡号
 
-状态: 待实现
+状态: 实现中（accomplish 10-24 开工，先做与 T-GA-05 不重叠的 21 页）
 优先级: P2（排在 T-GA-05 之后；纯文字，约 1.5 h，不跑 GPU）
 类型: 全站文字清理 + 巡检规则
 依赖: 无（T-GA-05 合并后开工，避免同时改同一批页面）
@@ -16,8 +16,11 @@
 2. **`reviews/…` 引用**：页面上指向 `reviews/` 的说法改为在页内写清实测要点（一两句），或改为"本站实测"并保留日期；不要链接到站点上不存在的文件。
 3. **任务卡号**：正文里的卡号（`T-…`）删掉或改为页面链接；**例外**：6.1.7"资产版本管理"里作为提交信息示例出现的卡号，若是在演示 commit message 的写法，可以保留，但要让读者明白那是示例。`docs/MIGRATION-NOTES.md`、`docs/0-map/_template-check.md` 若不是站点页面（不在任何 toctree 里），不改，在附记说明。
 4. "设计会话 / 实现会话 / 校验会话""Claude Code 会话""写页的会话""两个独立会话""微任务"等描述本站内部流程的说法同样算内部叫法（2026-10-24 裁断，含 A.1 L148、A.2 L75、A.3 L91、A.4 L123、4.14 L119 表 5 注）。附录里讲"本页怎么维护"的句子改成读者视角，如"本站发现变化后会更新本表"；4.14 写"两组独立测量"，按第 1 条处理（8.6 的维护流程一节已由 T-GA-05 改写，本卡只复查）。
-5. A.5 更新日志的"任务"列本来就是卡号，不改。
-6. 改完 `grep -rn "校验方\|实现方" docs --include=*.md` 应无命中（A.5 除外）；剩余的 `reviews/` 与 `T-` 命中逐条在附记说明保留理由。
+5. **设计裁断（2026-10-24，实现方提问）**：
+   - 6.1.5 L32、6.1.7 L39 与 L90–L96、6.4.1 L152 的卡号归**第一批**（不与 T-GA-05 重叠）。6.1.7 的"变更记录"表是真实的资产变更记录，不是演示写法，所以不算示例：把"卡片"列改为"详见"，填对应页面的链接（T-6.1.2 → 6.1.2 页，依此类推）；表里的"（D-026）"按下一条处理。"T-6-common"之类的引用改为写出它所指的那条事实或删掉。
+   - **决策编号（D-004、D-017、D-032 等，约 35 处）一并清理**，两批各自处理落在本批页面里的那些。`DECISIONS.md` 不在站点上，读者看不到。有内容的改写成理由本身（如"（D-004）"→"本站没有真机"）；只是标注出处的（如图注里的"D-017"）直接删掉。校验方把 `D-\d{3}` 加进第 12 项，列为一般。
+6. A.5 更新日志的"任务"列本来就是卡号，不改。
+7. 改完 `grep -rn "校验方\|实现方" docs --include=*.md` 应无命中（A.5 除外）；剩余的 `reviews/` 与 `T-` 命中逐条在附记说明保留理由。
 
 ## 校验（examine）
 
@@ -32,3 +35,20 @@
 ## 附记
 
 （实现/校验 session 写）
+
+**第一批（accomplish，2026-10-24）**：只改与 T-GA-05 不重叠的 21 页（设计方指定）。
+- **改法**：按语境改写，数字与结论不变。
+  - "本站与校验方各测 / 分别实测" 改为 "本站在两个独立环境里…" 或 "本站两组…"。
+  - "校验方复跑 / 复测 / 复核" 改为 "在另一个环境复跑 / 复核"。
+  - 4.14 表 5：两列改为"第一组 / 第二组"，表注写明两组是同一台机器上各自独立建的环境、不同时间运行。
+  - A.1 L148"写页的会话"、A.4 L123"由发现的会话报给设计会话，开微任务添加"改为读者视角。
+  - 6.4.5 的"T-6-common 第 13 条 / 第 9 条（D-026）"改为指向记下这些现象的页面（6.1.6、6.1.2）。
+- **自查**：用 audit-internal.py 的工作区版本（`scratch/accomplish/tga05/internal_wt.py`，把 git show 换成读文件），这 21 页 0 处命中；-W 通过。
+- **第一批改动的文件清单（21 个，均在 docs/ 下）**：2-usd-kit/2.7-extensions.md 3-isaacsim/3.10-ros2-bridge.md 3-isaacsim/3.7-cloner.md 4-isaaclab/4.14-direct-env.md 4-isaaclab/4.4-simulation-context.md 4-isaaclab/4.5-interactive-scene.md 4-isaaclab/4.8-sensors.md 5-rl/5.4-parallel-envs.md 6-galbot/1-asset/6.1.2-import-urdf.md 6-galbot/1-asset/6.1.3-vendor-vs-imported-usd.md 6-galbot/1-asset/6.1.4-collision-mass-inertia.md 6-galbot/2-scene/6.2.1-workbench-scene.md 6-galbot/3-sim-align/6.3.1-physics-tuning.md 6-galbot/4-task/6.4.5-base-navigation.md 6-galbot/5-train/6.5.2-hyperparameters.md 6-galbot/7-deploy/6.7.1-policy-export.md 7-infra/7.2-profiling.md 7-infra/7.4-testing-ci.md 8-frontier/8.5-galbot-reach-30.md appendix/A.1-api-cheatsheet.md appendix/A.4-community-projects.md 
+- **留到第二批**（T-GA-05 合并后再改）：0.3、1.4、1.7、1.8、1.9、3.5、4.20、6.4.3、6.7.3、A.2、A.3。
+- **不在设计方两份清单里、但 audit-internal 报了的页**（请设计方决定归哪批）：
+  - 6.1.5 L32：`T-6.1.5b`。
+  - 6.1.7 L39 `T-6-common`；L90–L96 表格"来源"一列的卡号（属于资产变更记录表，是否算"示例"需要裁断）。
+  - 6.4.1 L152：`T-6-common`。
+- **另外发现**：页面里还有约 36 处决策编号（如"D-004""D-032"），也是内部编号，本卡范围没有写到，请设计方决定是否一并处理。
+
