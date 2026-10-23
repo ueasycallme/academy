@@ -1,5 +1,7 @@
 # 第 8 部分任务卡的公共要求（设计 session）
 
+> **2026-10-23 起（D-035）**：第 8 部分升级到 **Isaac Lab v3.0.0 正式版（tag `v3.0.0`，commit e3f7d9ff1，2026-10-19；要求 Isaac Sim 6.2）**。下文凡写 `v3.0.0-EA`、Isaac Sim 6.1、"3.0 EA"、"页顶 EA 提示框"之处，对 T-GA 系列及以后的卡一律改读为 `v3.0.0`、Isaac Sim 6.2、"3.0 / 3.0 正式版"、"基于 v3.0.0 正式版"提示框；本地检出用 `git worktree add ../IsaacLab-3.0-GA v3.0.0`。EA 的写法只留作版本史（8.6）。
+
 适用于 T-8.x 全部任务卡。第 8 部分是"3.0 前沿专栏"（D-001 / D-019）：主线仍是 Isaac Sim 5.1.0 + Isaac Lab 2.3.2，本部分讲 3.0 改了什么、为什么、怎么迁移。内容基于 **Isaac Lab v3.0.0-EA**（tag `v3.0.0-EA`，commit ae37b028e，2026-09-16；要求 Isaac Sim 6.1.0），是 EA 之后尚无 GA 的状态，每页顶部用一个 `warning` 提示框写明"基于 EA，GA 后可能变动，最后核对日期"。
 
 - **来源**：以 `v3.0.0-EA` tag 为准——本地仓库 `~/wuql_ws/isaac_sim/IsaacLab` 已有该 tag（`git show v3.0.0-EA:<路径>` 或 `git worktree add ../IsaacLab-3.0 v3.0.0-EA` 只读检出，**不要切换主检出的 v2.3.2**）。permalink 用 `https://github.com/isaac-sim/IsaacLab/blob/v3.0.0-EA/<路径>#L<行>`。GitHub Releases 页（v3.0.0-beta / beta2 / beta2.patch1 的发布说明，tag 内 `docs/source/refs/release_notes.rst` 为副本）与 `docs/source/migration/migrating_to_isaaclab_3-0.rst`、`docs/source/concepts/*.rst`（physics_backends、backend_architecture、backends_and_presets、native-physics-api/*）是主要文档来源。
