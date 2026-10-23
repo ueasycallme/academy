@@ -1,8 +1,8 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab 3.0.0-EA（v3.0.0-EA tag）+ Isaac Sim 6.1.0（pip，isaacsim 6.1.0.0）
-# 验证日期：2026-10-12
+# 验证版本：Isaac Lab 3.0.0（v3.0.0 tag，commit e3f7d9ff1）+ Isaac Sim 6.2.0（pip，isaacsim 6.2.0.0）
+# 验证日期：2026-10-23
 # GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
 """最小的外部任务包（8.7）：把一个任务挂进 `isaaclab train / play`。
 

@@ -96,7 +96,7 @@ python scripts/bench_reward_warp.py --checkpoint <运行>/model_199.pt --num_env
 python scripts/warp_pitfalls.py
 ```
 
-预期（本站实测，RTX 5090，2026-10-12）：`比对 200 步 × 1024 个环境：最大绝对误差 3.8e-06 m`；`单次调用中位：torch 0.14 ms，Warp 0.047 ms`；`env.step 中位 11.0 ms`。Galbot 在 Newton 下仍偶发启动崩溃（本站这一轮 13 次启动崩了 6 次），崩了就重跑。
+预期（本站实测，v3.0.0，RTX 5090，2026-10-23）：`比对 200 步 × 1024 个环境：最大绝对误差 3.8e-06 m`；`单次调用中位：torch 0.13 ms，Warp 0.049 ms`；`env.step 中位 10.0 ms`。检查点用 8.8 在路线 C 上训练 200 次迭代的 `model_199.pt`；正式版上 Galbot 在 Newton 下的启动都一次成功（EA 时偶发崩溃，崩了就重跑）。
 
 ## 8.10：策略在 PhysX 与 Newton 之间互通
 

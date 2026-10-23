@@ -8,7 +8,7 @@
 |---|---|
 | `academy_cli_demo/tasks.py` | `gym.register(id="Academy-Cartpole-Direct", …)`，环境类与配置复用 `isaaclab_tasks.core.cartpole` |
 | `academy_cli_demo/__init__.py` | `register_tasks()`：供 `--external_callback` 调用，返回 None；`register_tasks_returning_empty()`：反例，返回 `[]`（页面坑一） |
-| `pyproject.toml` | 第二种挂法：`isaaclab.tasks` 入口点组。本站没有安装它，未验证 |
+| `pyproject.toml` | 第二种挂法：`isaaclab.tasks` 入口点组。本站在 v3.0.0 上 `uv pip install -e` 后实测可用（不设 `PYTHONPATH`、不给回调） |
 
 ## 运行
 
@@ -27,7 +27,7 @@ PYTHONPATH=$PWD isaaclab train --rl_library rsl_rl --task Academy-Cartpole-Direc
 
 启动摘要表里的 `Physics` 一行：第一条是 `isaacsim_physx`，第二条是 `newton_mjwarp`。训练跑 2 次迭代后正常结束，日志在 `logs/rsl_rl/cartpole_direct/<时间戳>_<run_name>/`（相对于当前目录）。
 
-本站实测时用的是 `physics=physx`：返回 None 的那次摘要为 `physx (ovphysx)`，因为没装 `ov[ovphysx]`，随即报 `ModuleNotFoundError`（页面坑二）；返回 `[]` 的那次为 `newton_mjwarp`。上面两条命令（`physics=isaacsim_physx`）也各跑过一次，摘要分别是 `isaacsim_physx` 与 `newton_mjwarp`，2 次迭代都正常结束（2026-10-12）。
+本站实测时用的是 `physics=physx`：返回 None 的那次摘要为 `physx (ovphysx)`，因为没装 `ov[ovphysx]`，随即报 `ModuleNotFoundError`（页面坑二）；返回 `[]` 的那次为 `newton_mjwarp`。`physics=physx` 这两次在 v3.0.0 上重跑过，结果同上（2026-10-23）。上面两条 `physics=isaacsim_physx` 的命令是 EA 时跑的，摘要分别是 `isaacsim_physx` 与 `newton_mjwarp`，2 次迭代都正常结束（2026-10-12）。
 
 ## 需求与时长
 
@@ -36,4 +36,4 @@ PYTHONPATH=$PWD isaaclab train --rl_library rsl_rl --task Academy-Cartpole-Direc
 
 ## 本站实测环境
 
-Isaac Lab v3.0.0-EA（commit ae37b028e）+ Isaac Sim 6.1.0（pip，`isaacsim` 6.1.0.0），Python 3.12，RTX 5090 32 GB，驱动 580.178.04，2026-10-12。
+Isaac Lab v3.0.0（commit e3f7d9ff1）+ Isaac Sim 6.2.0（pip，`isaacsim` 6.2.0.0），Python 3.12，RTX 5090 32 GB，驱动 580.178.04，2026-10-23。

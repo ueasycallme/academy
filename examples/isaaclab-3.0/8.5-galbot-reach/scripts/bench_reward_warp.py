@@ -1,8 +1,8 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab v3.0.0-EA（commit ae37b028e），warp-lang 1.16.0，rsl-rl-lib 5.4.1；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-12
+# 验证版本：Isaac Lab v3.0.0（commit e3f7d9ff1），warp-lang 1.17.0，rsl-rl-lib 5.5.1；Galbot 描述仓库 commit 2d496b0
+# 验证日期：2026-10-23
 # GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
 """TCP 位置误差奖励：torch 版与 Warp 内核版的逐步比对与计时（8.9）。
 
@@ -73,7 +73,7 @@ def main() -> None:
         runner.load(args_cli.checkpoint)
         policy = runner.get_inference_policy(device=base.device)
         params = base.reward_manager.get_term_cfg("end_effector_position_tracking").params
-        params["asset_cfg"].resolve(base.scene)
+        # 奖励管理器构造时已 resolve 并把索引移到设备上（3.0 正式版的 finalize）；再 resolve 一次会报 body_ids 不一致
         robot = base.scene[params["asset_cfg"].name]
         print(f"[8.9] {args_cli.num_envs} 个环境；数据类型：body_pos_w {robot.data.body_pos_w.warp.dtype.__name__} "
               f"{tuple(robot.data.body_pos_w.warp.shape)}，root_quat_w {robot.data.root_quat_w.warp.dtype.__name__}", flush=True)

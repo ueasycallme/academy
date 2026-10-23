@@ -29,6 +29,9 @@ sources_checked: 2026-10-09
 
 | 日期 | 页面 | 变化 | 一句话 | 任务 |
 |---|---|---|---|---|
+| 2026-10-24 | [`isaaclab` 命令行与入口点](../8-frontier/8.7-isaaclab-cli.md) | 修订 | 8.7 / 8.8 / 8.9 在 v3.0.0 正式版上重测（RTX 5090）：入口点挂任务实测可用，外部回调返回 [] 吞掉 physics= 与逗号选择器被跳过两条正式版仍未修 | T-GA-04 |
+| 2026-10-24 | [Kit-less 工作流实测](../8-frontier/8.8-kitless.md) | 修订 | 随《`isaaclab` 命令行与入口点》修订 | T-GA-04 |
+| 2026-10-24 | [Warp 原生数据路径实战](../8-frontier/8.9-warp-data-path.md) | 修订 | 随《`isaaclab` 命令行与入口点》修订 | T-GA-04 |
 | 2026-10-23 | [策略在 PhysX 与 Newton 之间互通](../8-frontier/8.10-physx-newton-transfer.md) | 修订 | 8.5 / 8.10 在 v3.0.0 正式版上重训重评（RTX 5090）：PhysX 训练 4.8–5.4 cm、成功率 47–52%，仍低于 2.3 | T-GA-03 |
 | 2026-10-23 | [在 3.0 上跑 Galbot reach](../8-frontier/8.5-galbot-reach-30.md) | 修订 | 8.5 / 8.10 在 v3.0.0 正式版上重训重评（RTX 5090）：PhysX 训练 4.8–5.4 cm、成功率 47–52%，仍低于 2.3 | T-GA-03 |
 | 2026-10-23 | [3.0 改了什么、为什么改](../8-frontier/8.1-what-changed.md) | 修订 | 8.1–8.4 与 A.1 升级到 v3.0.0 正式版：官方 45 个任务中 44 个默认 Newton、无一默认 PhysX（官方文档"多数默认 PhysX"与代码不一致） | T-GA-02 |

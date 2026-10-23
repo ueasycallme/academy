@@ -132,7 +132,7 @@ def _pack_examples(app):
         rev = "未知"
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
         for root, dirs, files in os.walk(src):
-            dirs[:] = sorted(d for d in dirs if d not in _EXAMPLES_EXCLUDE_DIRS)
+            dirs[:] = sorted(d for d in dirs if d not in _EXAMPLES_EXCLUDE_DIRS and not d.endswith(".egg-info"))  # pip install -e 留下的元数据
             for name in sorted(files):
                 if name.endswith(_EXAMPLES_EXCLUDE_SUFFIXES):
                     continue

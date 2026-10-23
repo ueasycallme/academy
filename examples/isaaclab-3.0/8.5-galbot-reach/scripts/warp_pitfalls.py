@@ -1,8 +1,8 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：warp-lang 1.16.0，torch 2.11.0+cu128（Isaac Lab v3.0.0-EA 环境）
-# 验证日期：2026-10-12
+# 验证版本：warp-lang 1.17.0，torch 2.11.0+cu130（Isaac Lab v3.0.0 环境）
+# 验证日期：2026-10-23
 # GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
 """8.9 的两个坑：传给 Warp 内核的数组 dtype 不对、device 不对时报什么。不启动仿真。
 

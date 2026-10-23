@@ -1,8 +1,8 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab 3.0.0-EA（v3.0.0-EA tag），不装 Isaac Sim（1.5 路线 C + ov[ovrtx]，ovrtx 0.4.1）
-# 验证日期：2026-10-12
+# 验证版本：Isaac Lab 3.0.0（v3.0.0 tag，commit e3f7d9ff1），不装 Isaac Sim（1.5 路线 C + ov[ovrtx]，ovrtx 0.5.1）
+# 验证日期：2026-10-23
 # GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
 """用 OVRTX 渲染器从 tiled camera 取一帧（8.8）。不需要 Isaac Sim。
 

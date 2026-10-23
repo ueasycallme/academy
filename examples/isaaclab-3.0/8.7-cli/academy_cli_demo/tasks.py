@@ -1,8 +1,8 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab 3.0.0-EA（v3.0.0-EA tag）+ Isaac Sim 6.1.0（pip）
-# 验证日期：2026-10-12
+# 验证版本：Isaac Lab 3.0.0（v3.0.0 tag，commit e3f7d9ff1）+ Isaac Sim 6.2.0（pip）
+# 验证日期：2026-10-23
 # GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
 """注册一个外部任务 Academy-Cartpole-Direct。环境类与配置直接复用 Isaac Lab 自带的 Cartpole（Direct），只换任务名。
 

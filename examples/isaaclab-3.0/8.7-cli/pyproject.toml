@@ -1,6 +1,7 @@
 # 第二种挂法：把本目录装进 3.0 环境（uv pip install -e .）后，isaaclab 在运行 train / play 等子命令前
-# 会导入 `isaaclab.tasks` 入口点组里登记的模块（isaaclab/cli/__init__.py 的 _load_external_tasks）。
-# 本站没有把它装进 3.0 环境，这种挂法未验证。
+# 会导入 `isaaclab.tasks` 入口点组里登记的模块（isaaclab/cli/__init__.py 的 load_external_tasks）。
+# 本站 2026-10-23 在 v3.0.0 的 1.5 路线 C 里 uv pip install -e 本目录后实测：list_envs 能列出、train 能跑。
+# editable 安装会在本目录留下 academy_cli_demo.egg-info/，不用时删掉。
 [project]
 name = "academy-cli-demo"
 version = "0.1.0"

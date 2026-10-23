@@ -1,8 +1,8 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab 3.0.0-EA（v3.0.0-EA tag）；1.5 路线 A（装 isaacsim 6.1.0.0）与路线 C（不装）两个环境
-# 验证日期：2026-10-12
+# 验证版本：Isaac Lab 3.0.0（v3.0.0 tag，commit e3f7d9ff1）；1.5 路线 A（装 isaacsim 6.2.0.0）与路线 C（不装）两个环境
+# 验证日期：2026-10-23
 # GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
 """给一条 `isaaclab train` 命令计时（8.8）：启动到第一次迭代的时间、每次迭代的时间。
 
