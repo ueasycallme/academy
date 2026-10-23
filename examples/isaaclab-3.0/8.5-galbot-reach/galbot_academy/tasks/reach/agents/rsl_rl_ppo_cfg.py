@@ -1,13 +1,13 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab v3.0.0-EA（commit ae37b028e）+ Isaac Sim 6.1.0；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-10
-# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
+# 验证版本：Isaac Lab v3.0.0（commit e3f7d9ff1）+ Isaac Sim 6.2.0；Galbot 描述仓库 commit 2d496b0
+# 验证日期：2026-10-23
+# GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
 """Galbot reach 的 PPO 配置（6.5.1）：照搬 Isaac-Reach-Franka-v0 的 FrankaReachPPORunnerCfg（isaaclab_tasks v2.3.2），
 只改实验名。两个任务的观测、动作维数相近（Franka 观测 32 维、Galbot 28 维，动作都是 7 维），控制周期都是 1/30 s。
 
-3.0 EA 版（8.5）：rsl_rl 升到 5.x，网络配置从一个 policy（RslRlPpoActorCriticCfg，已弃用）拆成 actor 与 critic 两个
+3.0 版（8.5）：rsl_rl 升到 5.x，网络配置从一个 policy（RslRlPpoActorCriticCfg，已弃用）拆成 actor 与 critic 两个
 RslRlMLPModelCfg，写法照 3.0 的 FrankaReachPPORunnerCfg；数值与 2.3 版相同。
 """
 

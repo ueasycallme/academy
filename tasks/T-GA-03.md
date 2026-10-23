@@ -1,6 +1,6 @@
 # T-GA-03 Galbot 在 3.0 正式版上：8.5 与 8.10 重训、重评、重转换
 
-状态: 待实现
+状态: 已合并
 优先级: P1（T-GA 系列第 3 张；8.9 的脚本依赖本卡升级后的 galbot_academy 包，所以排在 T-GA-04 之前）
 类型: 实测改写（GPU 较重：实现约 4–5 h，其中训练与评估约 2.5 h；校验约 1.5 h）
 依赖: T-GA-01（通过后开工；可与 T-GA-02 的校验并行）、D-035、`tasks/T-8-common.md`
@@ -34,3 +34,42 @@
 ## 附记
 
 （实现/校验 session 写）
+
+**实现（accomplish，2026-10-23）**：原件都在 `scratch/accomplish/tga03/`（`runs.sh`、各 `*.log` / `*.summary`、`gpu_before_*.txt`、`gpu_watch_*.log`、`NOTE_timing.txt`）。环境：1.5 路线 A（v3.0.0 检出的 `.venv`），`GALBOT_GENERATED_DIR=tga03/gen`；其中 `galbot_fixed_base` 链到 5.1 资产，`galbot_fixed_base_30` 在 Isaac Sim 6.2 上重新转换。
+- **示例包**
+  - `galbot_academy` 在 GA 上可以导入，注册 `Galbot-Reach` 与 `Galbot-Reach-Play`，导入时不加载 pxr。
+  - 正式版删除了 `hydra_task_config`：4 个脚本（check_hold、eval_reach、print_ordering、step_response_30）报 ImportError，改为 `main(*resolve_task_config(args.task, args.agent))`。
+  - `convert_galbot_30.py` 仍用 AppLauncher，能跑，带弃用警告（F6），未改。
+  - 21 个文件的头注改为 v3.0.0 / 6.2.0 / RTX 5090 / 2026-10-23；README 的环境表与预期值同步更新。
+- **转换脚本**：rsl_rl 5.5.1 与 5.4.1 的 `PPO.save` 键名相同（actor_state_dict / critic_state_dict / iter / infos / optimizer_state_dict）。转换后的 2.3 检查点与 3.0 检查点的键名、形状完全相同，评估能加载。
+- **资产**
+  - 重新转换：mimic 0 个、过滤对 7 对、组合错误 0 个，与 EA 一致。
+  - pxr 统计：184 个几何体全带 CollisionAPI，purpose 都是 guide，没有显示用的网格（8.8 坑三照旧成立）。
+  - 每侧 5 个 mimic 关节都写了 `newton:mimicJoint`，2 个另写了 `newton:mimicCoef1`，与 EA 资产逐项相同。原 8.5"每侧只保留 2 个跟随关节"的说法不准确，已改正。
+  - 原样的 5.1 资产在 GA 的 Newton 上仍报组合错误（`hold_newton_51asset.log`）。
+- **训练**（1024 env，1000 次迭代，按 D-032 计时，30 s 一次记录进程名）
+  - PhysX s42：rc=0，训练 1391.9 s。开跑时 GPU 上有 awesun_desktop，19:33 前消失，计时按规则作废，检查点只用于评估。
+  - PhysX s43：墙上时间 1403 s，训练 1385 s，每次迭代 1.38 s（采集 1.307 s、更新 0.073 s），3332 MiB，RSS 7.0 GB；全程无外部进程。
+  - Newton s42：第 1 次启动即成功；墙上时间 372 s，训练 361 s，每次迭代 0.36 s（0.296 / 0.059），5566 MiB，RSS 2.8 GB；全程无外部进程。
+- **评估**（每个 3 次；PhysX 上 3 次逐位一致）
+  - PhysX s42 → PhysX：5.36 cm / 46.6%
+  - PhysX s43 → PhysX：4.78 cm / 51.6%
+  - PhysX s42 → Newton：7.70–7.96 cm / 26.6–28.3%
+  - Newton s42 → Newton：3.49–3.56 cm / 74.2–74.6%（EA 时 5.67 / 41.4，明显变好，原因未查）
+  - Newton s42 → PhysX：5.70 cm / 40.5%
+  - 2.3 转换后：原样 51.58 cm / 0%；WXYZ 后在 PhysX 上 2.75 / 81.5%（与 EA 逐位相同）；WXYZ 后在 Newton 上 24.0–25.8 cm / 4.3–5.9%（nan 分别为 1、2、0 个）
+- **关节顺序与阶跃响应**：关节顺序 PhysX 10 / Newton 21，与 EA 相同；阶跃上升 0.092 s，超调 0.3 / 0.4%，调节 0.175 / 0.167 s，与 EA 相同；图 1 换成新曲线（1200×630，字号沿用 plot_step_30.py 的 13）。
+- **Newton 建场景崩溃**：GA 上 13 次启动（冒烟、顺序、训练、9 次评估、阶跃）0 次崩溃；EA 时 14 次中 7 次。原因未查，8.5 表 3 加了正式版一行。
+- **篇幅**（含表）：8.5 3478（≤ 3500，偏紧）、8.10 2628。-W 通过。
+- **受影响的其他页（本卡不改，交 T-GA-04 / 05）**
+  - 8.3 L76、L119"约一半启动会崩溃（8.5 表 3）"：正式版上 0 / 13，宜改成"EA 时约一半，正式版 13 次 0 次"。
+  - 8.8 L82 的 Galbot Kit-less 数字由 T-GA-04 重测。
+  - 8.4 表 3 的 81.5% / 2.75 cm 与正式版相同，不用改；8.4 第 5 步已在 T-GA-02 写成"正式版上的数字见 8.10"。
+  - 8.6 里没有找到 8.5 / 8.10 的具体数字。
+
+
+**校验（examine，2026-10-23）**：通过，1 条建议不阻塞，见 `reviews/T-GA-03.md`。
+- 在校验方的 GA 环境（envGA）里重评 3 个检查点：PhysX s42 → PhysX 5.36 / 46.6%，Newton s42 → Newton 3.49 / 74.3%，c23w → PhysX 2.75 / 81.5%，都与页面一致。实现方 c23w 那几次评估的日志路径是 `IsaacLab-3.0-GA/.venv`，加上我在独立的 GA 环境里结果相同，可以排除用错环境。
+- 关节顺序 10 / 21；Newton 10 次迭代冒烟 rc=0。24 份评估日志、Wilson 区间、两场计时（含 gpu_watch）、13 次 Newton 启动 0 次崩溃，逐项核过。链接全部指向 v3.0.0；快照 83a8317，-W 通过；8.5 3128、8.10 2511。
+- 建议：8.5 表 3 注里"每次的日志单独保存"重复了一次。
+- 附带：`examples/isaaclab-3.0/8.7-cli/academy_cli_demo.egg-info/` 未跟踪，20:35 新出现，合并时不要 add 进去。

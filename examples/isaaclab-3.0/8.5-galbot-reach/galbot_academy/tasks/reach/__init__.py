@@ -1,10 +1,10 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab v3.0.0-EA（commit ae37b028e）+ Isaac Sim 6.1.0；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-10
-# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
-"""Galbot 单臂 reach（3.0 EA 版，8.5）：Galbot-Reach 与 Galbot-Reach-Play。3.0 的任务名不带 -v0；
+# 验证版本：Isaac Lab v3.0.0（commit e3f7d9ff1）+ Isaac Sim 6.2.0；Galbot 描述仓库 commit 2d496b0
+# 验证日期：2026-10-23
+# GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
+"""Galbot 单臂 reach（3.0 版，8.5）：Galbot-Reach 与 Galbot-Reach-Play。3.0 的任务名不带 -v0；
 2.3 项目里的域随机化变体（Galbot-Reach-DR-v0）子集不带。"""
 
 import gymnasium as gym

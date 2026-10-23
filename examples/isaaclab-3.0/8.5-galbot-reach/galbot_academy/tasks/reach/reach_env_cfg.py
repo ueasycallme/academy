@@ -1,10 +1,10 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab v3.0.0-EA（commit ae37b028e）+ Isaac Sim 6.1.0；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-10
-# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
-"""Galbot 单臂 reach（6.4.1；3.0 EA 版，8.5）：右臂 TCP 到达随机采样的目标位置，并保持一个固定的姿态。
+# 验证版本：Isaac Lab v3.0.0（commit e3f7d9ff1）+ Isaac Sim 6.2.0；Galbot 描述仓库 commit 2d496b0
+# 验证日期：2026-10-23
+# GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
+"""Galbot 单臂 reach（6.4.1；3.0 版，8.5）：右臂 TCP 到达随机采样的目标位置，并保持一个固定的姿态。
 
 结构照 Isaac Lab 的 Isaac-Reach-Franka-v0（manipulation/reach/reach_env_cfg.py）写，改动处都有注释。
 3.0 的改动：物理后端改用预设（GalbotReachPhysicsCfg），命令行用 physics=isaacsim_physx / newton_mjwarp 选择；

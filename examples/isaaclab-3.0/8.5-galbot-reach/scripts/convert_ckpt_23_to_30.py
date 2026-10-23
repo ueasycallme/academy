@@ -1,12 +1,12 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：rsl-rl-lib 3.1.2 的检查点（Isaac Lab 2.3.2）→ rsl-rl-lib 5.4.1（Isaac Lab v3.0.0-EA）
-# 验证日期：2026-10-12
+# 验证版本：rsl-rl-lib 3.1.2 的检查点（Isaac Lab 2.3.2）→ rsl-rl-lib 5.5.1（Isaac Lab v3.0.0）
+# 验证日期：2026-10-23
 # GPU：不需要（只读写检查点文件）
 """把 2.3 主线的 rsl_rl 检查点改写成 3.0 的 rsl_rl 5.x 能加载的格式（8.10）。只改键名，不改数值。
 
-rsl_rl 3.1.2 存一个 `model_state_dict`（`std`、`actor.*`、`critic.*`）；5.4.1 分开存 `actor_state_dict`
+rsl_rl 3.1.2 存一个 `model_state_dict`（`std`、`actor.*`、`critic.*`）；5.x（5.4.1、5.5.1 相同）分开存 `actor_state_dict`
 （`distribution.std_param`、`mlp.*`）与 `critic_state_dict`（`mlp.*`）。直接加载会报 `KeyError: 'actor_state_dict'`。
 优化器状态不转换（评估不需要），加载时要用 eval_reach.py 的 --load_models_only。
 

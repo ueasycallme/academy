@@ -1,8 +1,8 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Python 3.12（3.0 EA 环境；不依赖 Isaac Sim）
-# 验证日期：2026-10-10
+# 验证版本：Python 3.12（3.0 环境；不依赖 Isaac Sim）
+# 验证日期：2026-10-23
 """资产目录约定。
 
 - Galbot 描述仓库（上游文件，不随本项目分发）：环境变量 `GALBOT_DESCRIPTION_DIR`，

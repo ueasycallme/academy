@@ -6,3 +6,6 @@ venv/
 .cache/
 third_party/
 docs/_static/academy-examples.zip
+
+# pip install -e 留下的包元数据
+*.egg-info/

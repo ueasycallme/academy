@@ -1,8 +1,8 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab v3.0.0-EA（commit ae37b028e）+ Isaac Sim 6.1.0（PhysX）/ Newton 1.5.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-12
+# 验证版本：Isaac Lab v3.0.0（commit e3f7d9ff1）+ Isaac Sim 6.2.0（PhysX）/ Newton 1.6.1；Galbot 描述仓库 commit 2d496b0
+# 验证日期：2026-10-23
 # GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
 """打印 Galbot reach 在当前物理后端下的关节 / 刚体顺序与策略观测的布局（8.10）。
 
@@ -24,7 +24,7 @@ from isaaclab.utils.string import list_intersection
 from isaaclab_rl.entrypoints.common import add_frontend_args, create_isaaclab_env
 
 from isaaclab_tasks.utils import setup_preset_cli
-from isaaclab_tasks.utils.hydra import hydra_task_config
+from isaaclab_tasks.utils import resolve_task_config
 
 import galbot_academy
 
@@ -38,7 +38,6 @@ galbot_academy.register_tasks()
 sys.argv = [sys.argv[0]] + list_intersection(remaining, None)
 
 
-@hydra_task_config(args.task, args.agent)
 def main(env_cfg, agent_cfg) -> None:
     with launch_simulation(env_cfg, args):
         env_cfg.scene.num_envs = 2
@@ -67,4 +66,5 @@ def main(env_cfg, agent_cfg) -> None:
 
 
 if __name__ == "__main__":
-    main()
+    # 3.0 正式版删除了 hydra_task_config 装饰器，改为显式解析（读 sys.argv 里的预设与覆盖项）
+    main(*resolve_task_config(args.task, args.agent))

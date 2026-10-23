@@ -1,10 +1,10 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab v3.0.0-EA（commit ae37b028e）+ Isaac Sim 6.1.0（PhysX 后端）；rsl_rl 5.4.1
-# 验证日期：2026-10-10（--load_models_only 为 8.10 所加，2026-10-12，RTX 5090）
-# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
-"""评估一个 reach 策略（3.0 EA 版，8.5）。指标与 2.3 版的 eval_reach.py（6.5.1、6.6.1）完全相同：
+# 验证版本：Isaac Lab v3.0.0（commit e3f7d9ff1）+ Isaac Sim 6.2.0（PhysX 后端）；rsl_rl 5.5.1
+# 验证日期：2026-10-23
+# GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
+"""评估一个 reach 策略（3.0 版，8.5）。指标与 2.3 版的 eval_reach.py（6.5.1、6.6.1）完全相同：
 跑一个完整回合，在每段目标（4 s）的最后一步记录 TCP 误差，报告位置误差的中位数、90% 分位、< 2 cm / < 5 cm 的比例、
 均值与最大值，姿态误差的中位数，以及"停住但没到"的样本数。
 
@@ -24,11 +24,11 @@ from isaaclab.utils.string import list_intersection
 from isaaclab_rl.entrypoints.common import add_frontend_args, create_isaaclab_env
 
 from isaaclab_tasks.utils import setup_preset_cli
-from isaaclab_tasks.utils.hydra import hydra_task_config
+from isaaclab_tasks.utils import resolve_task_config
 
 import galbot_academy
 
-parser = argparse.ArgumentParser(description="评估 reach 策略（3.0 EA）")
+parser = argparse.ArgumentParser(description="评估 reach 策略（3.0）")
 parser.add_argument("--task", default="Galbot-Reach-Play")
 parser.add_argument("--agent", default="rsl_rl_cfg_entry_point")
 parser.add_argument("--checkpoint", required=True)
@@ -45,7 +45,6 @@ galbot_academy.register_tasks()  # 注册 Galbot-Reach / Galbot-Reach-Play
 sys.argv = [sys.argv[0]] + list_intersection(remaining, None)  # 其余参数（如 physics=...）交给 Hydra
 
 
-@hydra_task_config(args.task, args.agent)
 def main(env_cfg, agent_cfg) -> None:
     import torch
     from rsl_rl.runners import OnPolicyRunner
@@ -112,4 +111,5 @@ def main(env_cfg, agent_cfg) -> None:
 
 
 if __name__ == "__main__":
-    main()
+    # 3.0 正式版删除了 hydra_task_config 装饰器，改为显式解析（读 sys.argv 里的预设与覆盖项）
+    main(*resolve_task_config(args.task, args.agent))

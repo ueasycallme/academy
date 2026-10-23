@@ -1,8 +1,8 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：matplotlib（Isaac Lab v3.0.0-EA 环境）；不启动仿真
-# 验证日期：2026-10-12
+# 验证版本：matplotlib（Isaac Lab v3.0.0 环境）；不启动仿真
+# 验证日期：2026-10-23
 # GPU：不需要
 """把 step_response_30.py 写出的几条曲线（t, q 相对起点）画在一张图上（8.10；样式同 6.3.2 的 plot_step.py）。
 

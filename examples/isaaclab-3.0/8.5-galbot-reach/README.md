@@ -2,16 +2,16 @@
 
 对应页面：`docs/8-frontier/8.5-galbot-reach-30.md`。
 
-这是第 6 部分项目 `examples/isaaclab-2.3/6-galbot-project` 的一个**子集**，迁到 Isaac Lab 3.0 EA。只包含 reach 需要的部分：资产配置、reach 场景、reach 任务、PPO 配置、评估脚本。2.3 项目没有改动。
+这是第 6 部分项目 `examples/isaaclab-2.3/6-galbot-project` 的一个**子集**，迁到 Isaac Lab 3.0（最早在 3.0 EA 上迁移，2026-10-23 在 v3.0.0 正式版上重新验证）。只包含 reach 需要的部分：资产配置、reach 场景、reach 任务、PPO 配置、评估脚本。2.3 项目没有改动。
 
 ## 环境
 
 | 用途 | 环境 | 版本 |
 |---|---|---|
-| 训练、评估（3.0） | 1.5 路线 A：`~/wuql_ws/isaac_sim/IsaacLab-3.0/.venv`（uv） | Isaac Lab v3.0.0-EA（commit ae37b028e），Python 3.12.14；isaaclab 17.0.2、isaaclab-physx 6.0.0、isaaclab-newton 5.4.1、isaaclab-rl 0.16.3；isaacsim 6.1.0.0；newton 1.5.2、mujoco-warp 3.11.0、warp-lang 1.16.0；torch 2.11.0+cu128；rsl-rl-lib 5.4.1 |
+| 训练、评估（3.0） | 1.5 路线 A：v3.0.0 检出里的 `.venv`（uv） | Isaac Lab v3.0.0（commit e3f7d9ff1），Python 3.12.14；isaaclab 28.0.0、isaaclab-physx 8.0.0、isaaclab-newton 9.1.4、isaaclab-rl 1.5.1；isaacsim 6.2.0.0；newton 1.6.1、mujoco-warp 3.12.0、warp-lang 1.17.0；torch 2.11.0+cu130；rsl-rl-lib 5.5.1 |
 | 资产转换（PhysX 用） | Isaac Sim 5.1.0 + Isaac Lab 2.3.2（1.4） | isaacsim 5.1.0.0、isaaclab 0.54.2（v2.3.2） |
 
-GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04；主机内存 16 GB。
+GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04；主机内存 62 GB（2026-10-23）。
 
 ## 准备资产
 
@@ -42,7 +42,7 @@ isaaclab train --rl_library rsl_rl --task Galbot-Reach --external_callback galbo
     --seed 42 --run_name newton_s42 physics=newton_mjwarp
 ```
 
-接触与约束容量（`nconmax` 400、`njmax` 2000）写在 `tasks/reach/reach_env_cfg.py` 的 `GalbotReachPhysicsCfg.newton_mjwarp` 里，命令行不用另加。Newton 解析 Galbot 时偶发崩溃（段错误、`malloc(): unaligned tcache chunk detected` 或 `MemoryError`，本站 14 次启动中 7 次），崩了就重跑。
+接触与约束容量（`nconmax` 400、`njmax` 2000）写在 `tasks/reach/reach_env_cfg.py` 的 `GalbotReachPhysicsCfg.newton_mjwarp` 里，命令行不用另加。Newton 解析 Galbot 时偶发崩溃（段错误、`malloc(): unaligned tcache chunk detected` 或 `MemoryError`，EA 时本站 14 次启动中 7 次；正式版上 13 次启动 0 次），崩了就重跑。
 
 ## 复现"5.1 资产在 Newton 下失败"
 
@@ -120,4 +120,4 @@ python scripts/eval_reach.py --checkpoint model23_as30.pt --load_models_only --c
 python scripts/step_response_30.py --joint right_arm_joint2 --step 0.05 --csv step_physx.csv physics=isaacsim_physx
 ```
 
-预期（本站实测，RTX 5090，2026-10-12）：`right_arm_joint2` 在 PhysX 下序号 10、Newton 下 21；3.0 PhysX 检查点在 Newton 上 `中位数 6.66 cm … < 5 cm 32.0%`；2.3 检查点改回四元数顺序后在 3.0 PhysX 上 `中位数 2.75 cm … < 5 cm 81.5%`；阶跃两后端上升时间都是 0.092 s。
+预期（本站实测，v3.0.0，RTX 5090，2026-10-23）：`right_arm_joint2` 在 PhysX 下序号 10、Newton 下 21；3.0 PhysX 检查点在 Newton 上 `中位数 7.70–7.96 cm … < 5 cm 26.6%–28.3%`（3 次的范围）；2.3 检查点改回四元数顺序后在 3.0 PhysX 上 `中位数 2.75 cm … < 5 cm 81.5%`；阶跃两后端上升时间都是 0.092 s。

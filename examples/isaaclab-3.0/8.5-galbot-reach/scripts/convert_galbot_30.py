@@ -1,9 +1,9 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab v3.0.0-EA（commit ae37b028e）+ Isaac Sim 6.1.0（URDF importer 3.0）；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-10
-"""用 3.0 EA 自带的 URDF 转换器重新转换 Galbot（8.5），供 Newton 后端使用。
+# 验证版本：Isaac Lab v3.0.0（commit e3f7d9ff1）+ Isaac Sim 6.2.0（URDF importer 3.0）；Galbot 描述仓库 commit 2d496b0
+# 验证日期：2026-10-23
+"""用 3.0 自带的 URDF 转换器重新转换 Galbot（8.5），供 Newton 后端使用。
 
 5.1 转换出的 USD 在 Newton 下用不了（8.5 实测：一处悬空引用；碰撞 API 加在 Xform 上，Newton 不认，随后崩溃）。
 EA 文档 prepare_asset_for_newton.rst 的建议是用 3.0 的转换器重新导入，保留 run_asset_transformer 与

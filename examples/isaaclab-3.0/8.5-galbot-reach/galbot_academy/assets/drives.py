@@ -1,9 +1,9 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab v3.0.0-EA（commit ae37b028e）+ Isaac Sim 6.1.0；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-10
-# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
+# 验证版本：Isaac Lab v3.0.0（commit e3f7d9ff1）+ Isaac Sim 6.2.0；Galbot 描述仓库 commit 2d496b0
+# 验证日期：2026-10-23
+# GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
 """Galbot 固定底座版的关节驱动参数表（6.1.5）。
 
 这是仿真内自洽的参数，不代表真机（D-004）。各组的 joint_names_expr 互不重叠（Isaac Lab 要求）。

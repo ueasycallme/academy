@@ -1,9 +1,9 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab v3.0.0-EA（commit ae37b028e）+ Isaac Sim 6.1.0；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-10
-# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
+# 验证版本：Isaac Lab v3.0.0（commit e3f7d9ff1）+ Isaac Sim 6.2.0；Galbot 描述仓库 commit 2d496b0
+# 验证日期：2026-10-23
+# GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
 """reach 的 MDP 函数（6.4.1）：Isaac Lab 自带的全部函数，加上以 TCP 为末端的命令与奖励。"""
 
 import isaaclab.envs.mdp as _isaaclab_mdp

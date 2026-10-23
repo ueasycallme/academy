@@ -1,8 +1,8 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab v3.0.0-EA（commit ae37b028e）+ Isaac Sim 6.1.0（PhysX）/ Newton 1.5.2；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-12
+# 验证版本：Isaac Lab v3.0.0（commit e3f7d9ff1）+ Isaac Sim 6.2.0（PhysX）/ Newton 1.6.1；Galbot 描述仓库 commit 2d496b0
+# 验证日期：2026-10-23
 # GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
 """右臂单关节阶跃响应（8.10；方法与指标同 6.3.2 的 step_response.py）。
 
@@ -23,11 +23,11 @@ from isaaclab.utils.string import list_intersection
 from isaaclab_rl.entrypoints.common import add_frontend_args, create_isaaclab_env
 
 from isaaclab_tasks.utils import setup_preset_cli
-from isaaclab_tasks.utils.hydra import hydra_task_config
+from isaaclab_tasks.utils import resolve_task_config
 
 import galbot_academy
 
-parser = argparse.ArgumentParser(description="单关节阶跃响应（3.0 EA，8.10）")
+parser = argparse.ArgumentParser(description="单关节阶跃响应（3.0，8.10）")
 parser.add_argument("--task", default="Galbot-Reach")
 parser.add_argument("--agent", default="rsl_rl_cfg_entry_point")
 parser.add_argument("--joint", default="right_arm_joint2")
@@ -67,7 +67,6 @@ def metrics(t, q, q0: float, step: float, dt: float) -> dict:
             "ss_err": final - (q0 + step), "ripple": (tail.max() - tail.min()).item()}
 
 
-@hydra_task_config(args.task, args.agent)
 def main(env_cfg, agent_cfg) -> None:
     import torch
 
@@ -115,4 +114,5 @@ def main(env_cfg, agent_cfg) -> None:
 
 
 if __name__ == "__main__":
-    main()
+    # 3.0 正式版删除了 hydra_task_config 装饰器，改为显式解析（读 sys.argv 里的预设与覆盖项）
+    main(*resolve_task_config(args.task, args.agent))

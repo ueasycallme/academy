@@ -1,10 +1,10 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab v3.0.0-EA（commit ae37b028e）+ Isaac Sim 6.1.0；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-10
-# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
-"""Isaac Academy 主线项目：Galbot One Golf（Isaac Lab 2.3.2）；本目录是 3.0 EA 版的子集（8.5）。
+# 验证版本：Isaac Lab v3.0.0（commit e3f7d9ff1）+ Isaac Sim 6.2.0；Galbot 描述仓库 commit 2d496b0
+# 验证日期：2026-10-23
+# GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
+"""Isaac Academy 主线项目：Galbot One Golf（Isaac Lab 2.3.2）；本目录是 3.0 版的子集（8.5）。
 
 本站修改：模板原本在这里导入 `tasks` 与 `ui_extension_example`。改为不导入任何依赖 Kit 的模块，
 使 `galbot_academy.assets` 等纯 Python 工具在不启动 Isaac Sim 时也能使用；

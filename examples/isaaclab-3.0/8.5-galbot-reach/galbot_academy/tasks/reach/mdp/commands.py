@@ -1,10 +1,10 @@
 # Copyright (c) 2026, Isaac Academy.
 # SPDX-License-Identifier: BSD-3-Clause
 #
-# 验证版本：Isaac Lab v3.0.0-EA（commit ae37b028e）+ Isaac Sim 6.1.0；Galbot 描述仓库 commit 2d496b0
-# 验证日期：2026-10-10
-# GPU：NVIDIA GeForce RTX 5070 12 GB，驱动 580.178.04
-"""以 TCP 为末端的位姿命令（6.4.1；3.0 EA 版，8.5）。
+# 验证版本：Isaac Lab v3.0.0（commit e3f7d9ff1）+ Isaac Sim 6.2.0；Galbot 描述仓库 commit 2d496b0
+# 验证日期：2026-10-23
+# GPU：NVIDIA GeForce RTX 5090 32 GB，驱动 580.178.04
+"""以 TCP 为末端的位姿命令（6.4.1；3.0 版，8.5）。
 
 Isaac Lab 的 UniformPoseCommand 用一个刚体的原点算误差与画"当前位姿"标记。Galbot 的 TCP 在转换时并进了
 right_arm_link7，离它的原点 0.256 m（6.2.1），所以这里只改两处：误差指标与当前位姿标记都换成"刚体 + 偏移"。
